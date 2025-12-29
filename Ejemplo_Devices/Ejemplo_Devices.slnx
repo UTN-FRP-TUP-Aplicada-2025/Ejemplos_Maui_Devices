@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/Elementos de la solución/">
+    <File Path="Readme.md" />
+  </Folder>
+  <Project Path="Ejemplo_photo/Ejemplo_photo.csproj">
+    <Deploy Solution="Debug|*" />
+  </Project>
+</Solution>
