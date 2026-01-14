@@ -1,0 +1,3 @@
+﻿
+Librerias
+BarcodeScanner.Mobile.Maui
