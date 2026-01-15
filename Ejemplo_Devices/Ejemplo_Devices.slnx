@@ -2,7 +2,7 @@
   <Folder Name="/Elementos de la solución/">
     <File Path="Readme.md" />
   </Folder>
-  <Project Path="Ejemplo_QR/Ejemplo_QR.csproj" Id="bd6a577d-5430-4f5b-abed-76643e2ef2e4">
+  <Project Path="Ejemplo_LectorQR/Ejemplo_LectorQR.csproj" Id="42e80caf-5f94-42b4-be26-a16c162d64ab">
     <Deploy Solution="Debug|*" />
   </Project>
 </Solution>
