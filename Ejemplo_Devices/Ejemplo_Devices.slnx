@@ -1,8 +1,14 @@
 <Solution>
-  <Folder Name="/Elementos de la solución/">
+  <Folder Name="/QR/">
+    <Project Path="Ejemplo_LectorQR/Ejemplo_LectorQR.csproj" Id="42e80caf-5f94-42b4-be26-a16c162d64ab">
+      <Deploy Solution="Debug|*" />
+    </Project>
+    <Project Path="Ejemplo_LectorQR_Page/Ejemplo_LectorQR_Page.csproj" Id="6f651d01-372e-45a6-808d-5ff5854a6075">
+      <Deploy Solution="Debug|*" />
+    </Project>
+  </Folder>
+  <Folder Name="/QR/Elementos de la solución/">
+    <File Path="Docs_QR/QR_Ejemplo.png" />
     <File Path="Readme.md" />
   </Folder>
-  <Project Path="Ejemplo_LectorQR/Ejemplo_LectorQR.csproj" Id="42e80caf-5f94-42b4-be26-a16c162d64ab">
-    <Deploy Solution="Debug|*" />
-  </Project>
 </Solution>

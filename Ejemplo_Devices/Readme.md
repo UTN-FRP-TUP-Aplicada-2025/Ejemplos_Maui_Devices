@@ -1,3 +1,9 @@
+
+dotnet add package BarcodeScanner.Mobile.Maui --version 9.0.1
+
+
+
+
 CommunityToolkit.Maui.Camera 5.0.0
 
 Microsoft.Maui.Controls 10.0.020

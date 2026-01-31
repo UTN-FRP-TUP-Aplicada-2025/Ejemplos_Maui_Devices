@@ -11,10 +11,7 @@ public partial class MainPage : ContentPage
         InitializeComponent();
 
         BarcodeScanner.Mobile.Methods.SetSupportBarcodeFormat(BarcodeScanner.Mobile.BarcodeFormats.QRCode);
-
-
     }
-
 
     async public Task<bool> RequestCameraPermission()
     {
@@ -30,11 +27,10 @@ public partial class MainPage : ContentPage
         }
         else
         {
-            await DisplayAlert("Alert", "Dale permiso si queres QR!","OK");
+            await DisplayAlertAsync("Alert", "Dale permiso si queres QR!","OK");
         }
     }
-
-    private async void OnSwitchCameraButtonClicked(object sender, EventArgs e)
+        private async void OnSwitchCameraButtonClicked(object sender, EventArgs e)
     {
         if (await RequestCameraPermission())
         {
@@ -58,7 +54,8 @@ public partial class MainPage : ContentPage
 
             this.Dispatcher.Dispatch(async () =>
             {
-                await DisplayAlert("QR Detected", result, "OK");
+                Camera.IsScanning = false;
+                await DisplayAlertAsync("QR Detected", result, "OK");
                 Camera.IsScanning = true;
             });
         }
