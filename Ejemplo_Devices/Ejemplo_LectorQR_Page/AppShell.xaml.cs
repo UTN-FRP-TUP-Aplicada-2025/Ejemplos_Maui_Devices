@@ -8,6 +8,6 @@ public partial class AppShell : Shell
     {
         InitializeComponent();
 
-        Routing.RegisterRoute( nameof(QRLectoPage), typeof(QRLectoPage) );
+        Routing.RegisterRoute( nameof(QRLectorPage), typeof(QRLectorPage) );
     }
 }

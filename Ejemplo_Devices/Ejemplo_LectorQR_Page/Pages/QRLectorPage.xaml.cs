@@ -2,19 +2,23 @@ using BarcodeScanner.Mobile;
 
 namespace Ejemplo_LectorQR_Page.Pages;
 
-public partial class QRLectoPage : ContentPage
+public partial class QRLectorPage : ContentPage
 {
     public TaskCompletionSource<string> ResultadoTask { get; set; } = new();
 
-    public QRLectoPage()
+    public QRLectorPage()
 	{
 		InitializeComponent();
-	}
+
+#if ANDROID
+        BarcodeScanner.Mobile.Methods.SetSupportBarcodeFormat(BarcodeScanner.Mobile.BarcodeFormats.QRCode | BarcodeScanner.Mobile.BarcodeFormats.Code39);
+#endif
+
+    }
 
     async protected override void OnAppearing()
     {
         base.OnAppearing();
-
         await RequestCameraPermission();
     }
 
@@ -39,12 +43,20 @@ public partial class QRLectoPage : ContentPage
             this.Dispatcher.Dispatch(async () =>
             {
                 Camera.IsScanning = false;
-                await Navigation.PopAsync();
-
+                
                 ResultadoTask.SetResult(result);
 
-                Camera.IsScanning = true;
+                await Navigation.PopAsync();
             });
         }        
+    }
+
+    protected override void OnDisappearing()
+    {
+        base.OnDisappearing();
+        if (!ResultadoTask.Task.IsCompleted)
+        {
+            ResultadoTask.TrySetResult(null);
+        }
     }
 }

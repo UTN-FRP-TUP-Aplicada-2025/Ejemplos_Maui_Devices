@@ -9,7 +9,7 @@ public partial class MainPage : ContentPage
 
     async private void OnLeerQRClicked(object sender, EventArgs e)
     {
-        var destinoPage = new QRLectoPage();
+        var destinoPage = new QRLectorPage();
 
         await Navigation.PushAsync(destinoPage);
 
