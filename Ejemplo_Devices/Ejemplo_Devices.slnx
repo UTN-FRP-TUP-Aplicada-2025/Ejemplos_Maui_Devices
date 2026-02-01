@@ -1,13 +1,27 @@
 <Solution>
+  <Folder Name="/Camera/">
+    <Project Path="Ejemplo_Photo_Dialog/Ejemplo_Photo_Dialog.csproj" Id="c009f442-a562-47e7-bdbd-faf3eee64eba" />
+  </Folder>
+  <Folder Name="/Camera/Docs/">
+    <File Path="Docs_Photo/Readme.md" />
+  </Folder>
+  <Folder Name="/GPS/">
+    <Project Path="Ejemplo_GPS/Ejemplo_GPS.csproj" Id="96dab9f5-6476-4338-b50d-473a33b0eefd">
+      <Deploy Solution="Debug|*" />
+    </Project>
+  </Folder>
+  <Folder Name="/GPS/Docs/">
+    <File Path="Docs_GPS/Readme.md" />
+  </Folder>
   <Folder Name="/QR/">
     <Project Path="Ejemplo_LectorQR/Ejemplo_LectorQR.csproj" Id="42e80caf-5f94-42b4-be26-a16c162d64ab">
       <Deploy Solution="Debug|*" />
     </Project>
-    <Project Path="Ejemplo_LectorQR_Page/Ejemplo_LectorQR_Page.csproj" Id="6f651d01-372e-45a6-808d-5ff5854a6075">
+    <Project Path="Ejemplo_LectorQR_Dialog/Ejemplo_LectorQR_Dialog.csproj" Id="6f651d01-372e-45a6-808d-5ff5854a6075">
       <Deploy Solution="Debug|*" />
     </Project>
   </Folder>
-  <Folder Name="/QR/Elementos de la solución/">
+  <Folder Name="/QR/Docs/">
     <File Path="Docs_QR/QR_Ejemplo.png" />
     <File Path="Readme.md" />
   </Folder>

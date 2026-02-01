@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 public partial class MainPage : ContentPage
 {
-   
+
     public MainPage()
     {
         InitializeComponent();
@@ -15,7 +15,7 @@ public partial class MainPage : ContentPage
 
     async public Task<bool> RequestCameraPermission()
     {
-        bool allowed= await BarcodeScanner.Mobile.Methods.AskForRequiredPermission();
+        bool allowed = await BarcodeScanner.Mobile.Methods.AskForRequiredPermission();
         return allowed;
     }
 
@@ -27,10 +27,11 @@ public partial class MainPage : ContentPage
         }
         else
         {
-            await DisplayAlertAsync("Alert", "Dale permiso si queres QR!","OK");
+            await DisplayAlertAsync("Alert", "Dale permiso si queres QR!", "OK");
         }
     }
-        private async void OnSwitchCameraButtonClicked(object sender, EventArgs e)
+
+    private async void OnSwitchCameraButtonClicked(object sender, EventArgs e)
     {
         if (await RequestCameraPermission())
         {
@@ -39,7 +40,7 @@ public partial class MainPage : ContentPage
               : BarcodeScanner.Mobile.CameraFacing.Back;
         }
     }
-   
+
     private async void OnCameraViewOnDetected(object sender, OnDetectedEventArg e)
     {
         if (await RequestCameraPermission())

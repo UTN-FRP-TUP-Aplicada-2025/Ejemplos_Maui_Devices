@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="Ejemplo_Photo_Dialog.Pages.MyMediaPickerPage"
+             Title="Camera Page"
+             BackgroundColor="#000000">
+   
+    <!-- Contenedor dinámico -->
+    <Grid x:Name="DynamicLayout" 
+            RowDefinitions="Auto,*,Auto" ColumnDefinitions="*"
+            HorizontalOptions="Center" VerticalOptions="Center">
+
+        <!-- bototnes en la parte superior -->
+        <Button x:Name="BtnFlashButton" Grid.Row="0" Grid.Column="0" 
+                Clicked="OnActiveFlashClicked" 
+                HorizontalOptions="Center"  VerticalOptions="Center" 
+                Background="#aa000000" CornerRadius="8">
+            <Button.ImageSource>
+                <FontImageSource Glyph="{Binding FlashIcon}" FontFamily="MaterialIconsOutlined" />
+            </Button.ImageSource>
+        </Button>
+
+        <toolkit:CameraView x:Name="Camera" Grid.Row="1" Grid.Column="0"
+                            HorizontalOptions="Center" VerticalOptions="Center" 
+                            MediaCaptured="OnMediaCaptured"
+                            MediaCaptureFailed="OnMediaCaptureFailed" Margin="0"/>
+
+        <Button x:Name="BtnTomarFoto" 
+             Grid.Row="2" Grid.Column="0" 
+             Clicked="OnTomarFotoClicked" 
+             HorizontalOptions="Center" VerticalOptions="Center"
+             Background="#aa000000" CornerRadius="8">
+            <Button.ImageSource>
+                <FontImageSource Glyph="photo_camera" Size="50" FontFamily="MaterialIconsOutlined"/>
+            </Button.ImageSource>
+        </Button>
+
+    </Grid>
+</ContentPage>

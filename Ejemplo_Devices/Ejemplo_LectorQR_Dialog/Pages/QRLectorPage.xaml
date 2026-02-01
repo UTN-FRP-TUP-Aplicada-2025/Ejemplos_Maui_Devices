@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:gv="clr-namespace:BarcodeScanner.Mobile;assembly=BarcodeScanner.Mobile.Maui"
+             x:Class="Ejemplo_LectorQR_Dialog.Pages.QRLectorPage"
+             Title="QRLectorPage"
+             BackgroundColor="#000000">
+
+    <Grid x:Name="DynamicLayout" 
+          RowDefinitions="Auto,*,Auto" ColumnDefinitions="*"
+          HorizontalOptions="Center" VerticalOptions="Center">
+
+        <Button x:Name="BtnFlashButton" 
+                Grid.Row="0" Grid.Column="0" 
+                Clicked="OnActiveFlashClicked" 
+                HorizontalOptions="Center" VerticalOptions="Center" 
+                Background="#aa000000" CornerRadius="8">
+            <Button.ImageSource>
+                <FontImageSource Glyph="{Binding FlashIcon}" FontFamily="MaterialIconsOutlined" />
+            </Button.ImageSource>
+        </Button>
+
+        <gv:CameraView x:Name="Camera" 
+                        Grid.Row="1" Grid.Column="0" 
+                        OnDetected="OnCameraViewOnDetecte" 
+                        TorchOn="False" VibrationOnDetected="False"
+                        ScanInterval="50"/>
+
+        <Button x:Name="BtnVolver" 
+                 Grid.Row="2" Grid.Column="0" 
+                 Clicked="OnVolverClicked" 
+                 HorizontalOptions="Center" VerticalOptions="Center"
+                 Background="#aa000000" CornerRadius="8">
+            <Button.ImageSource>
+                <FontImageSource Glyph="Arrow Back" Size="50" FontFamily="MaterialIconsOutlined"/>
+            </Button.ImageSource>
+        </Button>
+
+    </Grid>
+</ContentPage>
