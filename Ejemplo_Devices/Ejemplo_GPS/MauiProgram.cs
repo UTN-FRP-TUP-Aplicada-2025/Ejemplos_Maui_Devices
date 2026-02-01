@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using GPS.Services;
+using Microsoft.Extensions.Logging;
 
 namespace Ejemplo_GPS;
 
@@ -20,5 +21,12 @@ public static class MauiProgram
 #endif
 
         return builder.Build();
+    }
+
+    static public MauiAppBuilder AddServices(this MauiAppBuilder builder)
+    {
+        builder.Services.AddSingleton<GeoLocationsServices>();
+
+        return builder;
     }
 }

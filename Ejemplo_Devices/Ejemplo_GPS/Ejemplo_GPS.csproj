@@ -13,7 +13,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 
-		<ApplicationTitle>Ejemplo_GPS</ApplicationTitle>
+		<ApplicationTitle>GPS</ApplicationTitle>
 
 		<ApplicationId>com.ejemplos.devices.gps</ApplicationId>
 
