@@ -23,6 +23,7 @@
         <gv:CameraView x:Name="Camera" 
                         Grid.Row="1" Grid.Column="0" 
                         OnDetected="OnCameraViewOnDetecte" 
+                        VerticalOptions="Fill"
                         TorchOn="False" VibrationOnDetected="False"
                         ScanInterval="50"/>
 
@@ -32,7 +33,7 @@
                  HorizontalOptions="Center" VerticalOptions="Center"
                  Background="#aa000000" CornerRadius="8">
             <Button.ImageSource>
-                <FontImageSource Glyph="Arrow Back" Size="50" FontFamily="MaterialIconsOutlined"/>
+                <FontImageSource Glyph="arrow_back" Size="50" FontFamily="MaterialIconsOutlined"/>
             </Button.ImageSource>
         </Button>
 

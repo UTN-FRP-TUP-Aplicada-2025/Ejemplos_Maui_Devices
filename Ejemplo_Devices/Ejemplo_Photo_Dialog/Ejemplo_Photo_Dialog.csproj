@@ -43,8 +43,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Remove="Platforms\Android\Resources\values-31\colors.xml" />
-	  <None Remove="Platforms\Android\Resources\values-31\styles.xml" />
 	  <None Remove="Platforms\Android\Resources\values\styles.xml" />
 	</ItemGroup>
 

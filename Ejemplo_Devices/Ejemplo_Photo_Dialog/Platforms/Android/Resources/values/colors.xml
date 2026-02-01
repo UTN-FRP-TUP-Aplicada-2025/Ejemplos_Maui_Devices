@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#512BD4</color>
-    <color name="colorPrimaryDark">#2B0B98</color>
-    <color name="colorAccent">#2B0B98</color>
+	<!-- Set theme colors from https://aka.ms/material-colors -->
+	<color name="launcher_background">#FFFFFF</color>
+	<color name="colorPrimary">#3F51B5</color>
+	<color name="colorPrimaryDark">#000000</color>
+	<color name="colorAccent">#000000</color>
+	<color name="opaque_background">#FFFFFF</color>
 </resources>
