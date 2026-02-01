@@ -43,6 +43,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Platforms\Android\Resources\values-31\colors.xml" />
+	  <None Remove="Platforms\Android\Resources\values-31\styles.xml" />
+	  <None Remove="Platforms\Android\Resources\values\styles.xml" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Maui.Camera" Version="6.0.0" />
 		<PackageReference Include="CommunityToolkit.Maui.Core" Version="14.0.0" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="10.0.30" />
