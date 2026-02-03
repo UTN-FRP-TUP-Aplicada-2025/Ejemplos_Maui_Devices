@@ -1,6 +1,8 @@
 <Solution>
   <Folder Name="/Camera/">
-    <Project Path="Ejemplo_Photo_MediaPicker/Ejemplo_Photo_MediaPicker.csproj" Id="b9e9559a-bfbf-45e1-be27-127f510308b2" />
+    <Project Path="Ejemplo_Photo_MediaPicker/Ejemplo_Photo_MediaPicker.csproj" Id="b9e9559a-bfbf-45e1-be27-127f510308b2">
+      <Deploy Solution="Debug|*" />
+    </Project>
     <Project Path="Ejemplo_Photo_MiMediaPicker/Ejemplo_Photo_MiMediaPicker.csproj" Id="c009f442-a562-47e7-bdbd-faf3eee64eba">
       <Deploy Solution="Debug|*" />
     </Project>
@@ -25,7 +27,8 @@
     </Project>
   </Folder>
   <Folder Name="/QR/Docs/">
-    <File Path="Docs_QR/QR_Ejemplo.png" />
+    <File Path="Docs_QR/QR_frase.png" />
+    <File Path="Docs_QR/QR_pirincho.png" />
     <File Path="Readme.md" />
   </Folder>
 </Solution>
