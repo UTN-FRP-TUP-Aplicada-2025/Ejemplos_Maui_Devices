@@ -5,8 +5,8 @@
 
     <ScrollView>
 
-        <VerticalStackLayout>
-            <Label Text="{Binding Coordenadas}}"/>
+        <VerticalStackLayout Spacing="10" Margin="10">
+            <Label Text="{Binding Coordenadas}"/>
             <Button Text="Geo Localizarme!" Clicked="OnGetGeoLocalizacionClicked"/>
             <Button Text="Mostrar en mapa" Clicked="OnMostrarLocalizacionEnMapaClicked"/>
         </VerticalStackLayout>

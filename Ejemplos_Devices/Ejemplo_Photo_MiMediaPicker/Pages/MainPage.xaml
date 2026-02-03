@@ -6,13 +6,11 @@
 
     <ScrollView>
         <VerticalStackLayout Padding="30,0"  Spacing="25">
-            
-            <Image
-                x:Name="ImgPhoto"
-                Source="dotnet_bot.png"
-                HeightRequest="185"
-                Aspect="AspectFit"
-                SemanticProperties.Description="dot net bot in a submarine number ten" />
+
+            <Image x:Name="ImgPhoto"
+                    Source="dotnet_bot.png"
+                    HeightRequest="185"
+                    Aspect="AspectFit"/>
 
             <Button x:Name="BtnPhoto" Text="Tomar Foto"  Clicked="OnAbrirCamaraClicked" />
             

@@ -29,10 +29,15 @@ public partial class MainPage : ContentPage
 
     async private void OnGetGeoLocalizacionClicked(object sender, EventArgs e)
     {
+        Coordenadas = "Tomando las coordeandas... espere!";
         Location location=await _geoLocationsServices.GetCurrentLocation();
         if (location != null)
         {
             Coordenadas = $"Latitude: {location.Latitude}, Longitude: {location.Longitude}, Altitude: {location.Altitude}";
+        }
+        else
+        {
+            Coordenadas = "";
         }
     }
 

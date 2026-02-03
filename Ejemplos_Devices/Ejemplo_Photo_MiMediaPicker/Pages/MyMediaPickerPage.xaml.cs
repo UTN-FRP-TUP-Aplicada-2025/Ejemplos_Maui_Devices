@@ -43,42 +43,6 @@ public partial class MyMediaPickerPage : ContentPage
             }
             await Navigation.PopAsync();
         }
-        //try
-        //{
-        //    if (Camera.IsAvailable == true && e.Media != null)
-        //    {
-        //        // Leer el stream completamente en memoria
-        //        using (var ms = new MemoryStream())
-        //        {
-        //            await e.Media.CopyToAsync(ms);
-        //            ms.Position = 0;
-
-        //            // Crear ImageSource desde el buffer en memoria
-        //            var imageSource = ImageSource.FromStream(() => new MemoryStream(ms.ToArray()));
-        //            var image = new Image { Source = imageSource };
-
-        //            // Verificar que no se haya completado ya
-        //            if (!ResultadoTask.Task.IsCompleted)
-        //            {
-        //                ResultadoTask.SetResult(image);
-        //            }
-        //        }
-        //    }
-        //}
-        //catch (Exception ex)
-        //{
-        //    Debug.WriteLine($"Error en OnMediaCaptured: {ex.Message}");
-        //    if (!ResultadoTask.Task.IsCompleted)
-        //    {
-        //        ResultadoTask.SetException(ex);
-        //    }
-        //}
-        //finally
-        //{
-        //    _isCapturingImage = false;
-        //    DynamicLayout.IsEnabled = true;
-        //    await Navigation.PopAsync();
-        //}
     }
 
     private void OnMediaCaptureFailed(object sender, MediaCaptureFailedEventArgs e)
