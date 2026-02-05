@@ -2,7 +2,7 @@
 using CommunityToolkit.Maui.Core;
 using System.Diagnostics;
 
-namespace Ejemplo_Photo_Dialog.Pages;
+namespace Ejemplo_Imagen_Normalizacion.Pages;
 
 public partial class MyMediaPickerPage : ContentPage
 {
@@ -84,6 +84,7 @@ public partial class MyMediaPickerPage : ContentPage
     {
         base.OnNavigatedFrom(args);
     }
+
     protected async override void OnNavigatedTo(NavigatedToEventArgs args)
     {
         base.OnNavigatedTo(args);
@@ -121,11 +122,13 @@ public partial class MyMediaPickerPage : ContentPage
             DynamicLayout.IsEnabled = true;
         }
     }
+
     private async void btnSwitchCamera_Clicked(object sender, EventArgs e)
     {
         // Camera.CameraFacing = Camera.CameraFacing == CameraFacing.Back ? CameraFacing.Front : CameraFacing.Back;
         await Task.CompletedTask;
     }
+
     private async void OnActiveFlashClicked(object sender, EventArgs e)
     {
         if (Camera.CameraFlashMode == CameraFlashMode.Off)
@@ -143,6 +146,7 @@ public partial class MyMediaPickerPage : ContentPage
 
         StatusFlashToIcons();
     }
+
     public void StatusFlashToIcons()
     {
         if (Camera.CameraFlashMode == CameraFlashMode.Off)
@@ -190,6 +194,7 @@ public partial class MyMediaPickerPage : ContentPage
                     Grid.SetRow(BtnTomarFoto, 0);
                     Grid.SetColumn(BtnTomarFoto, 0);
                     Grid.SetColumnSpan(BtnTomarFoto, 1);
+
                 }
                 else if (orientation == DisplayOrientation.Portrait)
                 {
@@ -217,13 +222,32 @@ public partial class MyMediaPickerPage : ContentPage
         catch (Exception ex) { }
     }
 
+    //protected override void OnDisappearing()
+    //{
+    //    base.OnDisappearing();
+
+    //    // Si la página se cierra y nadie completó el Task, lo cancelamos
+    //    // para liberar el hilo que está esperando en MainPage.
+    //    if (!ResultadoTask.Task.IsCompleted)
+    //    {
+    //        ResultadoTask.TrySetResult(null);
+    //    }
+    //}
+
     protected override void OnDisappearing()
     {
         base.OnDisappearing();
 
+        //if (!ResultadoTask.Task.IsCompleted)
+        //{
+        //    ResultadoTask.TrySetResult(null);
+        //}
+
         try
         {
             DeviceDisplay.MainDisplayInfoChanged -= OnMainDisplayInfoChanged;
+
+            _captureCancellationTokenSource?.Cancel();
         }
         catch (Exception ex)
         {
@@ -237,7 +261,7 @@ public partial class MyMediaPickerPage : ContentPage
             activity.RequestedOrientation = Android.Content.PM.ScreenOrientation.Unspecified; //restablece la orientación predeterminada
         }
 #elif IOS
-        // Implementa un handler para restaurar orientación en iOS
+                // Implementa un handler para restaurar orientación en iOS
 #endif
     }
 

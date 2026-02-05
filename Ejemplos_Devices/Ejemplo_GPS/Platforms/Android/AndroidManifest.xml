@@ -19,4 +19,6 @@
 	<!-- android 10 o superior-->
 	<uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
 
+	<uses-sdk android:minSdkVersion="25" android:targetSdkVersion="36" />
+	
 </manifest>

@@ -18,6 +18,9 @@
   <Folder Name="/GPS/Docs/">
     <File Path="Docs_GPS/Readme.md" />
   </Folder>
+  <Folder Name="/Imagen/">
+    <Project Path="Ejemplo_Imagen_Normalizacion/Ejemplo_Imagen_Normalizacion.csproj" Id="c322c7dc-65ff-4689-b244-80937c7e8522" />
+  </Folder>
   <Folder Name="/QR/">
     <Project Path="Ejemplo_LectorQR/Ejemplo_LectorQR.csproj" Id="42e80caf-5f94-42b4-be26-a16c162d64ab">
       <Deploy Solution="Debug|*" />

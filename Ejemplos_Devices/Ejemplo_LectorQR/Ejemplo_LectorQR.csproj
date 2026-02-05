@@ -1,8 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net10.0-android;net10.0-ios</TargetFrameworks>
-	
+		<TargetFrameworks>net10.0-android</TargetFrameworks>
+		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('osx'))">$(TargetFrameworks);net10.0-ios</TargetFrameworks>
+
 		<OutputType>Exe</OutputType>
 		
 		<RootNamespace>Ejemplo_LectorQR</RootNamespace>
@@ -13,7 +14,7 @@
 		<Nullable>enable</Nullable>
 
 		<ApplicationTitle>Lector QR</ApplicationTitle>
-		<ApplicationId>com.ejemplos.devices.photo</ApplicationId>
+		<ApplicationId>com.ejemplos.devices.qr</ApplicationId>
 
 		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
 		<ApplicationVersion>1</ApplicationVersion>

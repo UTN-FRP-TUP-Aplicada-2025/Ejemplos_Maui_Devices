@@ -70,6 +70,16 @@ public partial class QRLectorPage : ContentPage
         {
             ResultadoTask.TrySetResult(null);
         }
+
+        try
+        {
+            DeviceDisplay.MainDisplayInfoChanged -= OnMainDisplayInfoChanged;
+
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"Error desregistrando el evento: {ex.Message}");
+        }
     }
 
     async protected override void OnAppearing()
@@ -102,11 +112,14 @@ public partial class QRLectorPage : ContentPage
     {
         try
         {
+            if (DynamicLayout == null || !DynamicLayout.IsEnabled) return;
+
             if (DynamicLayout.IsEnabled == true)
             {
+                DynamicLayout.BatchBegin();
+
                 DynamicLayout.RowDefinitions.Clear();
                 DynamicLayout.ColumnDefinitions.Clear();
-
 
                 if (orientation == DisplayOrientation.Landscape)
                 {
@@ -147,6 +160,8 @@ public partial class QRLectorPage : ContentPage
                     Grid.SetColumn(BtnVolver, 0);
                     Grid.SetColumnSpan(BtnVolver, 1);
                 }
+
+                DynamicLayout.BatchCommit();
             }
         }
         catch (Exception ex) { }
