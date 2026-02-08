@@ -4,7 +4,8 @@
              xmlns:gv="clr-namespace:BarcodeScanner.Mobile;assembly=BarcodeScanner.Mobile.Maui"
              x:Class="Ejemplo_LectorQR_Dialog.Pages.QRLectorPage"
              Title="QRLectorPage"
-             BackgroundColor="#000000">
+             BackgroundColor="#000000"
+             NavigationPage.HasNavigationBar="False">
 
     <Grid x:Name="DynamicLayout" 
           RowDefinitions="Auto,*,Auto" ColumnDefinitions="*"

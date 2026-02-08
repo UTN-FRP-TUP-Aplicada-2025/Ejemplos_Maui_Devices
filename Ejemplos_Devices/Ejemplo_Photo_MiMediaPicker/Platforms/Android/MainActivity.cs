@@ -1,8 +1,7 @@
 ﻿using Android.App;
 using Android.Content.PM;
-using Android.OS;
 
-namespace Ejemplo_Photo_Dialog;
+namespace Ejemplo_Photo_MiMediaPicker_Task;
 
 [Activity(Theme = "@style/Maui.SplashTheme", 
             MainLauncher = true,

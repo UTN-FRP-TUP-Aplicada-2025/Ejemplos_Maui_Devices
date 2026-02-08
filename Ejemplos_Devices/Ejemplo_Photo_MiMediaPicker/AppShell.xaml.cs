@@ -1,6 +1,6 @@
-﻿using Ejemplo_Photo_Dialog.Pages;
+﻿using Ejemplo_Photo_MiMediaPicker_Task.Pages;
 
-namespace Ejemplo_Photo_Dialog;
+namespace Ejemplo_Photo_MiMediaPicker_Task;
 
 public partial class AppShell : Shell
 {

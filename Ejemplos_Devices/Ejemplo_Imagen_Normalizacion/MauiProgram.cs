@@ -30,8 +30,7 @@ namespace Ejemplo_Imagen_Normalizacion
 
         public static MauiAppBuilder AddServices(this MauiAppBuilder builder)
         {
-            builder.Services.AddSingleton<Services.IImageDeviceService, Services.ImageDeviceAutoRotateService>();
-
+            //add services
             return builder;
         }
     }

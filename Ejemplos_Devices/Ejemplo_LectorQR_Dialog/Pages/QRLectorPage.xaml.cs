@@ -25,8 +25,8 @@ public partial class QRLectorPage : ContentPage
 
     async private void OnCameraViewOnDetecte(object sender, BarcodeScanner.Mobile.OnDetectedEventArg e)
     {
-        if (await RequestCameraPermission())
-        {
+        //if (await RequestCameraPermission())
+        //{
             List<BarcodeResult> obj = e.BarcodeResults;
 
             string result = string.Empty;
@@ -43,7 +43,7 @@ public partial class QRLectorPage : ContentPage
 
                 await Navigation.PopAsync();
             });
-        }        
+       // }        
     }
 
     private async void OnActiveFlashClicked(object sender, EventArgs e)

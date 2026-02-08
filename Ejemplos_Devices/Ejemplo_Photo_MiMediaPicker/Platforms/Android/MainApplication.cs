@@ -1,7 +1,7 @@
 ﻿using Android.App;
 using Android.Runtime;
 
-namespace Ejemplo_Photo_Dialog;
+namespace Ejemplo_Photo_MiMediaPicker_Task;
 
 [Application]
 public class MainApplication : MauiApplication

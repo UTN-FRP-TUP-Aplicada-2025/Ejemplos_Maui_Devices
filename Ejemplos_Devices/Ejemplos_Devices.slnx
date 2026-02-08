@@ -3,7 +3,10 @@
     <Project Path="Ejemplo_Photo_MediaPicker/Ejemplo_Photo_MediaPicker.csproj" Id="b9e9559a-bfbf-45e1-be27-127f510308b2">
       <Deploy Solution="Debug|*" />
     </Project>
-    <Project Path="Ejemplo_Photo_MiMediaPicker/Ejemplo_Photo_MiMediaPicker.csproj" Id="c009f442-a562-47e7-bdbd-faf3eee64eba">
+    <Project Path="Ejemplo_Photo_MiMediaPicker/Ejemplo_Photo_MiMediaPicker_Task.csproj" Id="c009f442-a562-47e7-bdbd-faf3eee64eba">
+      <Deploy Solution="Debug|*" />
+    </Project>
+    <Project Path="Ejemplo_Photo_MiMediaPicker_Callback/Ejemplo_Photo_MiMediaPicker_Callback.csproj" Id="bae08ccd-ae28-4ee5-bbcf-7067c0d65fe6">
       <Deploy Solution="Debug|*" />
     </Project>
   </Folder>
@@ -33,5 +36,13 @@
     <File Path="Docs_QR/QR_frase.png" />
     <File Path="Docs_QR/QR_pirincho.png" />
     <File Path="Readme.md" />
+  </Folder>
+  <Folder Name="/Red/">
+    <Project Path="Ejemplo_Maui_Connectivity/Ejemplo_Maui_Connectivity.csproj" Id="48f94d6b-5fca-47d6-8b02-bea1a35ba5f2">
+      <Deploy Solution="Debug|*" />
+    </Project>
+  </Folder>
+  <Folder Name="/Red/Docs/">
+    <File Path="Docs_Red/Readme.md" />
   </Folder>
 </Solution>

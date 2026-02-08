@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using Ejemplo_Imagen_Normalizacion.Services;
+using System.Diagnostics;
 
 namespace Ejemplo_Imagen_Normalizacion.Pages;
 
@@ -7,59 +8,50 @@ public partial class MainPage : ContentPage
     public MainPage()
     {
         InitializeComponent();
-    }
 
-    private bool _isNavigating = false;
+    }
 
     async private void OnAbrirCamaraClicked(object? sender, EventArgs e)
     {
-        var destinoPage = new MyMediaPickerPage();
-
-        await Navigation.PushAsync(destinoPage);
-
-        var imagen = await destinoPage.ResultadoTask.Task;
-
-        if (imagen != null)
+        BtnPhoto.IsEnabled = false;
+        try
         {
-            ImgPhoto.Source = imagen.Source;
+            var destinoPage = new MyMediaPickerPage();
+
+            await Navigation.PushAsync(destinoPage);
+
+            var imagen = await destinoPage.ResultadoTask.Task;
+
+            if (imagen != null)
+            {
+                using var memoryStream = new MemoryStream();
+
+                if (imagen.Source is StreamImageSource streamImageSource)
+                {
+                    var stream = await streamImageSource.Stream(CancellationToken.None);
+                    await stream.CopyToAsync(memoryStream);
+                }
+
+                byte[]? imageBytesC = await new ImageDeviceAutoRotateService()
+                {
+                    MaxWidthHeight = 1000,
+                    CompressionQuality = 75,
+                    CustomPhotoSize = 50
+                }.ProcesarPhotoAsync(memoryStream);
+
+                ImgPhoto.Source = ImageSource.FromStream(() => new MemoryStream(imageBytesC!));
+            }
+            else
+            {
+                await DisplayAlertAsync("Cancelado", "No se recibió ningún dato", "OK");
+            }
         }
-        else
+        catch (Exception ex)
         {
-            await DisplayAlertAsync("Cancelado", "No se recibió ningún dato", "OK");
         }
-
-        //if (_isNavigating) return;
-        //_isNavigating = true;
-
-        //try
-        //{
-        //    // En MAUI Shell, lo ideal es pasar el TaskCompletionSource o usar mensajería
-        //    var destinoPage = new MyMediaPickerPage();
-
-        //    // Si usas Shell con rutas registradas:
-        //    // await Shell.Current.GoToAsync(nameof(MyMediaPickerPage));
-
-        //    // Pero si sigues pasando la instancia manual:
-        //    await Navigation.PushAsync(destinoPage);
-
-        //    var imagen = await destinoPage.ResultadoTask.Task;
-        //    if (imagen != null)
-        //    {
-        //        ImgPhoto.Source = imagen.Source;
-        //    }
-        //    else
-        //    {
-        //        await DisplayAlertAsync("Cancelado", "No se recibió ningún dato", "OK");
-        //    }
-        //}
-        //catch (Exception ex)
-        //{
-        //    Debug.WriteLine($"Error al navegar: {ex.Message}");
-        //    await DisplayAlertAsync("Error", "Ocurrió un error al abrir la cámara.", "OK");
-        //}
-        //finally
-        //{
-        //    _isNavigating = false; // IMPORTANTE: Liberar siempre en el finally
-        //}
+        finally
+        {
+            BtnPhoto.IsEnabled = true;
+        }
     }
 }

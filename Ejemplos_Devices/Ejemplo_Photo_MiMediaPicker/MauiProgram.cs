@@ -2,7 +2,7 @@
 using CommunityToolkit.Maui.Core;
 using Microsoft.Extensions.Logging;
 
-namespace Ejemplo_Photo_Dialog;
+namespace Ejemplo_Photo_MiMediaPicker_Task;
 
 public static class MauiProgram
 {

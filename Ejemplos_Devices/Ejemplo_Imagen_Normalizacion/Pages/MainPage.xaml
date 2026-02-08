@@ -5,14 +5,15 @@
              NavigationPage.HasNavigationBar="False">
 
     <ScrollView>
-        <VerticalStackLayout Padding="30,0"  Spacing="25">
+        <VerticalStackLayout Padding="30"  Spacing="25">
 
-            <Image x:Name="ImgPhoto"
-                Source="dotnet_bot.png"
-                HeightRequest="185"
-                Aspect="AspectFit"/>
+            <Image x:Name="ImgPhoto" HeightRequest="185" Aspect="AspectFit" Background="Gray">
+                <Image.Source>
+                    <FontImageSource Glyph="photo_camera" FontFamily="MaterialIconsOutlined" />
+                </Image.Source>
+            </Image>
 
-            <Button x:Name="BtnPhoto" Text="Tomar Foto"  Clicked="OnAbrirCamaraClicked" />
+            <Button x:Name="BtnPhoto" Text="Tomar Foto" Clicked="OnAbrirCamaraClicked" />
 
         </VerticalStackLayout>
     </ScrollView>

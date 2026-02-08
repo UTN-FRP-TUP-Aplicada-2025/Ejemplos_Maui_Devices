@@ -1,8 +1,9 @@
 
 using CommunityToolkit.Maui.Core;
+using CommunityToolkit.Maui.Views;
 using System.Diagnostics;
 
-namespace Ejemplo_Photo_Dialog.Pages;
+namespace Ejemplo_Photo_MiMediaPicker_Task.Pages;
 
 public partial class MyMediaPickerPage : ContentPage
 {
@@ -39,9 +40,14 @@ public partial class MyMediaPickerPage : ContentPage
             if (e.Media != null)
             {
                 var image = new Image { Source = ImageSource.FromStream(() => e.Media) };
-                ResultadoTask.SetResult(image);
+                //ResultadoTask.SetResult(image);
+                ResultadoTask.TrySetResult(image);
             }
             await Navigation.PopAsync();
+        }
+        else
+        { 
+            await DisplayAlertAsync("Error del dispositivo", "El dispositivo no está activo", "OK");
         }
     }
 
@@ -217,30 +223,6 @@ public partial class MyMediaPickerPage : ContentPage
         catch (Exception ex) { }
     }
 
-    protected override void OnDisappearing()
-    {
-        base.OnDisappearing();
-
-        try
-        {
-            DeviceDisplay.MainDisplayInfoChanged -= OnMainDisplayInfoChanged;
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine($"Error desregistrando el evento: {ex.Message}");
-        }
-
-#if ANDROID
-        var activity = Platform.CurrentActivity;
-        if (activity != null)
-        {
-            activity.RequestedOrientation = Android.Content.PM.ScreenOrientation.Unspecified; //restablece la orientación predeterminada
-        }
-#elif IOS
-        // Implementa un handler para restaurar orientación en iOS
-#endif
-    }
-
     private async Task<bool> CheckForCameraPermissionAsync()
     {
         #region verifica permisos
@@ -293,5 +275,25 @@ public partial class MyMediaPickerPage : ContentPage
         }
 #endif
         return false;// status == PermissionStatus.Granted;
+    }
+
+    protected override void OnDisappearing()
+    {
+        _captureCancellationTokenSource?.Cancel();
+
+        if (Camera.Handler != null)
+        {
+            Camera.Handler.DisconnectHandler();
+        }
+
+        //si back la tarea no se completo
+        if (ResultadoTask != null && !ResultadoTask.Task.IsCompleted)
+        {
+            ResultadoTask.TrySetCanceled();
+        }
+
+        base.OnDisappearing();
+
+        DeviceDisplay.MainDisplayInfoChanged -= OnMainDisplayInfoChanged;
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace Ejemplo_Photo_Dialog.Pages;
+﻿namespace Ejemplo_Photo_MiMediaPicker_Task.Pages;
 
 public partial class MainPage : ContentPage
 {
@@ -9,19 +9,30 @@ public partial class MainPage : ContentPage
 
     async private void OnAbrirCamaraClicked(object? sender, EventArgs e)
     {
-        var destinoPage = new MyMediaPickerPage();
-
-        await Navigation.PushAsync(destinoPage);
-
-        var imagen = await destinoPage.ResultadoTask.Task;
-
-        if (imagen != null)
+        BtnPhoto.IsEnabled = false;
+        try
         {
-            ImgPhoto.Source = imagen.Source;
+            var destinoPage = new MyMediaPickerPage();
+
+            await Navigation.PushAsync(destinoPage);
+
+            var imagen = await destinoPage.ResultadoTask.Task;
+
+            if (imagen != null)
+            {
+                ImgPhoto.Source = imagen.Source;
+            }
+            else
+            {
+                await DisplayAlertAsync("Cancelado", "No se recibió ningún dato", "OK");
+            }
         }
-        else
+        catch (Exception ex)
         {
-            await DisplayAlertAsync("Cancelado", "No se recibió ningún dato", "OK");
+        }
+        finally
+        {
+            BtnPhoto.IsEnabled = true;
         }
     }
 }

@@ -5,6 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"    
     xmlns:local="clr-namespace:Ejemplo_Imagen_Normalizacion"
     xmlns:pages="clr-namespace:Ejemplo_Imagen_Normalizacion.Pages"
+    Shell.NavBarIsVisible="False"
     Title="Ejemplo_Imagen_Normalizacion">
 
     <ShellContent

@@ -1,5 +1,5 @@
 ﻿
-namespace Ejemplo_Photo_Dialog;
+namespace Ejemplo_Photo_MiMediaPicker_Task;
 
 public partial class App : Application
 {
