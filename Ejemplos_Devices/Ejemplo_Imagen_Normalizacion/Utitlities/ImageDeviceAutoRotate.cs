@@ -1,13 +1,10 @@
 ﻿using MetadataExtractor;
 using MetadataExtractor.Formats.Exif;
 using SkiaSharp;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Ejemplo_Imagen_Normalizacion.Services;
+namespace Ejemplo_Imagen_Normalizacion.Utilities;
 
-class ImageDeviceAutoRotateService : IImageDeviceService
+class ImageDeviceAutoRotate : IImageDevice
 {
     public int MaxWidthHeight { get; set; } = 1000;
     public int CompressionQuality { get; set; } = 75;

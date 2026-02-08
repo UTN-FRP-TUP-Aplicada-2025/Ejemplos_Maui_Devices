@@ -9,7 +9,7 @@
 
     <Grid x:Name="DynamicLayout" 
           RowDefinitions="Auto,*,Auto" ColumnDefinitions="*"
-          HorizontalOptions="Center" VerticalOptions="Center">
+          HorizontalOptions="Fill" VerticalOptions="Fill">
 
         <Button x:Name="BtnFlashButton" 
                 Grid.Row="0" Grid.Column="0" 
@@ -24,7 +24,7 @@
         <gv:CameraView x:Name="Camera" 
                         Grid.Row="1" Grid.Column="0" 
                         OnDetected="OnCameraViewOnDetecte" 
-                        VerticalOptions="Fill"
+                        HorizontalOptions="Center" VerticalOptions="Fill" 
                         TorchOn="False" VibrationOnDetected="False"
                         ScanInterval="50"/>
 

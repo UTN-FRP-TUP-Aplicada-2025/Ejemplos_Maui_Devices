@@ -1,5 +1,4 @@
-﻿using Ejemplo_Imagen_Normalizacion.Services;
-using System.Diagnostics;
+﻿using Ejemplo_Imagen_Normalizacion.Utilities;
 
 namespace Ejemplo_Imagen_Normalizacion.Pages;
 
@@ -32,13 +31,17 @@ public partial class MainPage : ContentPage
                     await stream.CopyToAsync(memoryStream);
                 }
 
-                byte[]? imageBytesC = await new ImageDeviceAutoRotateService()
+                byte[]? imageBytesC = null;
+                await Task.Run(async () =>
                 {
-                    MaxWidthHeight = 1000,
-                    CompressionQuality = 75,
-                    CustomPhotoSize = 50
-                }.ProcesarPhotoAsync(memoryStream);
-
+                    imageBytesC = await new ImageDeviceAutoRotate()
+                    {
+                        MaxWidthHeight = 1000,
+                        CompressionQuality = 75,
+                        CustomPhotoSize = 50
+                    }.ProcesarPhotoAsync(memoryStream);
+                });
+                
                 ImgPhoto.Source = ImageSource.FromStream(() => new MemoryStream(imageBytesC!));
             }
             else

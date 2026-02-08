@@ -40,7 +40,6 @@ public partial class MyMediaPickerPage : ContentPage
             if (e.Media != null)
             {
                 var image = new Image { Source = ImageSource.FromStream(() => e.Media) };
-                //ResultadoTask.SetResult(image);
                 ResultadoTask.TrySetResult(image);
             }
             await Navigation.PopAsync();
@@ -58,6 +57,8 @@ public partial class MyMediaPickerPage : ContentPage
 
         _captureCancellationTokenSource?.Dispose();
         _captureCancellationTokenSource = null;
+
+        UpdateLayoutOrientation(DeviceDisplay.MainDisplayInfo.Orientation);
     }
 
     async protected override void OnAppearing()
@@ -127,11 +128,13 @@ public partial class MyMediaPickerPage : ContentPage
             DynamicLayout.IsEnabled = true;
         }
     }
+    
     private async void btnSwitchCamera_Clicked(object sender, EventArgs e)
     {
         // Camera.CameraFacing = Camera.CameraFacing == CameraFacing.Back ? CameraFacing.Front : CameraFacing.Back;
         await Task.CompletedTask;
     }
+    
     private async void OnActiveFlashClicked(object sender, EventArgs e)
     {
         if (Camera.CameraFlashMode == CameraFlashMode.Off)
@@ -149,6 +152,7 @@ public partial class MyMediaPickerPage : ContentPage
 
         StatusFlashToIcons();
     }
+    
     public void StatusFlashToIcons()
     {
         if (Camera.CameraFlashMode == CameraFlashMode.Off)

@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿namespace Ejemplo_Imagen_Normalizacion.Utilities;
 
-namespace Ejemplo_Imagen_Normalizacion.Services;
-
-public interface IImageDeviceService
+public interface IImageDevice
 {
     public int MaxWidthHeight { get; set; }
 

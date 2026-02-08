@@ -9,7 +9,7 @@
         <VerticalStackLayout Padding="30,0" Spacing="25">
             
             <Label x:Name="LbQR"/>
-            <Button Text="Leer QR" Clicked="OnLeerQRClicked" />
+            <Button x:Name="BtnLeerQR" Text="Leer QR" Clicked="OnLeerQRClicked" />
             
         </VerticalStackLayout>
         

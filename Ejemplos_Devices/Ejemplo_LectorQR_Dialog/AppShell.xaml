@@ -5,6 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:Ejemplo_LectorQR_Dialog"
     xmlns:pages="clr-namespace:Ejemplo_LectorQR_Dialog.Pages"
+    Shell.NavBarIsVisible="False"
     Title="Ejemplo_LectorQR_Page">
 
     <ShellContent Title="Home" ContentTemplate="{DataTemplate pages:MainPage}" Route="MainPage" />

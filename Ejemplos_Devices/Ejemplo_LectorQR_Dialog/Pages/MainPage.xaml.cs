@@ -9,19 +9,27 @@ public partial class MainPage : ContentPage
 
     async private void OnLeerQRClicked(object sender, EventArgs e)
     {
-        var destinoPage = new QRLectorPage();
-
-        await Navigation.PushAsync(destinoPage);
-
-        var parametro = await destinoPage.ResultadoTask.Task;
-
-        if (parametro != null)
+        BtnLeerQR.IsEnabled = false;
+        try
         {
-            LbQR.Text = parametro;
+            var destinoPage = new QRLectorPage();
+
+            await Navigation.PushAsync(destinoPage);
+
+            var parametro = await destinoPage.ResultadoTask.Task;
+
+            if (parametro != null)
+            {
+                LbQR.Text = parametro;
+            }
+            else
+            {
+                await DisplayAlertAsync("Cancelado", "No se recibió ningún dato", "OK");
+            }
         }
-        else
+        finally
         {
-            await DisplayAlertAsync("Cancelado", "No se recibió ningún dato", "OK");
+            BtnLeerQR.IsEnabled = true;
         }
     }
 }
