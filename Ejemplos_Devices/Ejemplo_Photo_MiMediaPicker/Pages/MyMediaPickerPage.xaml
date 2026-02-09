@@ -6,29 +6,23 @@
              Title="Camera Page"
              BackgroundColor="#000000">
    
-    <Grid x:Name="DynamicLayout" 
-            RowDefinitions="Auto,*,Auto" ColumnDefinitions="*"
+    <Grid x:Name="DynamicLayout"  RowDefinitions="Auto,*,Auto" ColumnDefinitions="*"
             HorizontalOptions="Fill" VerticalOptions="Fill">
 
-        <Button x:Name="BtnFlashButton" Grid.Row="0" Grid.Column="0" 
-                Clicked="OnActiveFlashClicked" 
-                HorizontalOptions="Center"  VerticalOptions="Center" 
-                Background="#aa000000" CornerRadius="8">
+        <Button x:Name="BtnFlashButton" Grid.Row="0" Grid.Column="0" Clicked="OnActiveFlashClicked" 
+                HorizontalOptions="Center"  VerticalOptions="Center" Background="#aa000000" CornerRadius="8">
             <Button.ImageSource>
                 <FontImageSource Glyph="{Binding FlashIcon}" FontFamily="MaterialIconsOutlined" />
             </Button.ImageSource>
         </Button>
 
         <toolkit:CameraView x:Name="Camera" Grid.Row="1" Grid.Column="0"
-                            HorizontalOptions="Center" VerticalOptions="Fill" 
+                            HorizontalOptions="Fill" VerticalOptions="Fill" 
                             MediaCaptured="OnMediaCaptured"
                             MediaCaptureFailed="OnMediaCaptureFailed" Margin="0"/>
 
-        <Button x:Name="BtnTomarFoto" 
-             Grid.Row="2" Grid.Column="0" 
-             Clicked="OnTomarFotoClicked" 
-             HorizontalOptions="Center" VerticalOptions="Center"
-             Background="#aa000000" CornerRadius="8">
+        <Button x:Name="BtnTomarFoto"  Grid.Row="2" Grid.Column="0" Clicked="OnTomarFotoClicked" 
+             HorizontalOptions="Center" VerticalOptions="Center" Background="#aa000000" CornerRadius="8">
             <Button.ImageSource>
                 <FontImageSource Glyph="photo_camera" Size="50" FontFamily="MaterialIconsOutlined"/>
             </Button.ImageSource>

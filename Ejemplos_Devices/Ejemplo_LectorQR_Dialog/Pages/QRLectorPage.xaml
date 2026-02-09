@@ -7,31 +7,23 @@
              BackgroundColor="#000000"
              NavigationPage.HasNavigationBar="False">
 
-    <Grid x:Name="DynamicLayout" 
-          RowDefinitions="Auto,*,Auto" ColumnDefinitions="*"
+    <Grid x:Name="DynamicLayout" RowDefinitions="Auto,*,Auto" ColumnDefinitions="*"
           HorizontalOptions="Fill" VerticalOptions="Fill">
 
-        <Button x:Name="BtnFlashButton" 
-                Grid.Row="0" Grid.Column="0" 
-                Clicked="OnActiveFlashClicked" 
-                HorizontalOptions="Center" VerticalOptions="Center" 
+        <Button x:Name="BtnFlashButton" Grid.Row="0" Grid.Column="0" 
+                Clicked="OnActiveFlashClicked" HorizontalOptions="Center" VerticalOptions="Center" 
                 Background="#aa000000" CornerRadius="8">
             <Button.ImageSource>
                 <FontImageSource Glyph="{Binding FlashIcon}" FontFamily="MaterialIconsOutlined" />
             </Button.ImageSource>
         </Button>
 
-        <gv:CameraView x:Name="Camera" 
-                        Grid.Row="1" Grid.Column="0" 
-                        OnDetected="OnCameraViewOnDetecte" 
-                        HorizontalOptions="Center" VerticalOptions="Fill" 
-                        TorchOn="False" VibrationOnDetected="False"
-                        ScanInterval="50"/>
+        <gv:CameraView x:Name="Camera" Grid.Row="1" Grid.Column="0" 
+                        OnDetected="OnCameraViewOnDetecte" HorizontalOptions="Fill" VerticalOptions="Fill" 
+                        TorchOn="False" VibrationOnDetected="False" ScanInterval="50"/>
 
-        <Button x:Name="BtnVolver" 
-                 Grid.Row="2" Grid.Column="0" 
-                 Clicked="OnVolverClicked" 
-                 HorizontalOptions="Center" VerticalOptions="Center"
+        <Button x:Name="BtnVolver" Grid.Row="2" Grid.Column="0" 
+                 Clicked="OnVolverClicked" HorizontalOptions="Center" VerticalOptions="Center"
                  Background="#aa000000" CornerRadius="8">
             <Button.ImageSource>
                 <FontImageSource Glyph="arrow_back" Size="50" FontFamily="MaterialIconsOutlined"/>

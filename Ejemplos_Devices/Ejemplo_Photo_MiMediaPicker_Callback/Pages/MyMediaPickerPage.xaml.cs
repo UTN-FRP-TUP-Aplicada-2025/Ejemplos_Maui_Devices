@@ -230,6 +230,8 @@ public partial class MyMediaPickerPage : ContentPage
         try
         {
             DeviceDisplay.MainDisplayInfoChanged -= OnMainDisplayInfoChanged;
+
+            _captureCancellationTokenSource?.Cancel();
         }
         catch (Exception ex)
         {

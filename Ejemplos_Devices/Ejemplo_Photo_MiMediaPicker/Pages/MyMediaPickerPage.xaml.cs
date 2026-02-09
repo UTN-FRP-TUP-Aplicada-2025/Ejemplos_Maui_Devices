@@ -295,5 +295,15 @@ public partial class MyMediaPickerPage : ContentPage
         base.OnDisappearing();
 
         DeviceDisplay.MainDisplayInfoChanged -= OnMainDisplayInfoChanged;
+
+#if ANDROID
+        var activity = Platform.CurrentActivity;
+        if (activity != null)
+        {
+            activity.RequestedOrientation = Android.Content.PM.ScreenOrientation.Unspecified; //restablece la orientación predeterminada
+        }
+#elif IOS
+        // Implementa un handler para restaurar orientación en iOS
+#endif
     }
 }
