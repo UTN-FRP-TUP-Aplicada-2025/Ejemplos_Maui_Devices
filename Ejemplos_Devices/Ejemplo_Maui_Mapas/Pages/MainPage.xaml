@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:maps="http://schemas.microsoft.com/dotnet/2021/maui/maps"
+             x:Class="Ejemplo_Maui_Mapas.Pages.MainPage">
+
+    <Grid RowDefinitions="Auto,*" Margin="10">
+
+        <!-- Botones de control -->
+        <HorizontalStackLayout Grid.Row="0" Spacing="10" Padding="10">
+            <Button Text="🗺 Normal"   Clicked="OnNormalClicked" />
+            <Button Text="🛰 Satélite" Clicked="OnSateliteClicked" />
+            <Button Text="📍 Mi lugar" Clicked="OnGoToLocation" />
+        </HorizontalStackLayout>
+
+        <!-- El mapa -->
+        <maps:Map x:Name="MyMap" Grid.Row="1" MapType="Street" 
+                  IsShowingUser="False"
+                  IsScrollEnabled="True" 
+                  IsZoomEnabled="True" />
+    </Grid>
+
+</ContentPage>

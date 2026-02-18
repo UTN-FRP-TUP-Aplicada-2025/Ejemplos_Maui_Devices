@@ -1,7 +1,7 @@
 ﻿using ObjCRuntime;
 using UIKit;
 
-namespace Ejemplo_Maui_Conexion
+namespace Ejemplo_ThermalPrinter
 {
     public class Program
     {

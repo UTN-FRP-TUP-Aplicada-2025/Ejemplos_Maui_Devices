@@ -18,9 +18,7 @@
             </Button.ImageSource>
         </Button>
 
-        <gv:CameraView x:Name="Camera" Grid.Row="1" Grid.Column="0" 
-                        OnDetected="OnCameraViewOnDetecte" HorizontalOptions="Fill" VerticalOptions="Fill" 
-                        TorchOn="False" VibrationOnDetected="False" ScanInterval="50"/>
+        <gv:CameraView x:Name="Camera" Grid.Row="1" Grid.Column="0" OnDetected="OnCameraViewOnDetecte" HorizontalOptions="Fill" VerticalOptions="Fill" TorchOn="False" VibrationOnDetected="False" ScanInterval="50"/>
 
         <Button x:Name="BtnVolver" Grid.Row="2" Grid.Column="0" 
                  Clicked="OnVolverClicked" HorizontalOptions="Center" VerticalOptions="Center"

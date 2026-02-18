@@ -1,12 +1,17 @@
 <Solution>
+  <Folder Name="/BlueTooth/">
+    <Project Path="Ejemplo_ThermalPrinter/Ejemplo_ThermalPrinter.csproj" Id="28245c93-21a9-4b06-8622-0baf1b16cdba">
+      <Deploy Solution="Debug|*" />
+    </Project>
+  </Folder>
   <Folder Name="/Camera/">
     <Project Path="Ejemplo_Photo_MediaPicker/Ejemplo_Photo_MediaPicker.csproj" Id="b9e9559a-bfbf-45e1-be27-127f510308b2">
       <Deploy Solution="Debug|*" />
     </Project>
-    <Project Path="Ejemplo_Photo_MiMediaPicker/Ejemplo_Photo_MiMediaPicker_Task.csproj" Id="c009f442-a562-47e7-bdbd-faf3eee64eba">
+    <Project Path="Ejemplo_Photo_MiMediaPicker_Callback/Ejemplo_Photo_MiMediaPicker_Callback.csproj" Id="bae08ccd-ae28-4ee5-bbcf-7067c0d65fe6">
       <Deploy Solution="Debug|*" />
     </Project>
-    <Project Path="Ejemplo_Photo_MiMediaPicker_Callback/Ejemplo_Photo_MiMediaPicker_Callback.csproj" Id="bae08ccd-ae28-4ee5-bbcf-7067c0d65fe6">
+    <Project Path="Ejemplo_Photo_MiMediaPicker_Task/Ejemplo_Photo_MiMediaPicker_Task.csproj" Id="c009f442-a562-47e7-bdbd-faf3eee64eba">
       <Deploy Solution="Debug|*" />
     </Project>
   </Folder>
@@ -22,8 +27,16 @@
     <File Path="Docs_GPS/Readme.md" />
   </Folder>
   <Folder Name="/Imagen/">
-    <Project Path="Ejemplo_Imagen_Normalizacion/Ejemplo_Imagen_Normalizacion.csproj" Id="c322c7dc-65ff-4689-b244-80937c7e8522" />
+    <Project Path="Ejemplo_Imagen_Normalizacion/Ejemplo_Imagen_Normalizacion.csproj" Id="c322c7dc-65ff-4689-b244-80937c7e8522">
+      <Deploy Solution="Debug|*" />
+    </Project>
   </Folder>
+  <Folder Name="/Mapas/">
+    <Project Path="Ejemplo_Maui_Mapas/Ejemplo_Maui_Mapas.csproj" Id="d2accbd4-c163-4f24-b1e1-f7eb49a6582d">
+      <Deploy Solution="Debug|*" />
+    </Project>
+  </Folder>
+  <Folder Name="/Mapas/Docs/" />
   <Folder Name="/QR/">
     <Project Path="Ejemplo_LectorQR/Ejemplo_LectorQR.csproj" Id="42e80caf-5f94-42b4-be26-a16c162d64ab">
       <Deploy Solution="Debug|*" />

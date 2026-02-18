@@ -1,6 +1,6 @@
 ﻿using Foundation;
 
-namespace Ejemplo_Maui_Conexion
+namespace Ejemplo_Maui_Mapas
 {
     [Register("AppDelegate")]
     public class AppDelegate : MauiUIApplicationDelegate

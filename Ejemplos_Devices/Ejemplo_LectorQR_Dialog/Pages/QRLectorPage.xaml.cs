@@ -7,6 +7,23 @@ public partial class QRLectorPage : ContentPage
 {
     public TaskCompletionSource<string> ResultadoTask { get; set; } = new();
 
+    string flashIcon = "";
+    public string FlashIcon 
+    {
+        get 
+        {
+            return flashIcon;
+        }
+        set 
+        {
+            if (value != null)
+            {
+                flashIcon = value;
+                OnPropertyChanged();
+            }
+        }
+    }
+
     public QRLectorPage()
 	{
 		InitializeComponent();
@@ -15,6 +32,7 @@ public partial class QRLectorPage : ContentPage
         BarcodeScanner.Mobile.Methods.SetSupportBarcodeFormat(BarcodeScanner.Mobile.BarcodeFormats.QRCode | BarcodeScanner.Mobile.BarcodeFormats.Code39);
 #endif
 
+        BindingContext = this;
     }
        
     async public Task<bool> RequestCameraPermission()
@@ -51,11 +69,13 @@ public partial class QRLectorPage : ContentPage
         if (await RequestCameraPermission())
         {
             Camera.TorchOn = !Camera.TorchOn;
+            PaintFlashStatus();
         }
         else
         {
             await DisplayAlertAsync("Alert", "Dale permiso si queres QR!", "OK");
         }
+       
     }
 
     private async void OnVolverClicked(object sender, EventArgs e)
@@ -97,9 +117,17 @@ public partial class QRLectorPage : ContentPage
             Debug.WriteLine($"Error desregistrando el evento: {ex.Message}");
         }
 
+        PaintFlashStatus();
+
         DynamicLayout.IsEnabled = true;
 
         UpdateLayoutOrientation(DeviceDisplay.MainDisplayInfo.Orientation);
+    }
+
+    protected void PaintFlashStatus()
+    {
+        if (Camera.TorchOn) FlashIcon = "flash_on";
+        else FlashIcon = "flash_off";
     }
 
     private void OnMainDisplayInfoChanged(object sender, DisplayInfoChangedEventArgs e)
