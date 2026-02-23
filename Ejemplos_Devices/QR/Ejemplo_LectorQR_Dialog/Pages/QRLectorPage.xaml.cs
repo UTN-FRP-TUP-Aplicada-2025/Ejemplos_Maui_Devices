@@ -1,11 +1,13 @@
 using BarcodeScanner.Mobile;
+using Ejemplo_LectorQR_Dialog.Models;
 using System.Diagnostics;
 
 namespace Ejemplo_LectorQR_Dialog.Pages;
 
 public partial class QRLectorPage : ContentPage
 {
-    public TaskCompletionSource<string> ResultadoTask { get; set; } = new();
+    private int _completed = 0;
+    public TaskCompletionSource<List<QRContent>> ResultadoTask { get; set; } = new();
 
     string flashIcon = "";
     public string FlashIcon 
@@ -47,17 +49,21 @@ public partial class QRLectorPage : ContentPage
         //{
             List<BarcodeResult> obj = e.BarcodeResults;
 
-            string result = string.Empty;
-            for (int i = 0; i < obj.Count; i++)
-            {
-                result += $"Type: {obj[i].BarcodeType}, Value: {obj[i].DisplayValue}{Environment.NewLine}";
-            }
+        List<QRContent> QRs = new List<QRContent>();
+        for (int i = 0; i < obj.Count; i++)
+        {
+            string type = obj[i].BarcodeType == BarcodeTypes.Unknown ? "Text" : obj[i].BarcodeType.ToString();
 
-            this.Dispatcher.Dispatch(async () =>
+            var qr = new QRContent { Type = type, Value = obj[i].DisplayValue };
+            QRs.Add(qr);
+        }
+
+        this.Dispatcher.Dispatch(async () =>
             {
                 Camera.IsScanning = false;
                 
-                ResultadoTask.SetResult(result);
+                //ResultadoTask.SetResult(result);
+                CompletarResultado(QRs);
 
                 await Navigation.PopAsync();
             });
@@ -80,16 +86,18 @@ public partial class QRLectorPage : ContentPage
 
     private async void OnVolverClicked(object sender, EventArgs e)
     {
+        CompletarResultado(new List<QRContent>());
         await Navigation.PopAsync();
+        //await Navigation.PopAsync();
     }
 
     protected override void OnDisappearing()
     {
         base.OnDisappearing();
-        if (!ResultadoTask.Task.IsCompleted)
-        {
-            ResultadoTask.TrySetResult(null);
-        }
+        //if (!ResultadoTask.Task.IsCompleted)
+        //{
+        //    ResultadoTask.TrySetResult(null);
+        //}
 
         try
         {
@@ -122,6 +130,14 @@ public partial class QRLectorPage : ContentPage
         DynamicLayout.IsEnabled = true;
 
         UpdateLayoutOrientation(DeviceDisplay.MainDisplayInfo.Orientation);
+    }
+
+    private void CompletarResultado(List<QRContent> result)
+    {
+        if (Interlocked.Exchange(ref _completed, 1) == 0)
+        {
+            ResultadoTask.TrySetResult(result);
+        }
     }
 
     protected void PaintFlashStatus()

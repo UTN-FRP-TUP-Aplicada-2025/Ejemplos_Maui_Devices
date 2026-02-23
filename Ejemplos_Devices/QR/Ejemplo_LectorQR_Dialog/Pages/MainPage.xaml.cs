@@ -1,4 +1,6 @@
-﻿namespace Ejemplo_LectorQR_Dialog.Pages;
+﻿using Ejemplo_LectorQR_Dialog.Models;
+
+namespace Ejemplo_LectorQR_Dialog.Pages;
 
 public partial class MainPage : ContentPage
 {
@@ -16,11 +18,14 @@ public partial class MainPage : ContentPage
 
             await Navigation.PushAsync(destinoPage);
 
-            var parametro = await destinoPage.ResultadoTask.Task;
+            List<QRContent> qrs = await destinoPage.ResultadoTask.Task;
 
-            if (parametro != null)
+            var qr = qrs.FirstOrDefault();
+
+            if (qr != null)
             {
-                LbQR.Text = parametro;
+                
+                LbQR.Text = qr.Value;
             }
             else
             {
