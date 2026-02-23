@@ -48,3 +48,19 @@ For more information please visit:
 - Our documentation site: https://docs.microsoft.com/dotnet/communitytoolkit/maui
 
 - Our GitHub repository: https://github.com/CommunityToolkit/Maui
+
+
+## Ejemplos
+https://github.com/JimmyPun610/BarcodeScanner.Mobile/tree/master/SampleApp.Maui
+
+
+## Manifiesto
+
+```xml
+<key>NSCameraUsageDescription</key>
+<string>Require to use camera</string>
+<key>NSPhotoLibraryUsageDescription</key>
+<string>This app needs access to photos.</string>
+<key>NSPhotoLibraryAddUsageDescription</key>
+<string>This app needs access to the photo gallery.</string>
+```
