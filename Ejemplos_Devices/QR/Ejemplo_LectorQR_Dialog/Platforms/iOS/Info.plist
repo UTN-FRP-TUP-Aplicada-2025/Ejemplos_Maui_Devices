@@ -35,7 +35,7 @@
 	<string>iOS App</string>
 
 	<key>CFBundleIdentifier</key>
-	<string>com.ejemplos.ios</string>
+	<string>com.ejemplos.devices.qr.dialog</string>
 
 	<key>CFBundleVersion</key>
 	<string>1.0</string>
