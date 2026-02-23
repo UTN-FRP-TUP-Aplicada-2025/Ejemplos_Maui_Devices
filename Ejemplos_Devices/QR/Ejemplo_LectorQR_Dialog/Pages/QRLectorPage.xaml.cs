@@ -45,7 +45,7 @@ public partial class QRLectorPage : ContentPage
     {
         //if (await RequestCameraPermission())
         //{
-            List<BarcodeResult> obj = e.BarcodeResults;
+        List<BarcodeResult> obj = e.BarcodeResults;
 
         List<QRContent> QRs = new List<QRContent>();
         for (int i = 0; i < obj.Count; i++)
