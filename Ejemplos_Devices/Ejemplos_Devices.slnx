@@ -4,7 +4,15 @@
       <Deploy Solution="Debug|*" />
     </Project>
   </Folder>
+  <Folder Name="/.github/" />
+  <Folder Name="/.github/workflows/">
+    <File Path="../.github/workflows/cd-ios-qr-dialog.yml" />
+    <File Path="../.github/workflows/Readme.md" />
+  </Folder>
   <Folder Name="/Camera/">
+    <Project Path="Camera/Ejemplo_Imagen_Normalizacion/Ejemplo_Imagen_Normalizacion.csproj" Id="c322c7dc-65ff-4689-b244-80937c7e8522">
+      <Deploy Solution="Debug|*" />
+    </Project>
     <Project Path="Camera/Ejemplo_Photo_MediaPicker/Ejemplo_Photo_MediaPicker.csproj" Id="b9e9559a-bfbf-45e1-be27-127f510308b2">
       <Deploy Solution="Debug|*" />
     </Project>
@@ -12,9 +20,6 @@
       <Deploy Solution="Debug|*" />
     </Project>
     <Project Path="Camera/Ejemplo_Photo_MiMediaPicker_Task/Ejemplo_Photo_MiMediaPicker_Task.csproj" Id="c009f442-a562-47e7-bdbd-faf3eee64eba">
-      <Deploy Solution="Debug|*" />
-    </Project>
-	<Project Path="Camera/Ejemplo_Imagen_Normalizacion/Ejemplo_Imagen_Normalizacion.csproj" Id="c322c7dc-65ff-4689-b244-80937c7e8522">
       <Deploy Solution="Debug|*" />
     </Project>
   </Folder>
