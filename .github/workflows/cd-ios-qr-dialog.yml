@@ -29,9 +29,9 @@ env:
 
   # ─── Datos específicos del proyecto QR Dialog ───────────────────────────────
   PACKAGE_NAME: 'com.ejemplos.devices.qr.dialog'
-  SOLUTION_FOLDER: 'Ejemplos_Devices/QR/Ejemplo_LectorQR_Dialog'
-  PROJECT_FOLDER: 'Ejemplo_LectorQR_Dialog'
-  PROJECT_FILE: './Ejemplo_LectorQR_Dialog/Ejemplo_LectorQR_Dialog.csproj'
+  SOLUTION_FOLDER: 'Ejemplos_Devices'
+  PROJECT_FOLDER: 'QR/Ejemplo_LectorQR_Dialog'
+  PROJECT_FILE: 'Ejemplo_LectorQR_Dialog.csproj'
   # ─────────────────────────────────────────────────────────────────────────────
 
   VERSION_FECHA: '20260202'
@@ -64,7 +64,12 @@ jobs:
     - name: Info del workspace
       run: |
         echo "Current workspace: ${{ github.workspace }}"
+        # Current workspace: /Users/runner/work/Ejemplos_Maui_Devices/Ejemplos_Maui_Devices
+        
         ls -R ${{ github.workspace }}
+        
+        # Ejemplos_Devices
+        # README.md
 
     - name: "instalando utilidades para descarga desde google drive gdown"
       run: |
@@ -142,16 +147,22 @@ jobs:
     - name: .NETCORE. Descarga e instalación de netcore
       run: |  
         mkdir -p ~/.dotnet
+
         echo "Descargar e instalar con el script oficial"
+
         curl -sSL https://dot.net/v1/dotnet-install.sh -o dotnet-install.sh
         chmod ugo+x dotnet-install.sh
+
         echo "Ejecutando Script de Instalación dotnet"
         ./dotnet-install.sh --version ${{ env.DOTNET_VERSION }} --install-dir $HOME/.dotnet
+
         rm dotnet-install.sh
+
         echo "Fin script de instalación dotnet"
         sudo chown -R $(whoami):staff ~/.dotnet
         echo "$HOME/.dotnet" >> $GITHUB_PATH
         export PATH="$HOME/.dotnet:$PATH"
+
         echo "Instalación dotnet which: $(which dotnet)"
         echo "Instalación dotnet version: $(dotnet --version)"
         echo "Instalación dotnet info: $(dotnet --info)"
@@ -185,6 +196,8 @@ jobs:
       run: |
         # workspace/Ejemplos_Devices/QR/Ejemplo_LectorQR_Dialog  <- SOLUTION_PATH
         # workspace/Ejemplos_Devices/QR/Ejemplo_LectorQR_Dialog/Ejemplo_LectorQR_Dialog  <- PROJECT_PATH
+
+        echo "....> $(pwd)"
         
         SOLUTION_PATH=${{ github.workspace }}/${{ env.SOLUTION_FOLDER }}
         PROJECT_PATH=$SOLUTION_PATH/${{ env.PROJECT_FOLDER }}
