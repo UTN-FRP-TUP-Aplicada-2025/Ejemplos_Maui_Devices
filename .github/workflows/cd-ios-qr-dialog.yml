@@ -8,11 +8,9 @@ on:
 
     paths:
       - 'Ejemplos_Devices/QR/Ejemplo_LectorQR_Dialog/**'
-      
-    paths-ignore: 
-      - "**.md"
-      - '**/*.gitignore'
-      - '**/*.gitattributes'
+      - '!**.md'
+      - '!**/*.gitignore'
+      - '!**/*.gitattributes'
 
   workflow_call:
 
