@@ -39,6 +39,23 @@
 		<RuntimeIdentifiers>android-arm;android-arm64;android-x86;android-x64</RuntimeIdentifiers>
 	</PropertyGroup>
 
+	<PropertyGroup Condition="$(TargetFramework.Contains('-ios')) and '$(Configuration)' == 'Release'">
+		<UseInterpreter>true</UseInterpreter>
+		<PublishTrimmed>true</PublishTrimmed>
+
+		<MtouchLink>SdkOnly</MtouchLink>
+		<MtouchExtraArgs>--linkskip=System.Net.Mail --linkskip=System.Net.Ping</MtouchExtraArgs>
+		<EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
+
+		<RunAOTCompilation Condition="'$(RuntimeIdentifier)' == 'ios-arm64'">true</RunAOTCompilation>
+		<RunAOTCompilation Condition="'$(RuntimeIdentifier)' != 'ios-arm64'">false</RunAOTCompilation>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="$(TargetFramework.Contains('-ios'))">
+		<NoWarn>$(NoWarn);MT5209;MT5212</NoWarn>
+		<MtouchExtraArgs>--ignore-native-library-conflict</MtouchExtraArgs>
+	</PropertyGroup>
+
 	<ItemGroup>
 		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
 		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />

@@ -144,7 +144,7 @@ public partial class QRLectorPage : ContentPage
         else FlashIcon = "flash_off";
     }
 
-    private void OnMainDisplayInfoChanged(object sender, DisplayInfoChangedEventArgs e)
+    private void OnMainDisplayInfoChanged(object? sender, DisplayInfoChangedEventArgs e)
     {
         if (e != null)
             UpdateLayoutOrientation(e.DisplayInfo.Orientation);
