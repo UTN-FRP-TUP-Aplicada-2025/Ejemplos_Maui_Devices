@@ -52,6 +52,7 @@
     </Project>
   </Folder>
   <Folder Name="/QR/Docs/">
+    <File Path="QR/Ejemplo_Docs_QR/cicd.md" />
     <File Path="QR/Ejemplo_Docs_QR/QR_frase.png" />
     <File Path="QR/Ejemplo_Docs_QR/QR_pirincho.png" />
     <File Path="QR/Ejemplo_Docs_QR/Readme.md" />

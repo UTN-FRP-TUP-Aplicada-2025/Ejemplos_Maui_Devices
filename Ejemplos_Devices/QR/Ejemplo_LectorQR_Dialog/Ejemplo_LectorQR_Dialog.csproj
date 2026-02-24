@@ -51,12 +51,12 @@
 		<RunAOTCompilation Condition="'$(RuntimeIdentifier)' != 'ios-arm64'">false</RunAOTCompilation>
 	</PropertyGroup>
 
-	
 	<PropertyGroup Condition="$(TargetFramework.Contains('-ios')) AND '$(RuntimeIdentifier)' == 'iossimulator-arm64'">
-		<MtouchExtraArgs>$(MtouchExtraArgs) --setenv:DYLD_LIBRARY_PATH=/usr/lib/system/introspection</MtouchExtraArgs>
+		<MtouchExtraArgs>$(MtouchExtraArgs) --setenv:DYLD_LIBRARY_PATH=/usr/lib/system/introspection -gcc_flags "-Wl,-ignore_auto_link -Wl,-read_only_relocs,suppress"</MtouchExtraArgs>
+		<MtouchLink>SdkOnly</MtouchLink>
 		<NoWarn>$(NoWarn);MT5209;MT5212;MT5213</NoWarn>
 	</PropertyGroup>
-
+	
 	<ItemGroup>
 		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
 		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />

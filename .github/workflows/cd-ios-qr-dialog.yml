@@ -267,6 +267,8 @@ jobs:
             -c ${{ env.BUILD_CONFIG_SIMULATOR }} \
             -f:${{ env.DOTNET_TARGET_VERSION }}-ios \
             -p:RuntimeIdentifier=${{ env.RUNTIME_IDENTIFIER_SIMULATOR }} \
+            -p:LinkMode=SdkOnly \
+            -p:CLI_Build=true \
             -p:CodesignEntitlements=Platforms/iOS/Entitlements.Development.plist \
             -p:EnableCodeSigning=false \
             -p:CodesignProvision="" \
