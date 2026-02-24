@@ -51,9 +51,10 @@
 		<RunAOTCompilation Condition="'$(RuntimeIdentifier)' != 'ios-arm64'">false</RunAOTCompilation>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="$(TargetFramework.Contains('-ios'))">
-		<NoWarn>$(NoWarn);MT5209;MT5212</NoWarn>
-		<MtouchExtraArgs>--ignore-native-library-conflict</MtouchExtraArgs>
+	
+	<PropertyGroup Condition="$(TargetFramework.Contains('-ios')) AND '$(RuntimeIdentifier)' == 'iossimulator-arm64'">
+		<MtouchExtraArgs>$(MtouchExtraArgs) --setenv:DYLD_LIBRARY_PATH=/usr/lib/system/introspection</MtouchExtraArgs>
+		<NoWarn>$(NoWarn);MT5209;MT5212;MT5213</NoWarn>
 	</PropertyGroup>
 
 	<ItemGroup>
