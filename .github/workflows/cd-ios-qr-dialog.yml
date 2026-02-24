@@ -241,12 +241,14 @@ jobs:
     - name: BUILD SIMULADOR. Limpiar proyecto
       run: |
         cd ${{ env.SOLUTION_PATH }}
-        dotnet clean ${{ env.PROJECT_FILE }} -f ${{ env.DOTNET_TARGET_VERSION }}-ios
+        # cd /Users/runner/work/Ejemplos_Maui_Devices/Ejemplos_Maui_Devices/Ejemplos_Devices
+        dotnet clean "${{ env.PROJECT_FOLDER }}/${{ env.PROJECT_FILE }}" -f ${{ env.DOTNET_TARGET_VERSION }}-ios
+        # dotnet clean Ejemplo_LectorQR_Dialog.csproj -f net10.0-ios
 
     - name: BUILD SIMULADOR. Restaurar dependencias
       run: |
         cd ${{ env.SOLUTION_PATH }}
-        dotnet restore  ${{ env.PROJECT_FILE }} \
+        dotnet restore  "${{ env.PROJECT_FOLDER }}/${{ env.PROJECT_FILE }}" \
           -p:TargetFramework=${{ env.DOTNET_TARGET_VERSION }}-ios \
           -p:RuntimeIdentifier=${{ env.RUNTIME_IDENTIFIER_SIMULATOR }}
           
@@ -261,7 +263,7 @@ jobs:
         echo "Build: ${{ env.BUILD_CONFIG_SIMULATOR }}"
         echo "Target framework: ${{ env.DOTNET_TARGET_VERSION }}-ios"
 
-        dotnet build ${{ env.PROJECT_FILE }} \
+        dotnet build "${{ env.PROJECT_FOLDER }}/${{ env.PROJECT_FILE }}" \
             -c ${{ env.BUILD_CONFIG_SIMULATOR }} \
             -f:${{ env.DOTNET_TARGET_VERSION }}-ios \
             -p:RuntimeIdentifier=${{ env.RUNTIME_IDENTIFIER_SIMULATOR }} \
@@ -272,7 +274,7 @@ jobs:
             -v normal
 
         echo "Imprime la carpeta bin recursiva:"
-        ls -Rl ${{ env.PROJECT_PATH }}/bin/
+        ls -Rl "${{ env.PROJECT_FOLDER }}/${{ env.PROJECT_FILE }}/bin/"
         
         BASE_PATH=${{ env.PROJECT_PATH }}/bin/${{ env.BUILD_CONFIG_SIMULATOR }}/${{ env.DOTNET_TARGET_VERSION }}-ios/${{ env.RUNTIME_IDENTIFIER_SIMULATOR }}
         APP_PATH=${BASE_PATH}/${{ env.PROJECT_FOLDER }}.app
@@ -286,7 +288,7 @@ jobs:
     - name: BUILD SIMULADOR. Firma robusta 
       run: |
         APP_FOLDER="${{ env.PROJECT_FOLDER }}.app"
-        ENTITLEMENTS_PATH="${{ env.PROJECT_PATH }}/Platforms/iOS/Entitlements.Development.plist"
+        ENTITLEMENTS_PATH="${{ env.PROJECT_FOLDER }}/${{ env.PROJECT_FILE }}/Platforms/iOS/Entitlements.Development.plist"
     
         echo "Limpiando firmas previas y atributos corruptos..."
         xattr -cr "${{ env.APP_PATH }}"
