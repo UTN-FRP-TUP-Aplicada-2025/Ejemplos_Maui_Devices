@@ -1,19 +1,20 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net10.0-android;net10.0-ios</TargetFrameworks>
-		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net10.0-windows10.0.19041.0</TargetFrameworks>
+		<TargetFrameworks>net10.0-android</TargetFrameworks>
+		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('osx'))">$(TargetFrameworks);net10.0-ios</TargetFrameworks>
 
 		<OutputType>Exe</OutputType>
+
 		<RootNamespace>Ejemplo_ThermalPrinter</RootNamespace>
+
 		<UseMaui>true</UseMaui>
 		<SingleProject>true</SingleProject>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 
-		<ApplicationTitle>Ejemplo_ThermalPrinter</ApplicationTitle>
-
-		<ApplicationId>com.ejemplos.devices.thermalprinter</ApplicationId>
+		<ApplicationTitle>Thermal Printer</ApplicationTitle>
+		<ApplicationId>com.ejemplos.devices.ThermalPrinter</ApplicationId>
 
 		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
 		<ApplicationVersion>1</ApplicationVersion>
@@ -22,8 +23,30 @@
 
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">15.0</SupportedOSPlatformVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">25.0</SupportedOSPlatformVersion>
-		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
-		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
+	</PropertyGroup>
+
+
+	<PropertyGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">
+		<AndroidLdFlags>-Wl,-z,max-page-size=16384</AndroidLdFlags>
+		<RuntimeIdentifiers>android-arm;android-arm64;android-x86;android-x64</RuntimeIdentifiers>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="$(TargetFramework.Contains('-ios')) and '$(Configuration)' == 'Release'">
+		<UseInterpreter>true</UseInterpreter>
+		<PublishTrimmed>true</PublishTrimmed>
+
+		<MtouchLink>SdkOnly</MtouchLink>
+		<MtouchExtraArgs>--linkskip=System.Net.Mail --linkskip=System.Net.Ping</MtouchExtraArgs>
+		<EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
+
+		<RunAOTCompilation Condition="'$(RuntimeIdentifier)' == 'ios-arm64'">true</RunAOTCompilation>
+		<RunAOTCompilation Condition="'$(RuntimeIdentifier)' != 'ios-arm64'">false</RunAOTCompilation>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="$(TargetFramework.Contains('-ios')) AND '$(RuntimeIdentifier)' == 'iossimulator-arm64'">
+		<MtouchExtraArgs>$(MtouchExtraArgs) --setenv:DYLD_LIBRARY_PATH=/usr/lib/system/introspection -gcc_flags "-Wl,-ignore_auto_link -Wl,-read_only_relocs,suppress"</MtouchExtraArgs>
+		<MtouchLink>SdkOnly</MtouchLink>
+		<NoWarn>$(NoWarn);MT5209;MT5212;MT5213</NoWarn>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -36,10 +59,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="ESCPOS_NET" Version="3.0.0" />
+		<None Remove="Platforms\Android\Resources\values\styles.xml" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="BarcodeScanner.Mobile.Maui" Version="9.0.1" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.2" />
-		<PackageReference Include="Plugin.BLE" Version="3.2.0" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.3" />
+		<PackageReference Include="ESCPOS_NET" Version="2.2.1" />
 	</ItemGroup>
 
 </Project>

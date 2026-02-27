@@ -1,2 +1,0 @@
-﻿ESCPOS_NET
-Plugin.BLE

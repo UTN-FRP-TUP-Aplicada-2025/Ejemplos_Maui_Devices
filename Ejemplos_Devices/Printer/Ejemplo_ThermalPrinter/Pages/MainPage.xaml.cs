@@ -1,12 +1,6 @@
 ﻿
 using Ejemplo_ThermalPrinter.Services;
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.Maui.Controls;
-using Ejemplo_ThermalPrinter.Services;
-
 #if ANDROID
 using Android;
 using AndroidX.Core.App;
@@ -131,7 +125,7 @@ public partial class MainPage : ContentPage
         {
             if (DevicePicker.SelectedIndex < 0)
             {
-                await DisplayAlert("Información", "Por favor, selecciona un dispositivo", "OK");
+                await DisplayAlertAsync("Información", "Por favor, selecciona un dispositivo", "OK");
                 return;
             }
 
@@ -145,12 +139,12 @@ public partial class MainPage : ContentPage
             {
                 UpdateConnectionStatus(true);
                 ShowMessage($"Conectado a {selectedDevice.Name}");
-                await DisplayAlert("Éxito", "Conexión establecida correctamente", "OK");
+                await DisplayAlertAsync("Éxito", "Conexión establecida correctamente", "OK");
             }
             else
             {
                 ShowMessage("Error al conectar");
-                await DisplayAlert("Error", "No se pudo establecer la conexión", "OK");
+                await DisplayAlertAsync("Error", "No se pudo establecer la conexión", "OK");
             }
         }
         catch (Exception ex)
@@ -175,7 +169,7 @@ public partial class MainPage : ContentPage
         }
         catch (Exception ex)
         {
-            await DisplayAlert("Error", $"Error al desconectar: {ex.Message}", "OK");
+            await DisplayAlertAsync("Error", $"Error al desconectar: {ex.Message}", "OK");
         }
     }
 
@@ -234,7 +228,7 @@ public partial class MainPage : ContentPage
         catch (Exception ex)
         {
             ShowMessage("Error al imprimir");
-            await DisplayAlert("Error", $"Error al imprimir ticket: {ex.Message}", "OK");
+            await DisplayAlertAsync("Error", $"Error al imprimir ticket: {ex.Message}", "OK");
         }
     }
 
@@ -254,7 +248,7 @@ public partial class MainPage : ContentPage
         catch (Exception ex)
         {
             ShowMessage("Error al imprimir");
-            await DisplayAlert("Error", $"Error al imprimir código QR: {ex.Message}", "OK");
+            await DisplayAlertAsync("Error", $"Error al imprimir código QR: {ex.Message}", "OK");
         }
     }
 
@@ -273,7 +267,7 @@ public partial class MainPage : ContentPage
         catch (Exception ex)
         {
             ShowMessage("Error al imprimir");
-            await DisplayAlert("Error", $"Error al imprimir código de barras: {ex.Message}", "OK");
+            await DisplayAlertAsync("Error", $"Error al imprimir código de barras: {ex.Message}", "OK");
         }
     }
 
@@ -283,7 +277,7 @@ public partial class MainPage : ContentPage
         {
             if (string.IsNullOrWhiteSpace(CustomTextEntry.Text))
             {
-                await DisplayAlert("Información", "Por favor, ingresa un texto", "OK");
+                await DisplayAlertAsync("Información", "Por favor, ingresa un texto", "OK");
                 return;
             }
 
@@ -301,7 +295,7 @@ public partial class MainPage : ContentPage
         catch (Exception ex)
         {
             ShowMessage("Error al imprimir");
-            await DisplayAlert("Error", $"Error al imprimir: {ex.Message}", "OK");
+            await DisplayAlertAsync("Error", $"Error al imprimir: {ex.Message}", "OK");
         }
     }
 
@@ -349,4 +343,5 @@ public partial class MainPage : ContentPage
     {
         MessageLabel.Text = $"{DateTime.Now:HH:mm:ss} - {message}";
     }
+
 }

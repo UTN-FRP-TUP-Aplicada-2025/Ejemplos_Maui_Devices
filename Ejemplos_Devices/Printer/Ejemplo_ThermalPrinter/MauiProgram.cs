@@ -1,4 +1,5 @@
-﻿using Ejemplo_ThermalPrinter.Services;
+﻿using Ejemplo_ThermalPrinter.Pages;
+using Ejemplo_ThermalPrinter.Services;
 using Microsoft.Extensions.Logging;
 
 namespace Ejemplo_ThermalPrinter;
@@ -26,10 +27,9 @@ public static class MauiProgram
 
     public static MauiAppBuilder AddsServices(this MauiAppBuilder builder)
     {
-        // Registrar el servicio de impresión térmica
+
         builder.Services.AddSingleton<IThermalPrinterService, ThermalPrinterService>();
 
-        // Registrar la página principal
         builder.Services.AddTransient<MainPage>();
 
         return builder;
