@@ -111,7 +111,7 @@ public partial class MainPage : ContentPage
         catch (Exception ex)
         {
             ShowMessage("Error al escanear");
-            await DisplayAlert("Error", $"Error al escanear dispositivos: {ex.Message}", "OK");
+            await DisplayAlertAsync("Error", $"Error al escanear dispositivos: {ex.Message}", "OK");
         }
         finally
         {
@@ -150,7 +150,7 @@ public partial class MainPage : ContentPage
         catch (Exception ex)
         {
             ShowMessage("Error de conexión");
-            await DisplayAlert("Error", $"Error al conectar: {ex.Message}", "OK");
+            await DisplayAlertAsync("Error", $"Error al conectar: {ex.Message}", "OK");
         }
         finally
         {
@@ -193,7 +193,7 @@ public partial class MainPage : ContentPage
         catch (Exception ex)
         {
             ShowMessage("Error al imprimir");
-            await DisplayAlert("Error", $"Error al imprimir: {ex.Message}", "OK");
+            await DisplayAlertAsync("Error", $"Error al imprimir: {ex.Message}", "OK");
         }
     }
 
