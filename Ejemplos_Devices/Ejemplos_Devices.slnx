@@ -30,7 +30,7 @@
     <File Path="Camera/Ejemplo_Docs_Photo/Readme.md" />
   </Folder>
   <Folder Name="/Docs/">
-    <File Path="Readme.md" />
+    <File Path="../README.md" />
   </Folder>
   <Folder Name="/GPS/">
     <Project Path="GPS/Ejemplo_GPS/Ejemplo_GPS.csproj" Id="96dab9f5-6476-4338-b50d-473a33b0eefd">
