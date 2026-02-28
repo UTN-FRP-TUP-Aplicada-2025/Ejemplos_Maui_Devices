@@ -2,8 +2,6 @@
 dotnet add package BarcodeScanner.Mobile.Maui --version 9.0.1
 
 
-
-
 CommunityToolkit.Maui.Camera 5.0.0
 
 Microsoft.Maui.Controls 10.0.020
@@ -69,22 +67,23 @@ https://github.com/JimmyPun610/BarcodeScanner.Mobile/tree/master/SampleApp.Maui
 
 uso para cuando se tiene varias librerías de Google (como Firebase + MLKit) que traen componentes duplicados
 ```
-	<PropertyGroup Condition="$(TargetFramework.Contains('-ios'))">
-		<NoWarn>$(NoWarn);MT5209;MT5212</NoWarn>
-		<MtouchExtraArgs>--ignore-native-library-conflict</MtouchExtraArgs>
-	</PropertyGroup>
+<PropertyGroup Condition="$(TargetFramework.Contains('-ios'))">
+  <NoWarn>$(NoWarn);MT5209;MT5212</NoWarn>
+  <MtouchExtraArgs>--ignore-native-library-conflict</MtouchExtraArgs>
+</PropertyGroup>
 ```
-o
 
+o
 
 se usa para cuando estás compilando específicamente para el Simulador en una Mac con procesador
 Apple Silicon (iossimulator-arm64). Es el estándar para solucionar problemas de librerías nativas 
 (como MLKit) que no fueron compiladas correctamente para los nuevos simuladores ARM de Apple.
+
 ```
-	<PropertyGroup Condition="$(TargetFramework.Contains('-ios')) AND '$(RuntimeIdentifier)' == 'iossimulator-arm64'">
-		<MtouchExtraArgs>$(MtouchExtraArgs) --setenv:DYLD_LIBRARY_PATH=/usr/lib/system/introspection</MtouchExtraArgs>
-		<NoWarn>$(NoWarn);MT5209;MT5212;MT5213</NoWarn>
-	</PropertyGroup>
+<PropertyGroup Condition="$(TargetFramework.Contains('-ios')) AND '$(RuntimeIdentifier)' == 'iossimulator-arm64'">
+  <MtouchExtraArgs>$(MtouchExtraArgs) --setenv:DYLD_LIBRARY_PATH=/usr/lib/system/introspection</MtouchExtraArgs>
+  <NoWarn>$(NoWarn);MT5209;MT5212;MT5213</NoWarn>
+</PropertyGroup>
 ```
 
 
@@ -110,7 +109,7 @@ intentar añadir este bloque al archivo .csproj:
 
 ```xml
 <PropertyGroup Condition="$(TargetFramework.Contains('-ios')) AND '$(RuntimeIdentifier)' == 'iossimulator-arm64'">
-    <MtouchExtraArgs>$(MtouchExtraArgs) --setenv:DYLD_LIBRARY_PATH=/usr/lib/system/introspection</MtouchExtraArgs>
-    <NoWarn>$(NoWarn);MT5209;MT5212;MT5213</NoWarn>
+  <MtouchExtraArgs>$(MtouchExtraArgs) --setenv:DYLD_LIBRARY_PATH=/usr/lib/system/introspection</MtouchExtraArgs>
+  <NoWarn>$(NoWarn);MT5209;MT5212;MT5213</NoWarn>
 </PropertyGroup>
 ```

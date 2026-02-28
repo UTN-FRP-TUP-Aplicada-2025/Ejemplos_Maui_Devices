@@ -29,6 +29,9 @@
   <Folder Name="/Camera/Docs/">
     <File Path="Camera/Ejemplo_Docs_Photo/Readme.md" />
   </Folder>
+  <Folder Name="/Docs/">
+    <File Path="Readme.md" />
+  </Folder>
   <Folder Name="/GPS/">
     <Project Path="GPS/Ejemplo_GPS/Ejemplo_GPS.csproj" Id="96dab9f5-6476-4338-b50d-473a33b0eefd">
       <Deploy Solution="Debug|*" />
@@ -42,11 +45,49 @@
       <Deploy Solution="Debug|*" />
     </Project>
   </Folder>
-  <Folder Name="/Maps/Docs/" />
+  <Folder Name="/Maps/Docs/">
+    <File Path="Maps/Ejemplo_Docs_Maps/Readme.md" />
+  </Folder>
   <Folder Name="/Printer/Docs/">
-    <File Path="Printer/Ejemplo_Docs_Maps/ejemplo_impresion.jpeg" />
-    <File Path="Printer/Ejemplo_Docs_Maps/ejemplo_print_thermal.gif" />
-    <File Path="Printer/Ejemplo_Docs_Maps/Readme.md" />
+    <File Path="Printer/Ejemplo_Docs_Printer/Readme.md" />
+  </Folder>
+  <Folder Name="/Printer/Docs/Borradores/">
+    <File Path="Printer/Ejemplo_Docs_Maps/Borradores/Readme.md" />
+  </Folder>
+  <Folder Name="/Printer/Docs/Manuales/">
+    <File Path="Printer/Ejemplo_Docs_Printer/Manuales/00_README_DOCUMENTACION.md" />
+    <File Path="Printer/Ejemplo_Docs_Printer/Manuales/01_MANUAL_USUARIO.md" />
+    <File Path="Printer/Ejemplo_Docs_Printer/Manuales/02_MANUAL_TECNICO_ESC_POS.md" />
+    <File Path="Printer/Ejemplo_Docs_Printer/Manuales/03_GUIA_INTEGRACION_ESCPOS_NET.md" />
+    <File Path="Printer/Ejemplo_Docs_Printer/Manuales/04_Borrador_Manual.md" />
+  </Folder>
+  <Folder Name="/Printer/Docs/Prompts_Generacion_Apk_ejemplo/">
+    <File Path="Printer/Ejemplo_Docs_Printer/Prompts_Generacion_Apk_ejemplo/Imagen_dispositivo_mercadolibre.jpg" />
+    <File Path="Printer/Ejemplo_Docs_Printer/Prompts_Generacion_Apk_ejemplo/Readme.md" />
+  </Folder>
+  <Folder Name="/Printer/Docs/Prompts_Generacion_Apk_ejemplo/ficheros_claude.ia/">
+    <File Path="Printer/Ejemplo_Docs_Printer/Prompts_Generacion_Apk_ejemplo/ficheros_claude.ia/Advancedprintingexamples.cs" />
+    <File Path="Printer/Ejemplo_Docs_Printer/Prompts_Generacion_Apk_ejemplo/ficheros_claude.ia/Androidmanifest.XML" />
+    <File Path="Printer/Ejemplo_Docs_Printer/Prompts_Generacion_Apk_ejemplo/ficheros_claude.ia/Instalacion.md" />
+    <File Path="Printer/Ejemplo_Docs_Printer/Prompts_Generacion_Apk_ejemplo/ficheros_claude.ia/Ithermalprinterservice.cs" />
+    <File Path="Printer/Ejemplo_Docs_Printer/Prompts_Generacion_Apk_ejemplo/ficheros_claude.ia/Mainpage.XAML" />
+    <File Path="Printer/Ejemplo_Docs_Printer/Prompts_Generacion_Apk_ejemplo/ficheros_claude.ia/MainPage.XAML.cs" />
+    <File Path="Printer/Ejemplo_Docs_Printer/Prompts_Generacion_Apk_ejemplo/ficheros_claude.ia/MauiProgram.cs" />
+    <File Path="Printer/Ejemplo_Docs_Printer/Prompts_Generacion_Apk_ejemplo/ficheros_claude.ia/Thermalprintermaui.csproj" />
+    <File Path="Printer/Ejemplo_Docs_Printer/Prompts_Generacion_Apk_ejemplo/ficheros_claude.ia/Thermalprintermaui_readme.md" />
+    <File Path="Printer/Ejemplo_Docs_Printer/Prompts_Generacion_Apk_ejemplo/ficheros_claude.ia/Thermalprinterservice.cs" />
+  </Folder>
+  <Folder Name="/Printer/Docs/Prompts_Generacion_Documentacion/">
+    <File Path="Printer/Ejemplo_Docs_Printer/Prompts_generacion_documentacion/01_Prompt_chatgpt.md" />
+    <File Path="Printer/Ejemplo_Docs_Printer/Prompts_generacion_documentacion/02_Prompt_copilot.md" />
+    <File Path="Printer/Ejemplo_Docs_Printer/Prompts_generacion_documentacion/03_Prompt_copilot_manual_borrador.md" />
+    <File Path="Printer/Ejemplo_Docs_Printer/Prompts_generacion_documentacion/Imagen_dispositivo_mercadolibre.jpg" />
+    <File Path="Printer/Ejemplo_Docs_Printer/Prompts_generacion_documentacion/Readme.md" />
+  </Folder>
+  <Folder Name="/Printer/Docs/Pruebas_realizadas/">
+    <File Path="Printer/Ejemplo_Docs_Printer/Pruebas_realizadas/ejemplo_impresion.jpg" />
+    <File Path="Printer/Ejemplo_Docs_Printer/Pruebas_realizadas/ejemplo_print_thermal.gif" />
+    <File Path="Printer/Ejemplo_Docs_Printer/Pruebas_realizadas/Readme.md" />
   </Folder>
   <Folder Name="/QR/">
     <Project Path="QR/Ejemplo_LectorQR/Ejemplo_LectorQR.csproj" Id="42e80caf-5f94-42b4-be26-a16c162d64ab">

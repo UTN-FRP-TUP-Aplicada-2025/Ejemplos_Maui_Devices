@@ -1,5 +1,8 @@
 
 
+
+## 
+
 - Escaneo de dispositivos Bluetooth
  - Conexión/desconexión
  - Impresión de texto con formato (tamaños, negrita, alineación)
