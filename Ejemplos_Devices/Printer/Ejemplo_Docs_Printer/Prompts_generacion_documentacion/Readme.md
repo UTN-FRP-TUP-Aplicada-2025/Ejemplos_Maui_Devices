@@ -36,9 +36,9 @@ se ejecuta generandose la siguiente documentación:
 
 **Resultado**:
 
-[Manuales/01_MANUAL_USUARIO.md](../Manuales/01_MANUAL_USUARIO.md)
-[Manuales/02_MANUAL_TECNICO_ESC_POS.md](../Manuales/02_MANUAL_TECNICO_ESC_POS.md)
-[Manuales/03_GUIA_INTEGRACION_ESCPOS_NET.md](../Manuales/03_GUIA_INTEGRACION_ESCPOS_NET.md)
+- 📘 [Manuales/01_MANUAL_USUARIO.md](../Manuales/01_MANUAL_USUARIO.md)
+- 📘 [Manuales/02_MANUAL_TECNICO_ESC_POS.md](../Manuales/02_MANUAL_TECNICO_ESC_POS.md)
+- 📘 [Manuales/03_GUIA_INTEGRACION_ESCPOS_NET.md](../Manuales/03_GUIA_INTEGRACION_ESCPOS_NET.md)
 
 ### [Prompt copilot sin planeamiento](03_Prompt_copilot_manual_borrador.md)
 
@@ -60,10 +60,7 @@ operativas, esas dos ultima estarian relacionadas con lo relativo al desarrollad
 
 **Resultado**:
 
-[Manuales/04_Borrador_Manual.md](../Manuales/04_Borrador_Manual.md)
-
-
-
+- 📘 [Manuales/04_Borrador_Manual.md](../Manuales/04_Borrador_Manual.md)
 
 Finalmente todos los documentos fueron movidos a otra carpeta junto con la documentación
 de los prompts, para mantener el orden y la limpieza del proyecto.
