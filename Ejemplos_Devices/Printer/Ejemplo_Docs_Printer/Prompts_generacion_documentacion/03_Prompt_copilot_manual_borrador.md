@@ -1,19 +1,7 @@
 ﻿
-## Prompt en copilot para generar documentación 
+## Contenido del Readme.md para el Prompt en copilot para generar documentación 
 
 **Prompt**:
-
-```
-Necesito generar la documentación técnica completa para el dispositivo:
-
-* Producto: Impresora Térmica Portátil Bluetooth 58mm
-* Modelo: 58HB6-THERMAL-PRINTER
-* Tipo: impresora térmica ESC/POS compatible
-
-Quiero que generes TRES documentos separados, profesionales y bien estructurados, en español técnico neutro.
-
-
-**Respuesta**:
 
 ```
 

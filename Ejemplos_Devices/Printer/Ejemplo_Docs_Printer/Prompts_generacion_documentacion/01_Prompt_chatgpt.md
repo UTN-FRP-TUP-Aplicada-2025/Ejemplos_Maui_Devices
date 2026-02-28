@@ -18,7 +18,6 @@ estimo esos tres manuales, esta bien? ajustalos si en la practica difiere, fijat
 
 ## Respuesta
 
-**Respuesta**:
 ```
 Vas muy bien encaminado. En la práctica profesional normalmente se separa así:
 

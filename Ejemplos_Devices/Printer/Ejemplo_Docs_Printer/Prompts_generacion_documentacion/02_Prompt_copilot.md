@@ -1,10 +1,4 @@
-﻿
-### Prompt para copilot,  
-
-**Prompt**:
-
-```
-Necesito generar la documentación técnica completa para el dispositivo:
+﻿Necesito generar la documentación técnica completa para el dispositivo:
 
 * Producto: Impresora Térmica Portátil Bluetooth 58mm
 * Modelo: 58HB6-THERMAL-PRINTER
@@ -92,4 +86,3 @@ Incluir ejemplos de código en C# listos para usar.
  1. **Manual de Usuario (operativo)**
  2. **Manual Técnico del Dispositivo (hardware + protocolo)**
  3. **Guía de Integración para Desarrolladores (SDK / librerías específicas)**
-```
