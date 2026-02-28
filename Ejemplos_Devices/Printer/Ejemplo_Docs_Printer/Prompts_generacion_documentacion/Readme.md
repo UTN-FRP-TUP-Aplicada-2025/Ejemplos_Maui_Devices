@@ -42,9 +42,7 @@ se ejecuta generandose la siguiente documentación:
 
 ### [Prompt copilot sin planeamiento](03_Prompt_copilot_manual_borrador.md)
 
-Aquí se realizó una solicitud a copilot de forma desestructurada.
-
-Resultando en documento general:
+Aquí se realizó una solicitud a copilot de forma desestructurada, resultando en documento general:
 
 **Prompt**:
 
