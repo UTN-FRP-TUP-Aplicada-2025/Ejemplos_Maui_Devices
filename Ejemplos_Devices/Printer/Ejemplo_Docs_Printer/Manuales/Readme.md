@@ -8,7 +8,7 @@ Se han generado tres documentos profesionales y completos para la impresora tér
 ## Documentos Generados
 
 ### 📘 Documento 1: Manual de Usuario
-**Archivo**: `01_MANUAL_USUARIO.md`
+**Archivo**: [01_MANUAL_USUARIO.md](01_MANUAL_USUARIO.md)
 
 **Propósito**: Guía operativa para usuarios finales (no técnicos)
 
@@ -32,7 +32,7 @@ Se han generado tres documentos profesionales y completos para la impresora tér
 ---
 
 ### 📗 Documento 2: Manual Técnico ESC/POS (Programming Guide)
-**Archivo**: `02_MANUAL_TECNICO_ESC_POS.md`
+**Archivo**: [02_MANUAL_TECNICO_ESC_POS.md](02_MANUAL_TECNICO_ESC_POS.md)
 
 **Propósito**: Referencia técnica detallada para desarrolladores de bajo nivel
 
@@ -62,7 +62,7 @@ Se han generado tres documentos profesionales y completos para la impresora tér
 ---
 
 ### 📙 Documento 3: Guía de Integración ESCPOS_NET v2.2.1
-**Archivo**: `03_GUIA_INTEGRACION_ESCPOS_NET.md`
+**Archivo**: [03_GUIA_INTEGRACION_ESCPOS_NET.md](03_GUIA_INTEGRACION_ESCPOS_NET.md)
 
 **Propósito**: Guía práctica de integración para desarrolladores de aplicaciones .NET MAUI
 

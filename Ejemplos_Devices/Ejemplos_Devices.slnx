@@ -55,11 +55,11 @@
     <File Path="Printer/Ejemplo_Docs_Maps/Borradores/Readme.md" />
   </Folder>
   <Folder Name="/Printer/Docs/Manuales/">
-    <File Path="Printer/Ejemplo_Docs_Printer/Manuales/00_README_DOCUMENTACION.md" />
     <File Path="Printer/Ejemplo_Docs_Printer/Manuales/01_MANUAL_USUARIO.md" />
     <File Path="Printer/Ejemplo_Docs_Printer/Manuales/02_MANUAL_TECNICO_ESC_POS.md" />
     <File Path="Printer/Ejemplo_Docs_Printer/Manuales/03_GUIA_INTEGRACION_ESCPOS_NET.md" />
     <File Path="Printer/Ejemplo_Docs_Printer/Manuales/04_Borrador_Manual.md" />
+    <File Path="Printer/Ejemplo_Docs_Printer/Manuales/Readme.md" />
   </Folder>
   <Folder Name="/Printer/Docs/Prompts_Generacion_Apk_ejemplo/">
     <File Path="Printer/Ejemplo_Docs_Printer/Prompts_Generacion_Apk_ejemplo/Imagen_dispositivo_mercadolibre.jpg" />
