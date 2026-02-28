@@ -1,19 +1,20 @@
 
-# Introducción.
+## Introducción.
 
-hay dos ejemplos:
+Hay dos ejemplos:
 
 1- Utilizando MediaPicker, usa el dialogo nativo del dispositivo
 2- Mediante la libreria CommunityToolKit.Maui se recrea un dialogo. Esto es así porque supe tener problemas
 con el dialogo nativo en algunas versiones de android, entonces cree un dialogo minimalista
 para ver y tomar la foto.
 
-# Dialogo nativo - MediaPicker
+
+## Dialogo nativo - MediaPicker
 
 [Media Picker - Microsoft](https://learn.microsoft.com/en-us/dotnet/maui/platform-integration/device-media/picker?view=net-maui-10.0&tabs=android)
 
 
-```
+```xml
 <!-- Needed for Picking photo/video -->
 <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
 <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
@@ -30,15 +31,16 @@ para ver y tomar la foto.
 ```
 
 
-# Utilizando  CommunityToolKit.Maui.Camera
+## Utilizando  CommunityToolKit.Maui.Camera
 
 
-## Referencias
+### Referencias
 [CommunityToolKit.Maui.Camera - Microsoft](https://learn.microsoft.com/en-us/dotnet/communitytoolkit/maui/views/camera-view?tabs=windows)
 
 
 ## Install Nugget
-```
+
+```bash
 dotnet add package CommunityToolkit.Maui.Core
 dotnet add package CommunityToolkit.Maui.Camera 
 ```
@@ -74,6 +76,7 @@ public static class MauiProgram
 ## Manifiesto
 
 Agregar
+
 ```xml
 <uses-permission android:name="android.permission.CAMERA" />
 ```
