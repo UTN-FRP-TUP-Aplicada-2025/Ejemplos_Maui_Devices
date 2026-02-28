@@ -2,10 +2,10 @@
 
 ## Prompts para crear el ejemplo
 
-### Partí de una base en claude.ai. 
+### Partí de una base realizada de un prompt en claude.ai. 
 Finalmente lo ajuste con copilot desde visualstudio (ver al final el prompt al agente de copilot).
 
-Prompt
+**Prompt**:
 ```
 podes investigarme y construirme el codigo para imprimir desde maui net por bluetooth
 ```
@@ -80,8 +80,8 @@ La solución está optimizada para impresoras ESC/POS de 58mm como la que mostra
 
 ### Finalmente lo ajuste con copilot desde visualstudio,  
 
-Prompt
+**Prompt**:
 
 ```
-podes corregir  #Ejemplo_Thermal.csproj, fijate que no compila #ThermalprinterSerivce  , ni  #MainPage.xaml.cs
+podes corregir  #Ejemplo_Thermal.csproj, fijate que no compila #ThermalprinterSerivce , ni  #MainPage.xaml.cs
 ```

@@ -1,6 +1,8 @@
 
 ## Construcción del prompot para pedir el prompt a Copilot
 
+**Prompt**:
+
 ```
 necesito construir los manuales tecnicos del dispositivo "Impresora Termica Portatil Bluetooth 58mm Usb Tickets 58hb4 Negro" de la imagen, el modelo es  
 58HB6-THERMAL-PRINTER. 
@@ -16,6 +18,8 @@ estimo esos tres manuales, esta bien? ajustalos si en la practica difiere, fijat
 
 ## Respuesta
 
+**Respuesta**:
+```
 Vas muy bien encaminado. En la práctica profesional normalmente se separa así:
 
 1. **Manual de Usuario (operativo)**
@@ -220,3 +224,4 @@ Si querés, en el próximo paso puedo:
 * ✅ o revisar lo que te genere Copilot
 
 Decime cómo querés seguir.
+```

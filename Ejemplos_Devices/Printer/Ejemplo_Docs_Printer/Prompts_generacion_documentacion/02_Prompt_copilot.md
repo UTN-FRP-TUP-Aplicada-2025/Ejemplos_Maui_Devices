@@ -1,5 +1,9 @@
 ﻿
+### Prompt para copilot,  
 
+**Prompt**:
+
+```
 Necesito generar la documentación técnica completa para el dispositivo:
 
 * Producto: Impresora Térmica Portátil Bluetooth 58mm
@@ -71,8 +75,6 @@ Debe incluir:
 
 Incluir ejemplos de código en C# listos para usar.
 
-
-
 **Requisitos generales:**
 
 * Usar formato Markdown
@@ -82,15 +84,12 @@ Incluir ejemplos de código en C# listos para usar.
 * Español técnico neutro
 * No inventar características no estándar; marcar como "por confirmar" si falta información
 
-
-
 ## 🚀 Extra (muy recomendado)
 
  Basarse en impresoras térmicas ESC/POS genéricas de 58mm cuando falte información específica del modelo.
 
-
  ## resumen de los objetivos
  1. **Manual de Usuario (operativo)**
-2. **Manual Técnico del Dispositivo (hardware + protocolo)**
-3. **Guía de Integración para Desarrolladores (SDK / librerías específicas)**
-
+ 2. **Manual Técnico del Dispositivo (hardware + protocolo)**
+ 3. **Guía de Integración para Desarrolladores (SDK / librerías específicas)**
+```
