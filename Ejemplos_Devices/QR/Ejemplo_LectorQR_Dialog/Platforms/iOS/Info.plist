@@ -28,6 +28,9 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 
+	<key>XSAppIconAssets</key>
+	<string>Assets.xcassets/appicon.appiconset</string>
+
 	<key>MinimumOSVersion</key>
 	<string>15.0</string>
 
@@ -47,9 +50,6 @@
 
 	<key>CFBundleName</key>
 	<string>Ejemplo_iOS</string>
-
-	<key>XSAppIconAssets</key>
-	<string>Assets.xcassets/appicon.appiconset</string>
 
 	<key>NSCameraUsageDescription</key>
 	<string>Require to use camera</string>

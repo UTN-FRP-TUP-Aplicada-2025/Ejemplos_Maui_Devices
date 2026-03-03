@@ -6,7 +6,8 @@
   </Folder>
   <Folder Name="/.github/" />
   <Folder Name="/.github/workflows/">
-    <File Path="../.github/workflows/cd-ios-qr-dialog.yml" />
+    <File Path="../.github/workflows/cd-ios-camera.Ejemplo_Imagen_Normalizacion.yml" />
+    <File Path="../.github/workflows/cd-ios-qr.Ejemplo_LectorQR_Dialog.yml" />
     <File Path="../.github/workflows/Readme.md" />
   </Folder>
   <Folder Name="/.Utilities/">
