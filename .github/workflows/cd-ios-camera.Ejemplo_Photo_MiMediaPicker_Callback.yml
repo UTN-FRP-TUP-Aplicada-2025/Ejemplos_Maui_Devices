@@ -1,4 +1,4 @@
-﻿name: CD iOS - LectorQR Dialog
+﻿name: CD iOS - CAMERA - Ejemplo_Photo_MiMediaPicker_Callback
 
 on:
   
@@ -7,7 +7,7 @@ on:
       - main
 
     paths:
-      - 'Ejemplos_Devices/QR/Ejemplo_LectorQR_Dialog/**'
+      - 'Ejemplos_Devices/Camera/Ejemplo_Photo_MiMediaPicker_Callback/**'
       - '!**.md'
       - '!**/*.gitignore'
       - '!**/*.gitattributes'
@@ -28,13 +28,13 @@ env:
   DOTNET_VERSION_WORKLOAD: '10.0.100'
 
   # ─── Datos específicos del proyecto QR Dialog ───────────────────────────────
-  PACKAGE_NAME: 'com.ejemplos.devices.qr.dialog'
-  SOLUTION_FOLDER: 'Ejemplos_Devices'
-  PROJECT_FOLDER: 'QR/Ejemplo_LectorQR_Dialog'
-  PROJECT_FILE: 'Ejemplo_LectorQR_Dialog.csproj'
+  PACKAGE_NAME: 'com.ejemplos.photo.mimediapicker.callback'
+  SOLUTION_FOLDER: 'Ejemplo_Photo_MiMediaPicker_Callback'
+  PROJECT_FOLDER: 'Camera/Ejemplo_Photo_MiMediaPicker_Callback'
+  PROJECT_FILE: 'Ejemplo_Photo_MiMediaPicker_Callback.csproj'
   # ─────────────────────────────────────────────────────────────────────────────
 
-  VERSION_FECHA: '20260202'
+  VERSION_FECHA: '20260327'
 
   RUNTIME_IDENTIFIER_SIMULATOR: 'iossimulator-arm64' 
   BUILD_CONFIG_SIMULATOR: 'Release'
