@@ -7,6 +7,7 @@
   <Folder Name="/.github/" />
   <Folder Name="/.github/workflows/">
     <File Path="../.github/workflows/cd-ios-camera.Ejemplo_Imagen_Normalizacion.yml" />
+    <File Path="../.github/workflows/cd-ios-camera.Ejemplo_Photo_MiMediaPicker_Callback.yml" />
     <File Path="../.github/workflows/cd-ios-qr.Ejemplo_LectorQR_Dialog.yml" />
     <File Path="../.github/workflows/Readme.md" />
   </Folder>

@@ -4,21 +4,25 @@
 <dict>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	
 	<key>UIDeviceFamily</key>
 	<array>
 		<integer>1</integer>
 		<integer>2</integer>
 	</array>
+	
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>arm64</string>
 	</array>
+	
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
@@ -26,7 +30,17 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/appicon.appiconset</string>
+
+	<string>We will implement an interactive map, to show the user points of interest related to the municipal management.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>This app does not require access to the microphone.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>
+		We use the camera so that users can attach photos of the claims they are making.
+	</string>
+	
 </dict>
 </plist>
