@@ -5,7 +5,7 @@ using System.Diagnostics;
 
 namespace Ejemplo_Photo_MiMediaPicker_Callback.Pages;
 
-[QueryProperty(nameof(OnPhotoCallback), "OnPhotoCallback")]
+[QueryProperty(nameof(OnPhotoCallback), "OnPhotoCallback")] 
 public partial class MyMediaPickerPage : ContentPage
 {
     private bool _isCapturingImage = false;

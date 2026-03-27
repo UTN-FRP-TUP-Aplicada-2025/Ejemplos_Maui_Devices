@@ -1,6 +1,4 @@
-﻿using Ejemplo_Photo_MiMediaPicker_Callback.Pages;
-
-namespace Ejemplo_Photo_MiMediaPicker_Callback.Pages;
+﻿namespace Ejemplo_Photo_MiMediaPicker_Callback.Pages;
 
 public partial class MainPage : ContentPage
 {
@@ -9,7 +7,6 @@ public partial class MainPage : ContentPage
     {
         InitializeComponent();
     }
-
 
     async private void OnAbrirCamaraClicked(object? sender, EventArgs e)
     {

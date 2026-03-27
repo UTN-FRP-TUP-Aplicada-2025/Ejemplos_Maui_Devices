@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-
-namespace Ejemplo_Photo_MiMediaPicker_Callback;
+﻿namespace Ejemplo_Photo_MiMediaPicker_Callback;
 
 public partial class App : Application
 {
