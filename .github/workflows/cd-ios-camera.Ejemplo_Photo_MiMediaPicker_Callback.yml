@@ -29,7 +29,7 @@ env:
 
   # ─── Datos específicos del proyecto QR Dialog ───────────────────────────────
   PACKAGE_NAME: 'com.ejemplos.photo.mimediapicker.callback'
-  SOLUTION_FOLDER: 'Ejemplo_Photo_MiMediaPicker_Callback'
+  SOLUTION_FOLDER: 'Ejemplos_Devices'
   PROJECT_FOLDER: 'Camera/Ejemplo_Photo_MiMediaPicker_Callback'
   PROJECT_FILE: 'Ejemplo_Photo_MiMediaPicker_Callback.csproj'
   # ─────────────────────────────────────────────────────────────────────────────

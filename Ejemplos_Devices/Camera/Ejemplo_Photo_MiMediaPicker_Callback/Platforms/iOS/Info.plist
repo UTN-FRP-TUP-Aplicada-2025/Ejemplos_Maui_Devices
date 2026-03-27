@@ -38,7 +38,7 @@
 	<string>15.0</string>
 
 	<key>CFBundleName</key>
-	<string>Ejemplo_Mi_MediaPickerCallbackS</string>
+	<string>Ejemplo_Mi_MediaPickerCallback</string>
 
 	<key>CFBundleDisplayName</key>
 	<string>Mi MediaPicker Callback</string>
@@ -48,6 +48,7 @@
 
 	<key>CFBundleVersion</key>
 	<string>1.0</string>
+	
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 
