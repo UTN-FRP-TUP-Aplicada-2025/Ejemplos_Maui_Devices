@@ -30,7 +30,9 @@ env:
   # ─── Datos específicos del proyecto QR Dialog ───────────────────────────────
   PACKAGE_NAME: 'com.ejemplos.photo.mimediapicker.callback'
   SOLUTION_FOLDER: 'Ejemplos_Devices'
-  PROJECT_FOLDER: 'Camera/Ejemplo_Photo_MiMediaPicker_Callback'
+  PROJECTS_ROOT: 'Camera' 
+  # PROJECT_FOLDER=${{ env.PROJECTS_ROOT }}/${{ env.PROJECT_NAME }} 
+  PROJECT_NAME: 'Ejemplo_Photo_MiMediaPicker_Callback'
   PROJECT_FILE: 'Ejemplo_Photo_MiMediaPicker_Callback.csproj'
   # ─────────────────────────────────────────────────────────────────────────────
 
@@ -212,7 +214,8 @@ jobs:
         echo "....> $(pwd)"
         
         SOLUTION_PATH=${{ github.workspace }}/${{ env.SOLUTION_FOLDER }}
-        PROJECT_PATH=$SOLUTION_PATH/${{ env.PROJECT_FOLDER }}
+        #PROJECT_PATH=$SOLUTION_PATH/${{ env.PROJECT_FOLDER }}
+        PROJECT_PATH=$SOLUTION_PATH/${{ env.PROJECTS_ROOT }}/${{ env.PROJECT_NAME}}
                 
         echo "PROJECT_PATH=$PROJECT_PATH" >> $GITHUB_ENV
         echo "SOLUTION_PATH=$SOLUTION_PATH" >> $GITHUB_ENV
@@ -242,13 +245,15 @@ jobs:
       run: |
         cd ${{ env.SOLUTION_PATH }}
         # cd /Users/runner/work/Ejemplos_Maui_Devices/Ejemplos_Maui_Devices/Ejemplos_Devices
-        dotnet clean "${{ env.PROJECT_FOLDER }}/${{ env.PROJECT_FILE }}" -f ${{ env.DOTNET_TARGET_VERSION }}-ios
+        #dotnet clean "${{ env.PROJECT_FOLDER }}/${{ env.PROJECT_FILE }}" -f ${{ env.DOTNET_TARGET_VERSION }}-ios
+        dotnet clean "${{ env.PROJECTS_ROOT }}/${{ env.PROJECT_NAME}}/${{ env.PROJECT_FILE }}" -f ${{ env.DOTNET_TARGET_VERSION }}-ios
         # dotnet clean Ejemplo_LectorQR_Dialog.csproj -f net10.0-ios
 
     - name: BUILD SIMULADOR. Restaurar dependencias
       run: |
         cd ${{ env.SOLUTION_PATH }}
-        dotnet restore  "${{ env.PROJECT_FOLDER }}/${{ env.PROJECT_FILE }}" \
+        #dotnet restore  "${{ env.PROJECT_FOLDER }}/${{ env.PROJECT_FILE }}" \
+        dotnet restore "${{ env.PROJECTS_ROOT }}/${{ env.PROJECT_NAME }}/${{ env.PROJECT_FILE }}" \
           -p:TargetFramework=${{ env.DOTNET_TARGET_VERSION }}-ios \
           -p:RuntimeIdentifier=${{ env.RUNTIME_IDENTIFIER_SIMULATOR }}
           
@@ -263,7 +268,8 @@ jobs:
         echo "Build: ${{ env.BUILD_CONFIG_SIMULATOR }}"
         echo "Target framework: ${{ env.DOTNET_TARGET_VERSION }}-ios"
 
-        dotnet build "${{ env.PROJECT_FOLDER }}/${{ env.PROJECT_FILE }}" \
+        #dotnet build "${{ env.PROJECT_FOLDER }}/${{ env.PROJECT_FILE }}" \
+        dotnet build "${{ env.PROJECTS_ROOT }}/${{ env.PROJECT_NAME }}/${{ env.PROJECT_FILE }}" \
             -c ${{ env.BUILD_CONFIG_SIMULATOR }} \
             -f:${{ env.DOTNET_TARGET_VERSION }}-ios \
             -p:RuntimeIdentifier=${{ env.RUNTIME_IDENTIFIER_SIMULATOR }} \
@@ -276,10 +282,14 @@ jobs:
             -v normal
 
         echo "Imprime la carpeta bin recursiva:"
-        ls -Rl "${{ env.PROJECT_FOLDER }}/bin/"
+        #ls -Rl "${{ env.PROJECT_FOLDER }}/bin/"
+        ls -Rl "${{ env.PROJECTS_ROOT }}/${{ env.PROJECT_NAME }}/bin/"
+        
         
         BASE_PATH=${{ env.PROJECT_PATH }}/bin/${{ env.BUILD_CONFIG_SIMULATOR }}/${{ env.DOTNET_TARGET_VERSION }}-ios/${{ env.RUNTIME_IDENTIFIER_SIMULATOR }}
-        APP_PATH=${BASE_PATH}/${{ env.PROJECT_FOLDER }}.app
+        #APP_PATH=${BASE_PATH}/${{ env.PROJECT_FOLDER }}.app
+        APP_PATH=${BASE_PATH}/${{ env.PROJECTS_ROOT }}/${{ env.PROJECT_NAME }}.app
+        
 
         echo "BASE_PATH: $BASE_PATH"      
         echo "APP_PATH: $APP_PATH"
@@ -289,19 +299,24 @@ jobs:
            
     - name: BUILD SIMULADOR. Firma robusta 
       run: |
-        APP_FOLDER="${{ env.PROJECT_FOLDER }}.app"
-        ENTITLEMENTS_PATH="${{ env.PROJECT_FOLDER }}/${{ env.PROJECT_FILE }}/Platforms/iOS/Entitlements.Development.plist"
+        
+        #APP_FOLDER="${{ env.PROJECT_FOLDER }}.app"
+        APP_FOLDER="${{ env.PROJECTS_ROOT }}/${{ env.PROJECT_NAME }}.app"
+        #ENTITLEMENTS_PATH="${{ env.PROJECT_FOLDER }}/${{ env.PROJECT_FILE }}/Platforms/iOS/Entitlements.Development.plist"
+        ENTITLEMENTS_PATH="${{ env.PROJECTS_ROOT }}/${{ env.PROJECT_NAME }}/${{ env.PROJECT_FILE }}/Platforms/iOS/Entitlements.Development.plist"
     
         echo "Limpiando firmas previas y atributos corruptos..."
         xattr -cr "${{ env.APP_PATH }}"
         rm -rf "${{ env.APP_PATH }}/_CodeSignature"
-        chmod +x "${{ env.APP_PATH }}/${{ env.PROJECT_FOLDER }}"
+        #chmod +x "${{ env.APP_PATH }}/${{ env.PROJECT_FOLDER }}"
+        chmod +x "${{ env.APP_PATH }}/${{ env.PROJECTS_ROOT }}/${{ env.PROJECT_NAME }}"
 
         echo "Firmando contenido interno (DLLs y AOT) uno por uno..."
         find "${{ env.APP_PATH }}" -name "*.dll" -or -name "*.dylib" -or -name "*.aotdata*" | xargs codesign --force --sign "-" --timestamp=none
         
         echo "Firmando el binario principal con los Entitlements..."
-        codesign --force --sign "-" --timestamp=none --entitlements "$ENTITLEMENTS_PATH" "${{ env.APP_PATH }}/${{ env.PROJECT_FOLDER }}"
+        #codesign --force --sign "-" --timestamp=none --entitlements "$ENTITLEMENTS_PATH" "${{ env.APP_PATH }}/${{ env.PROJECT_FOLDER }}"
+        codesign --force --sign "-" --timestamp=none --entitlements "$ENTITLEMENTS_PATH" "${{ env.APP_PATH }}/${{ env.PROJECTS_ROOT }}/${{ env.PROJECT_NAME }}"
         
         echo "Sellado final del paquete (Bundle)..."
         codesign --force --sign "-" --timestamp=none "${{ env.APP_PATH }}"
@@ -313,9 +328,12 @@ jobs:
 
     - name: BUILD SIMULADOR. Test entitlements
       run: |  
-        file "${{ env.APP_PATH }}/${{ env.PROJECT_FOLDER }}"
+        #file "${{ env.APP_PATH }}/${{ env.PROJECT_FOLDER }}"
+        file "${{ env.APP_PATH }}/${{ env.PROJECTS_ROOT }}/${{ env.PROJECT_NAME }}"
+
         /usr/libexec/PlistBuddy -c "Print CFBundleIdentifier" "${{ env.APP_PATH }}/Info.plist"
-        codesign -d --entitlements :- "${{ env.APP_PATH }}/${{ env.PROJECT_FOLDER }}"
+        #codesign -d --entitlements :- "${{ env.APP_PATH }}/${{ env.PROJECT_FOLDER }}"
+        codesign -d --entitlements :- "${{ env.APP_PATH }}/${{ env.PROJECTS_ROOT }}/${{ env.PROJECT_NAME }}"
         
     - name: BUILD RELEASE SIMULADOR. Zip del .app
       run: |  
@@ -325,8 +343,9 @@ jobs:
         echo "ZIP NAME: $ZIP_NAME"
 
         cd "${{ env.BASE_PATH }}"
-        zip -ry "$ZIP_NAME" "${{ env.PROJECT_FOLDER }}.app"
-                
+        # zip -ry "$ZIP_NAME" "${{ env.PROJECT_FOLDER }}.app"
+        zip -ry "$ZIP_NAME" "${{ env.PROJECTS_ROOT }}/${{ env.PROJECT_NAME }}.app"
+                        
         echo "ZIP_NAME=$ZIP_NAME" >> $GITHUB_ENV
         echo "ZIP_PATH=${{ env.BASE_PATH }}/$ZIP_NAME" >> $GITHUB_ENV    
         
