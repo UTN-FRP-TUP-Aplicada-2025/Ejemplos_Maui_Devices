@@ -94,6 +94,14 @@ public partial class MyMediaPickerPage : ContentPage
     {
         base.OnNavigatedTo(args);
 
+        var status = await Permissions.CheckStatusAsync<Permissions.Camera>();
+        if (status != PermissionStatus.Granted)
+        {
+            Debug.WriteLine("MyMediaPickerPage: Permiso de cámara no concedido.");
+            await Shell.Current.GoToAsync($"//{nameof(MainPage)}");
+            return;
+        }
+
         var availableCameras = await Camera.GetAvailableCameras(CancellationToken.None);
         var frontCamera = availableCameras.FirstOrDefault(c => c.Position == CameraPosition.Rear);
 
@@ -259,12 +267,14 @@ public partial class MyMediaPickerPage : ContentPage
         }
         #endregion
 
+#if ANDROID
         #region explica porque se necesitan los permisos - no se muestra 
         if (Permissions.ShouldShowRationale<Permissions.Camera>())
         {
             await Shell.Current.DisplayAlertAsync("Necesidad de permisos de uso de la cámara", "Usamos la cámara para que los usuarios puedan adjuntar fotografías a los formularios que lo requieran.", "OK");
         }
         #endregion
+#endif
 
         #region los solicita!
         status = await Permissions.RequestAsync<Permissions.Camera>();
