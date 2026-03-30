@@ -288,7 +288,7 @@ jobs:
         
         BASE_PATH=${{ env.PROJECT_PATH }}/bin/${{ env.BUILD_CONFIG_SIMULATOR }}/${{ env.DOTNET_TARGET_VERSION }}-ios/${{ env.RUNTIME_IDENTIFIER_SIMULATOR }}
         #APP_PATH=${BASE_PATH}/${{ env.PROJECT_FOLDER }}.app
-        APP_PATH=${BASE_PATH}/${{ env.PROJECTS_ROOT }}/${{ env.PROJECT_NAME }}.app
+        APP_PATH=${BASE_PATH}/${{ env.PROJECT_NAME }}.app
         
 
         echo "BASE_PATH: $BASE_PATH"      
