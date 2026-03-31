@@ -24,7 +24,7 @@ public partial class MainPage : ContentPage
                     }
                     else
                     {
-                        await DisplayAlertAsync("Cancelado", "No se recibió ningún dato", "OK");
+                        await DisplayAlertAsync("Cancelado", "No se recibió ningún dato", "OK"); 
                     }
                 }));
             };

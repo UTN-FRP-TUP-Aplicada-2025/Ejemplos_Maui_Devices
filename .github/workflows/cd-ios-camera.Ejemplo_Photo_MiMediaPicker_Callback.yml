@@ -303,7 +303,7 @@ jobs:
         #APP_FOLDER="${{ env.PROJECT_FOLDER }}.app" 
         APP_FOLDER="${{ env.PROJECTS_ROOT }}/${{ env.PROJECT_NAME }}.app"
         #ENTITLEMENTS_PATH="${{ env.PROJECT_FOLDER }}/${{ env.PROJECT_FILE }}/Platforms/iOS/Entitlements.Development.plist"
-        ENTITLEMENTS_PATH="${{ env.PROJECTS_ROOT }}/${{ env.PROJECT_NAME }}/${{ env.PROJECT_FILE }}/Platforms/iOS/Entitlements.Development.plist"
+        ENTITLEMENTS_PATH="${{ env.PROJECTS_ROOT }}/${{ env.PROJECT_NAME }}/Platforms/iOS/Entitlements.Development.plist"
     
         echo "Limpiando firmas previas y atributos corruptos..."
         xattr -cr "${{ env.APP_PATH }}"
