@@ -309,14 +309,14 @@ jobs:
         xattr -cr "${{ env.APP_PATH }}"
         rm -rf "${{ env.APP_PATH }}/_CodeSignature"
         #chmod +x "${{ env.APP_PATH }}/${{ env.PROJECT_FOLDER }}"
-        chmod +x "${{ env.APP_PATH }}/${{ env.PROJECTS_ROOT }}/${{ env.PROJECT_NAME }}"
+        chmod +x "${{ env.APP_PATH }}/${{ env.PROJECT_NAME }}"
 
         echo "Firmando contenido interno (DLLs y AOT) uno por uno..."
         find "${{ env.APP_PATH }}" -name "*.dll" -or -name "*.dylib" -or -name "*.aotdata*" | xargs codesign --force --sign "-" --timestamp=none
         
         echo "Firmando el binario principal con los Entitlements..."
         #codesign --force --sign "-" --timestamp=none --entitlements "$ENTITLEMENTS_PATH" "${{ env.APP_PATH }}/${{ env.PROJECT_FOLDER }}"
-        codesign --force --sign "-" --timestamp=none --entitlements "$ENTITLEMENTS_PATH" "${{ env.APP_PATH }}/${{ env.PROJECTS_ROOT }}/${{ env.PROJECT_NAME }}"
+        codesign --force --sign "-" --timestamp=none --entitlements "$ENTITLEMENTS_PATH" "${{ env.APP_PATH }}/${{ env.PROJECT_NAME }}"
         
         echo "Sellado final del paquete (Bundle)..."
         codesign --force --sign "-" --timestamp=none "${{ env.APP_PATH }}"
@@ -329,11 +329,11 @@ jobs:
     - name: BUILD SIMULADOR. Test entitlements
       run: |  
         #file "${{ env.APP_PATH }}/${{ env.PROJECT_FOLDER }}"
-        file "${{ env.APP_PATH }}/${{ env.PROJECTS_ROOT }}/${{ env.PROJECT_NAME }}"
+        file "${{ env.APP_PATH }}/${{ env.PROJECT_NAME }}"
 
         /usr/libexec/PlistBuddy -c "Print CFBundleIdentifier" "${{ env.APP_PATH }}/Info.plist"
         #codesign -d --entitlements :- "${{ env.APP_PATH }}/${{ env.PROJECT_FOLDER }}"
-        codesign -d --entitlements :- "${{ env.APP_PATH }}/${{ env.PROJECTS_ROOT }}/${{ env.PROJECT_NAME }}"
+        codesign -d --entitlements :- "${{ env.APP_PATH }}/${{ env.PROJECT_NAME }}"
         
     - name: BUILD RELEASE SIMULADOR. Zip del .app
       run: |  
