@@ -39,7 +39,7 @@ public partial class MainPage : ContentPage
         }
         catch (Exception ex)
         {
-            await DisplayAlertAsync("Error", $"Ocurrió un error al abrir la cámara: {ex.Message}", "OK");
+            await DisplayAlertAsync("Error", $"Ocurrió un error al abrir la cámara: {ex.Message}", "OK"); 
         }
         finally
         {
