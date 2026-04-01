@@ -9,7 +9,7 @@
     <Grid x:Name="DynamicLayout" RowDefinitions="Auto,*,Auto" ColumnDefinitions="*"
           HorizontalOptions="Fill" VerticalOptions="Fill">
 
-        <!-- Botón flash -->
+        <!-- barra de botones -->
         <Button x:Name="BtnFlashButton" Grid.Row="0" Grid.Column="0"
                 Clicked="OnActiveFlashClicked"
                 HorizontalOptions="Center" VerticalOptions="Center"
@@ -97,7 +97,7 @@
             </VerticalStackLayout>
         </Grid>
 
-        <!-- Botón tomar foto -->
+        <!-- barra de botones -->
         <Button x:Name="BtnTomarFoto" Grid.Row="2" Grid.Column="0"
                 Clicked="OnTomarFotoClicked"
                 HorizontalOptions="Center" VerticalOptions="Center"

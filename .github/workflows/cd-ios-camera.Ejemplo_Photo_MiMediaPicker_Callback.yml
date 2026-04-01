@@ -305,12 +305,12 @@ jobs:
         #ENTITLEMENTS_PATH="${{ env.PROJECT_FOLDER }}/${{ env.PROJECT_FILE }}/Platforms/iOS/Entitlements.Development.plist"
         #ENTITLEMENTS_PATH="${{ env.PROJECTS_ROOT }}/${{ env.PROJECT_NAME }}/Platforms/iOS/Entitlements.Development.plist"
 
+        echo "pwd: $(pwd)";
+        echo "ls recursivo: $(ls -lsR)";
+
         cd ${{ env.SOLUTION_PATH }}
         ENTITLEMENTS_PATH="${{ env.PROJECTS_ROOT }}/${{ env.PROJECT_NAME }}/Platforms/iOS/Entitlements.Development.plist"
-
-        echo "pwd: $(ls -lsR)";
-        echo "pwd: $(ls pwd)";
-               
+       
     
         echo "Limpiando firmas previas y atributos corruptos..."
         xattr -cr "${{ env.APP_PATH }}"
@@ -351,7 +351,7 @@ jobs:
 
         cd "${{ env.BASE_PATH }}"
         # zip -ry "$ZIP_NAME" "${{ env.PROJECT_FOLDER }}.app"
-        zip -ry "$ZIP_NAME" "${{ env.PROJECTS_ROOT }}/${{ env.PROJECT_NAME }}.app"
+        zip -ry "$ZIP_NAME" "${{ env.PROJECT_NAME }}.app"
                         
         echo "ZIP_NAME=$ZIP_NAME" >> $GITHUB_ENV
         echo "ZIP_PATH=${{ env.BASE_PATH }}/$ZIP_NAME" >> $GITHUB_ENV    

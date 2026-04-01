@@ -126,7 +126,8 @@ xcrun simctl uninstall $UUID "${PACKAGE_NAME}" 2>/dev/null || true
 echo "Limpieza total de atributos de cuarentena"
 chmod -R 755 "${APP_PATH}"
 xattr -rc "${APP_PATH}"
-chmod +x "${APP_PATH}/${PROJECT_FOLDER}"
+#chmod +x "${APP_PATH}/${PROJECT_FOLDER}"
+chmod +x "${APP_PATH}/${PROJECTS_ROOT}/${PROJECT_NAME}"
 sudo xattr -rd com.apple.quarantine "${APP_PATH}" 2>/dev/null || true
 # echo "Firma ad-hoc limpia (importante en Apple Silicon)"
 # codesign --force --deep --sign - "${APP_PATH}"
@@ -264,7 +265,7 @@ echo "Capturando logs de la app (por bundle ID)..."
 run_with_timeout 30 xcrun simctl spawn $UUID log show --last 5m --predicate "senderIdentifier == '${PACKAGE_NAME}'" > debug_logs/app_specific_log.txt 2>&1 || echo "Timeout/error en app log"
 
 echo "Capturando logs de la app (por proceso)..."
-run_with_timeout 30 xcrun simctl spawn $UUID log show --last 5m --predicate 'process == "${PROJECT_FOLDER}"' > debug_logs/app_process_log.txt 2>&1 || echo "Timeout/error en ${PROJECT_FOLDER} log"
+run_with_timeout 30 xcrun simctl spawn $UUID log show --last 5m --predicate 'process == "${PROJECTS_ROOT}/${PROJECT_NAME}"' > debug_logs/app_process_log.txt 2>&1 || echo "Timeout/error en ${PROJECTS_ROOT}/${PROJECT_NAME} log"
 
 echo "Capturando logs del sistema..."
 run_with_timeout 30 xcrun simctl spawn $UUID log show --last 5m --info --debug > debug_logs/system_log_full.txt 2>&1 || echo "Timeout/error en system log"
@@ -274,7 +275,7 @@ echo "Busqueda de crash reports"
 echo ""
 CRASH_DIR="$HOME/Library/Logs/DiagnosticReports"
 if [ -d "$CRASH_DIR" ]; then
-    find "$CRASH_DIR" -name "*${PROJECT_FOLDER}*" -mtime -1 -exec cp {} debug_logs/ \; 2>/dev/null || true
+    find "$CRASH_DIR" -name "*${PROJECTS_ROOT}/${PROJECT_NAME}*" -mtime -1 -exec cp {} debug_logs/ \; 2>/dev/null || true
     find "$CRASH_DIR" \( -name "*.ips" -o -name "*.crash" \) -mtime -1 -exec cp {} debug_logs/ \; 2>/dev/null || true
     
     CRASH_COUNT=$(ls debug_logs/*.{ips,crash} 2>/dev/null | wc -l)
