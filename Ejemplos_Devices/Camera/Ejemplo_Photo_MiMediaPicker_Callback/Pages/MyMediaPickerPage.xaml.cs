@@ -66,7 +66,13 @@ public partial class MyMediaPickerPage : ContentPage
 
         try
         {
-            await CheckForCameraPermissionAsync();
+            var ok=await CheckForCameraPermissionAsync();
+            if (!ok)
+            {
+                // Si no hay permisos, volvemos al flujo principal
+                await Shell.Current.GoToAsync($"//{nameof(MainPage)}");
+                return;
+            }
 
             DeviceDisplay.MainDisplayInfoChanged += OnMainDisplayInfoChanged;
         }
@@ -106,7 +112,7 @@ public partial class MyMediaPickerPage : ContentPage
         var frontCamera = availableCameras.FirstOrDefault(c => c.Position == CameraPosition.Rear);
 
         if (frontCamera != null)
-            Camera.SelectedCamera = frontCamera;
+            MainThread.BeginInvokeOnMainThread(() => Camera.SelectedCamera = frontCamera);
     }
 
     private async void OnTomarFotoClicked(object sender, EventArgs e)
@@ -127,9 +133,29 @@ public partial class MyMediaPickerPage : ContentPage
             _captureCancellationTokenSource?.Dispose();
             _captureCancellationTokenSource = new CancellationTokenSource();
 
-            await Camera.CaptureImage(_captureCancellationTokenSource.Token);
+            //await Camera.CaptureImage(_captureCancellationTokenSource.Token);
+            // se asegura que la llamada relacionada con la cámara en el hilo principal
+            await MainThread.InvokeOnMainThreadAsync(async () =>
+            {
+                await Camera.CaptureImage(_captureCancellationTokenSource.Token);
+            });
         }
+        /*
         catch (OperationCanceledException)
+        {
+            _isCapturingImage = false;
+            DynamicLayout.IsEnabled = true;
+        }
+        */
+        catch (OperationCanceledException)
+        {
+            // captura cancelada por usuario o por OnDisappearing
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"Error al capturar imagen: {ex}");
+        }
+        finally
         {
             _isCapturingImage = false;
             DynamicLayout.IsEnabled = true;
@@ -291,14 +317,16 @@ public partial class MyMediaPickerPage : ContentPage
                     "Se necesitan habilitar los permisos",
                     "Abrir configuración"
                 );
-                AppInfo.ShowSettingsUI();
+                //este abre el setting de la aplicacion
+                //AppInfo.ShowSettingsUI();
                 return false;
             }
 
             if (status != PermissionStatus.Restricted)
             {
                 status = await Permissions.RequestAsync<Permissions.Camera>();
-                if (status == PermissionStatus.Granted) return true;
+                if (status == PermissionStatus.Granted) 
+                    return true;
             }
 
             await Shell.Current.DisplayAlertAsync("Permiso no concedido", "Sin el acceso a la cámara no se podrá tomar la foto.", "OK");

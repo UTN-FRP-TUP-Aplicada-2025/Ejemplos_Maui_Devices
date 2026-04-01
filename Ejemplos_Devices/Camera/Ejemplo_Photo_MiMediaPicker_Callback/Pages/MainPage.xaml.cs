@@ -14,6 +14,16 @@ public partial class MainPage : ContentPage
 
         try
         {
+            var camaraStatus = await RequestCameraPermissionAsync();
+            if (camaraStatus != PermissionStatus.Granted)
+            {
+                await DisplayAlertAsync(
+                    "Permiso requerido",
+                    "Se necesita acceso a la cámara para continuar. Por favor habilitalo en los ajustes del dispositivo.",
+                    "OK");
+                return;
+            }
+
             Action<Image> resultadoCallback = async (image) =>
             {
                 await this.Dispatcher.DispatchAsync(new Action(async () =>
@@ -45,5 +55,34 @@ public partial class MainPage : ContentPage
         {
             BtnPhoto.IsEnabled = true;
         }
+    }
+
+    private async Task<PermissionStatus> RequestCameraPermissionAsync()
+    {
+        // Verifica el estado actual sin mostrar el diálogo todavía
+        var status = await Permissions.CheckStatusAsync<Permissions.Camera>();
+
+        if (status == PermissionStatus.Granted)
+            return status;
+
+        // Si fue denegado permanentemente, no se puede solicitar de nuevo
+        //if (status == PermissionStatus.Denied && DeviceInfo.Platform == DevicePlatform.iOS)
+        //{
+        //    // En iOS, una vez denegado hay que ir a Settings
+        //    bool irASettings = await DisplayAlertAsync(
+        //        "Permiso denegado",
+        //        "El acceso a la cámara fue denegado. ¿Querés habilitarlo en Ajustes?",
+        //        "Ir a Ajustes",
+        //        "Cancelar");
+
+        //    if (irASettings)
+        //        AppInfo.ShowSettingsUI();
+
+        //    return PermissionStatus.Denied;
+        //}
+
+        // Solicitar el permiso (muestra el diálogo nativo del SO)
+        status = await Permissions.RequestAsync<Permissions.Camera>();
+        return status;
     }
 }
