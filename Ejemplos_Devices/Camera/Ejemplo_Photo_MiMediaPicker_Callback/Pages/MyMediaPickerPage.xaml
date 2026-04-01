@@ -5,18 +5,92 @@
              x:Class="Ejemplo_Photo_MiMediaPicker_Callback.Pages.MyMediaPickerPage"
              Title="Camera Page"
              BackgroundColor="#000000">
-   
-    <Grid x:Name="DynamicLayout" RowDefinitions="Auto,*,Auto" ColumnDefinitions="*" HorizontalOptions="Fill" VerticalOptions="Fill">
 
-        <Button x:Name="BtnFlashButton" Grid.Row="0" Grid.Column="0" Clicked="OnActiveFlashClicked" HorizontalOptions="Center" VerticalOptions="Center" Background="#aa000000" CornerRadius="8">
+    <Grid x:Name="DynamicLayout" RowDefinitions="Auto,*,Auto" ColumnDefinitions="*"
+          HorizontalOptions="Fill" VerticalOptions="Fill">
+
+        <!-- Botón flash -->
+        <Button x:Name="BtnFlashButton" Grid.Row="0" Grid.Column="0"
+                Clicked="OnActiveFlashClicked"
+                HorizontalOptions="Center" VerticalOptions="Center"
+                Background="#aa000000" CornerRadius="8">
             <Button.ImageSource>
                 <FontImageSource Glyph="{Binding FlashIcon}" FontFamily="MaterialIconsOutlined" />
             </Button.ImageSource>
         </Button>
 
-        <toolkit:CameraView x:Name="Camera" Grid.Row="1" Grid.Column="0" HorizontalOptions="Fill" VerticalOptions="Fill" MediaCaptured="OnMediaCaptured" MediaCaptureFailed="OnMediaCaptureFailed" Margin="0"/>
+        <!-- Vista de cámara -->
+        <toolkit:CameraView x:Name="Camera" Grid.Row="1" Grid.Column="0"
+                            HorizontalOptions="Fill" VerticalOptions="Fill"
+                            MediaCaptured="OnMediaCaptured"
+                            MediaCaptureFailed="OnMediaCaptureFailed"
+                            Margin="0"/>
 
-        <Button x:Name="BtnTomarFoto" Grid.Row="2" Grid.Column="0" Clicked="OnTomarFotoClicked" HorizontalOptions="Center" VerticalOptions="Center" Background="#aa000000" CornerRadius="8">
+        <!-- ✅ Overlay de permiso denegado — se muestra sobre el visor -->
+        <Grid x:Name="PermissionDeniedOverlay"
+              Grid.Row="1" Grid.Column="0"
+              IsVisible="False"
+              BackgroundColor="#CC000000"
+              HorizontalOptions="Fill" VerticalOptions="Fill">
+
+            <VerticalStackLayout Spacing="20"
+                                 HorizontalOptions="Center"
+                                 VerticalOptions="Center"
+                                 Padding="32">
+
+                <!-- Ícono de cámara tachada -->
+                <Label Text="no_photography"
+                       FontFamily="MaterialIconsOutlined"
+                       FontSize="80"
+                       TextColor="#AAAAAA"
+                       HorizontalOptions="Center"/>
+
+                <!-- Título -->
+                <Label x:Name="LblPermissionTitle"
+                       Text="Sin acceso a la cámara"
+                       FontSize="20"
+                       FontAttributes="Bold"
+                       TextColor="White"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center"/>
+
+                <!-- Descripción -->
+                <Label x:Name="LblPermissionMessage"
+                       Text="Para tomar fotos necesitamos acceso a la cámara."
+                       FontSize="14"
+                       TextColor="#CCCCCC"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center"/>
+
+                <!-- Botón ir a Settings -->
+                <Button x:Name="BtnGoToSettings"
+                        Text="Abrir configuración"
+                        Clicked="OnGoToSettingsClicked"
+                        BackgroundColor="#512BD4"
+                        TextColor="White"
+                        CornerRadius="8"
+                        Padding="20,12"
+                        HorizontalOptions="Center"/>
+
+                <!-- Botón volver -->
+                <Button Text="Volver"
+                        Clicked="OnVolverClicked"
+                        BackgroundColor="Transparent"
+                        TextColor="#AAAAAA"
+                        BorderColor="#555555"
+                        BorderWidth="1"
+                        CornerRadius="8"
+                        Padding="20,12"
+                        HorizontalOptions="Center"/>
+
+            </VerticalStackLayout>
+        </Grid>
+
+        <!-- Botón tomar foto -->
+        <Button x:Name="BtnTomarFoto" Grid.Row="2" Grid.Column="0"
+                Clicked="OnTomarFotoClicked"
+                HorizontalOptions="Center" VerticalOptions="Center"
+                Background="#aa000000" CornerRadius="8">
             <Button.ImageSource>
                 <FontImageSource Glyph="photo_camera" Size="50" FontFamily="MaterialIconsOutlined"/>
             </Button.ImageSource>
