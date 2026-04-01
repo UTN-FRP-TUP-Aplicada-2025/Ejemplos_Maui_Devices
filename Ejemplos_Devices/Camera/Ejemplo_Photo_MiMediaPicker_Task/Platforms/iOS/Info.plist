@@ -4,21 +4,25 @@
 <dict>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	
 	<key>UIDeviceFamily</key>
 	<array>
 		<integer>1</integer>
 		<integer>2</integer>
 	</array>
+	
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>arm64</string>
 	</array>
+	
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
@@ -30,11 +34,32 @@
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/appicon.appiconset</string>
 
+	<key>MinimumOSVersion</key>
+	<string>15.0</string>
+
+	<key>CFBundleName</key>
+	<string>Ejemplo_Mi_MediaPickerCallback</string>
+
+	<key>CFBundleDisplayName</key>
+	<string>Mi MediaPicker Callback</string>
+
+	<key>CFBundleIdentifier</key>
+	<string>com.ejemplos.photo.mimediapicker.callback</string>
+
+	<key>CFBundleVersion</key>
+	<string>1.0</string>
+
+	<key>CFBundleShortVersionString</key>
+	<string>1.0</string>
+
 	<key>NSCameraUsageDescription</key>
-	<string>Esta aplicación necesita acceso a la cámara para tomar fotos.</string>
+	<string>Usamos la cámara para que puedas adjuntar fotos a los formularios que lo requieran.</string>
 
 	<key>NSMicrophoneUsageDescription</key>
-	<string>Esta aplicación necesita acceso al micrófono para la captura de medios.</string>
+	<string>This app does not require access to the microphone.</string>
+
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>We use the camera so that users can attach photos of the claims they are making.</string>
 	
 </dict>
 </plist>

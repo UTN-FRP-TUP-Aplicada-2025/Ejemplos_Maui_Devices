@@ -1,4 +1,4 @@
-﻿name: CD iOS - CAMERA - Ejemplo_Photo_MiMediaPicker_Callback
+﻿name: CD iOS - CAMERA - Ejemplo_Photo_MiMediaPicker_Task
 
 on:
   
@@ -7,7 +7,7 @@ on:
       - main
 
     paths:
-      - 'Ejemplos_Devices/Camera/Ejemplo_Photo_MiMediaPicker_Callback/**'
+      - 'Ejemplos_Devices/Camera/Ejemplo_Photo_MiMediaPicker_Task/**'
       - '!**.md'
       - '!**/*.gitignore'
       - '!**/*.gitattributes'
@@ -28,12 +28,12 @@ env:
   DOTNET_VERSION_WORKLOAD: '10.0.100'
 
   # ─── Datos específicos del proyecto QR Dialog ───────────────────────────────
-  PACKAGE_NAME: 'com.ejemplos.photo.mimediapicker.callback'
+  PACKAGE_NAME: 'com.ejemplos.devices.mimediapicker.task'
   SOLUTION_FOLDER: 'Ejemplos_Devices'
   PROJECTS_ROOT: 'Camera' 
   # PROJECT_FOLDER=${{ env.PROJECTS_ROOT }}/${{ env.PROJECT_NAME }} 
-  PROJECT_NAME: 'Ejemplo_Photo_MiMediaPicker_Callback'
-  PROJECT_FILE: 'Ejemplo_Photo_MiMediaPicker_Callback.csproj'
+  PROJECT_NAME: 'Ejemplo_Photo_MiMediaPicker_Task'
+  PROJECT_FILE: 'Ejemplo_Photo_MiMediaPicker_Task.csproj'
   # ─────────────────────────────────────────────────────────────────────────────
 
   VERSION_FECHA: '20260401'
