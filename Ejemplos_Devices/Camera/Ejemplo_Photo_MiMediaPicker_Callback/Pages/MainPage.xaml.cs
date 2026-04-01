@@ -14,42 +14,24 @@ public partial class MainPage : ContentPage
 
         try
         {
-            var camaraStatus = await RequestCameraPermissionAsync();
-            if (camaraStatus != PermissionStatus.Granted)
-            {
-                await DisplayAlertAsync(
-                    "Permiso requerido",
-                    "Se necesita acceso a la cámara para continuar. Por favor habilitalo en los ajustes del dispositivo.",
-                    "OK");
-                return;
-            }
-
             Action<Image> resultadoCallback = async (image) =>
             {
                 await this.Dispatcher.DispatchAsync(new Action(async () =>
                 {
-                    if (image != null)
-                    {
-                        ImgPhoto.Source = image.Source;
-                    }
-                    else
-                    {
-                        await DisplayAlertAsync("Cancelado", "No se recibió ningún dato", "OK"); 
-                    }
+                    if (image != null) ImgPhoto.Source = image.Source;
                 }));
             };
 
             var pageParams = new ShellNavigationQueryParameters
-                {
-                    {"OnPhotoCallback" , resultadoCallback}
-                };
+            {
+                { "OnPhotoCallback", resultadoCallback }
+            };
 
             await Shell.Current.GoToAsync(nameof(MyMediaPickerPage), pageParams);
-
         }
         catch (Exception ex)
         {
-            await DisplayAlertAsync("Error", $"Ocurrió un error al abrir la cámara: {ex.Message}", "OK"); 
+            await DisplayAlertAsync("Error", $"Ocurrió un error: {ex.Message}", "OK");
         }
         finally
         {

@@ -26,7 +26,7 @@
                             MediaCaptureFailed="OnMediaCaptureFailed"
                             Margin="0"/>
 
-        <!-- ✅ Overlay de permiso denegado — se muestra sobre el visor -->
+        <!-- Overlay de permiso denegado -->
         <Grid x:Name="PermissionDeniedOverlay"
               Grid.Row="1" Grid.Column="0"
               IsVisible="False"
@@ -62,7 +62,18 @@
                        HorizontalOptions="Center"
                        HorizontalTextAlignment="Center"/>
 
-                <!-- Botón ir a Settings -->
+                <!-- Botón pedir permiso (visible cuando se puede reintentar) -->
+                <Button x:Name="BtnPedirPermiso"
+                        Text="Pedir permiso"
+                        Clicked="OnPedirPermisoClicked"
+                        BackgroundColor="#512BD4"
+                        TextColor="White"
+                        CornerRadius="8"
+                        Padding="20,12"
+                        HorizontalOptions="Center"
+                        IsVisible="False"/>
+
+                <!-- Botón ir a Settings (visible cuando es denegado permanente) -->
                 <Button x:Name="BtnGoToSettings"
                         Text="Abrir configuración"
                         Clicked="OnGoToSettingsClicked"

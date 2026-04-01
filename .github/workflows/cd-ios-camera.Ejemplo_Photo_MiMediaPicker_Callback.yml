@@ -307,8 +307,7 @@ jobs:
 
         echo "pwd: $(ls -lsR)";
         echo "pwd: $(ls pwd)";
-       
-        
+               
     
         echo "Limpiando firmas previas y atributos corruptos..."
         xattr -cr "${{ env.APP_PATH }}"
