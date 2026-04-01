@@ -54,12 +54,16 @@
 
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
-	
+
+	<key>NSCameraUsageDescription</key>
+	<string>Usamos la cámara para que puedas adjuntar fotos a los formularios que lo requieran.</string>
+
 	<key>NSMicrophoneUsageDescription</key>
 	<string>This app does not require access to the microphone.</string>
-	
+
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>We use the camera so that users can attach photos of the claims they are making.</string>
+	
 	
 </dict>
 </plist>
