@@ -1,7 +1,7 @@
 ﻿using ObjCRuntime;
 using UIKit;
 
-namespace Ejemplo_Photo_Dialog;
+namespace Ejemplo_Photo_MiMediaPicker_Task;
 
 public class Program
 {
