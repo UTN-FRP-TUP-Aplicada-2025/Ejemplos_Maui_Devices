@@ -80,7 +80,18 @@ public partial class MyMediaPickerPage : ContentPage
 
         if (status == PermissionStatus.Granted)
         {
-            MostrarVisorCamara();
+            if (MediaPicker.Default.IsCaptureSupported)
+            {
+                MostrarVisorCamara();
+            }
+            else
+            {
+                MostrarOverlayPermiso(
+                    titulo: "Cámara no disponible",
+                    mensaje: "Este dispositivo no tiene cámara disponible.",
+                    puedeReintentar: false
+                );
+            }
             return;
         }
 
@@ -89,7 +100,19 @@ public partial class MyMediaPickerPage : ContentPage
 
         if (status == PermissionStatus.Granted)
         {
-            MostrarVisorCamara();
+            if (MediaPicker.Default.IsCaptureSupported)
+            {
+                MostrarVisorCamara();
+            }
+            else
+            {
+                MostrarOverlayPermiso(
+                    titulo: "Cámara no disponible",
+                    mensaje: "Este dispositivo no tiene cámara disponible.",
+                    puedeReintentar: false
+                );
+            }
+            return;
             return;
         }
 
@@ -188,6 +211,9 @@ public partial class MyMediaPickerPage : ContentPage
           
             var rear = cameras.FirstOrDefault(c => c.Position == CameraPosition.Rear)
                             ?? cameras.FirstOrDefault(); // fallback a cualquier cámara
+
+           
+
 
             if (rear != null)
             {
