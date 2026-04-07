@@ -1,4 +1,5 @@
 using CommunityToolkit.Maui.Core;
+using CommunityToolkit.Maui.Views;
 using System.Diagnostics;
 
 namespace Ejemplo_Photo_MiMediaPicker_Callback.Pages;
@@ -8,6 +9,7 @@ public partial class MyMediaPickerPage : ContentPage
 {
     private bool _isCapturingImage = false;
     private CancellationTokenSource? _captureCancellationTokenSource;
+    private CameraView? _cameraView;
 
     public Action<Image>? OnPhotoCallback { get; set; }
 
@@ -29,7 +31,6 @@ public partial class MyMediaPickerPage : ContentPage
     {
         InitializeComponent();
         BindingContext = this;
-        StatusFlashToIcons();
     }
 
     protected override async void OnAppearing()
@@ -50,6 +51,14 @@ public partial class MyMediaPickerPage : ContentPage
         {
             DeviceDisplay.MainDisplayInfoChanged -= OnMainDisplayInfoChanged;
             _captureCancellationTokenSource?.Cancel();
+
+            if (_cameraView != null)
+            {
+                _cameraView.MediaCaptured -= OnMediaCaptured;
+                _cameraView.MediaCaptureFailed -= OnMediaCaptureFailed;
+                CameraContainer.Content = null;
+                _cameraView = null;
+            }
         }
         catch (Exception ex)
         {
@@ -68,7 +77,7 @@ public partial class MyMediaPickerPage : ContentPage
         base.OnNavigatedTo(args);
 
         var status = await Permissions.CheckStatusAsync<Permissions.Camera>();
-        if (status == PermissionStatus.Granted)
+        if (status == PermissionStatus.Granted && _cameraView != null)
             await SeleccionarCamaraAsync();
     }
 
@@ -81,53 +90,35 @@ public partial class MyMediaPickerPage : ContentPage
         if (status == PermissionStatus.Granted)
         {
             if (MediaPicker.Default.IsCaptureSupported)
-            {
                 MostrarVisorCamara();
-            }
             else
-            {
-                MostrarOverlayPermiso(
-                    titulo: "Cámara no disponible",
-                    mensaje: "Este dispositivo no tiene cámara disponible.",
-                    puedeReintentar: false
-                );
-            }
+                MostrarOverlayPermiso("Cámara no disponible",
+                    "Este dispositivo no tiene cámara disponible.",
+                    puedeReintentar: false);
             return;
         }
 
-        // Unknown como para Denied sin "no volver a preguntar"
         status = await Permissions.RequestAsync<Permissions.Camera>();
 
         if (status == PermissionStatus.Granted)
         {
             if (MediaPicker.Default.IsCaptureSupported)
-            {
                 MostrarVisorCamara();
-            }
             else
-            {
-                MostrarOverlayPermiso(
-                    titulo: "Cámara no disponible",
-                    mensaje: "Este dispositivo no tiene cámara disponible.",
-                    puedeReintentar: false
-                );
-            }
-            return;
+                MostrarOverlayPermiso("Cámara no disponible",
+                    "Este dispositivo no tiene cámara disponible.",
+                    puedeReintentar: false);
             return;
         }
 
-        // Restringido (control parental / MDM en iOS)
         if (status == PermissionStatus.Restricted)
         {
-            MostrarOverlayPermiso( titulo: "Acceso restringido",
-                mensaje: "El acceso a la cámara está restringido por una política del dispositivo. Consultá con el administrador.",
-                puedeReintentar: false
-            );
+            MostrarOverlayPermiso("Acceso restringido",
+                "El acceso a la cámara está restringido por una política del dispositivo. Consultá con el administrador.",
+                puedeReintentar: false);
             return;
         }
 
-        // Denegado — ¿se puede volver a pedir?
-        // IMPORTANTE: ShouldShowRationale ahora es confiable porque ya llamamos a RequestAsync
         bool puedeReintentar = false;
 
 #if ANDROID
@@ -141,25 +132,34 @@ public partial class MyMediaPickerPage : ContentPage
             mensaje: puedeReintentar
                 ? "Para tomar fotos necesitamos acceso a la cámara. Podés intentar conceder el permiso."
                 : "Para tomar fotos necesitamos acceso a la cámara. Habilitalo desde los ajustes de la aplicación.",
-            puedeReintentar: puedeReintentar
-        );
+            puedeReintentar: puedeReintentar);
     }
 
-    // HANDLERS DEL OVERLAY
-
-    private async void OnPedirPermisoClicked(object sender, EventArgs e)
-    {
-        await EvaluarYMostrarEstadoPermisoAsync();
-    }
+    // OVERLAY — mostrar / ocultar
 
     private void MostrarVisorCamara()
     {
         MainThread.BeginInvokeOnMainThread(() =>
         {
             PermissionDeniedOverlay.IsVisible = false;
-            Camera.IsVisible = true;
+
+            if (_cameraView == null)
+            {
+                _cameraView = new CameraView
+                {
+                    HorizontalOptions = LayoutOptions.Fill,
+                    VerticalOptions = LayoutOptions.Fill,
+                    Margin = new Thickness(0)
+                };
+                _cameraView.MediaCaptured += OnMediaCaptured;
+                _cameraView.MediaCaptureFailed += OnMediaCaptureFailed;
+                CameraContainer.Content = _cameraView;
+            }
+
+            CameraContainer.IsVisible = true;
             BtnTomarFoto.IsVisible = true;
             BtnFlashButton.IsVisible = true;
+            StatusFlashToIcons();
         });
     }
 
@@ -170,12 +170,10 @@ public partial class MyMediaPickerPage : ContentPage
             LblPermissionTitle.Text = titulo;
             LblPermissionMessage.Text = mensaje;
 
-            // Mostrar "Pedir permiso" si aún se puede preguntar,
-            // o "Abrir configuración" si es permanente.
             BtnPedirPermiso.IsVisible = puedeReintentar;
             BtnGoToSettings.IsVisible = !puedeReintentar;
 
-            Camera.IsVisible = false;
+            CameraContainer.IsVisible = false;
             BtnTomarFoto.IsVisible = false;
             BtnFlashButton.IsVisible = false;
             PermissionDeniedOverlay.IsVisible = true;
@@ -184,12 +182,10 @@ public partial class MyMediaPickerPage : ContentPage
 
     // HANDLERS DEL OVERLAY
 
-    //private async void OnPedirPermisoClicked(object sender, EventArgs e)
-    //{
-    //    //await PedirPermisoYActualizarVistaAsync();
-
-    //    await EvaluarYMostrarEstadoPermisoAsync();
-    //}
+    private async void OnPedirPermisoClicked(object sender, EventArgs e)
+    {
+        await EvaluarYMostrarEstadoPermisoAsync();
+    }
 
     private void OnGoToSettingsClicked(object sender, EventArgs e)
     {
@@ -203,30 +199,23 @@ public partial class MyMediaPickerPage : ContentPage
     }
 
     // CÁMARA
+
     private async Task SeleccionarCamaraAsync()
     {
+        if (_cameraView == null) return;
+
         try
         {
-            var cameras = await Camera.GetAvailableCameras(CancellationToken.None);
-          
+            var cameras = await _cameraView.GetAvailableCameras(CancellationToken.None);
             var rear = cameras.FirstOrDefault(c => c.Position == CameraPosition.Rear)
-                            ?? cameras.FirstOrDefault(); // fallback a cualquier cámara
-
-           
-
+                       ?? cameras.FirstOrDefault();
 
             if (rear != null)
-            {
-                MainThread.BeginInvokeOnMainThread(() => Camera.SelectedCamera = rear);
-            }
+                MainThread.BeginInvokeOnMainThread(() => _cameraView.SelectedCamera = rear);
             else
-            {
-                MostrarOverlayPermiso(
-                    titulo: "Cámara no disponible",
-                    mensaje: "Este dispositivo no tiene cámara disponible.",
-                    puedeReintentar: false
-                );
-            }
+                MostrarOverlayPermiso("Cámara no disponible",
+                    "Este dispositivo no tiene cámara disponible.",
+                    puedeReintentar: false);
         }
         catch (Exception ex)
         {
@@ -236,7 +225,7 @@ public partial class MyMediaPickerPage : ContentPage
 
     private async void OnTomarFotoClicked(object sender, EventArgs e)
     {
-        if (_isCapturingImage) return;
+        if (_isCapturingImage || _cameraView == null) return;
 
         _isCapturingImage = true;
         DynamicLayout.IsEnabled = false;
@@ -248,7 +237,7 @@ public partial class MyMediaPickerPage : ContentPage
 
             await MainThread.InvokeOnMainThreadAsync(async () =>
             {
-                await Camera.CaptureImage(_captureCancellationTokenSource.Token);
+                await _cameraView.CaptureImage(_captureCancellationTokenSource.Token);
             });
         }
         catch (OperationCanceledException) { }
@@ -267,7 +256,7 @@ public partial class MyMediaPickerPage : ContentPage
     {
         await MainThread.InvokeOnMainThreadAsync(async () =>
         {
-            if (Camera.IsAvailable == true)
+            if (_cameraView?.IsAvailable == true)
             {
                 if (e.Media != null)
                 {
@@ -278,7 +267,7 @@ public partial class MyMediaPickerPage : ContentPage
             }
             else
             {
-                await DisplayAlertAsync("Error del dispositivo", "El dispositivo no está activo", "OK");
+                await DisplayAlert("Error del dispositivo", "El dispositivo no está activo", "OK");
             }
         });
     }
@@ -296,21 +285,24 @@ public partial class MyMediaPickerPage : ContentPage
 
     // FLASH Y ORIENTACIÓN
 
-    private async void OnActiveFlashClicked(object sender, EventArgs e)
+    private void OnActiveFlashClicked(object sender, EventArgs e)
     {
-        Camera.CameraFlashMode = Camera.CameraFlashMode switch
+        if (_cameraView == null) return;
+
+        _cameraView.CameraFlashMode = _cameraView.CameraFlashMode switch
         {
             CameraFlashMode.Off => CameraFlashMode.On,
             CameraFlashMode.On => CameraFlashMode.Auto,
             _ => CameraFlashMode.Off
         };
         StatusFlashToIcons();
-        await Task.CompletedTask;
     }
 
     public void StatusFlashToIcons()
     {
-        FlashIcon = Camera.CameraFlashMode switch
+        if (_cameraView == null) return;
+
+        FlashIcon = _cameraView.CameraFlashMode switch
         {
             CameraFlashMode.Off => "flash_off",
             CameraFlashMode.On => "flash_on",
@@ -343,7 +335,7 @@ public partial class MyMediaPickerPage : ContentPage
                 DynamicLayout.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
 
                 Grid.SetRow(BtnFlashButton, 0); Grid.SetColumn(BtnFlashButton, 2);
-                Grid.SetRow(Camera, 0); Grid.SetColumn(Camera, 1);
+                Grid.SetRow(CameraContainer, 0); Grid.SetColumn(CameraContainer, 1);
                 Grid.SetRow(BtnTomarFoto, 0); Grid.SetColumn(BtnTomarFoto, 0);
                 Grid.SetRow(PermissionDeniedOverlay, 0); Grid.SetColumn(PermissionDeniedOverlay, 1);
             }
@@ -355,7 +347,7 @@ public partial class MyMediaPickerPage : ContentPage
                 DynamicLayout.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Star });
 
                 Grid.SetRow(BtnFlashButton, 0); Grid.SetColumn(BtnFlashButton, 0);
-                Grid.SetRow(Camera, 1); Grid.SetColumn(Camera, 0);
+                Grid.SetRow(CameraContainer, 1); Grid.SetColumn(CameraContainer, 0);
                 Grid.SetRow(BtnTomarFoto, 2); Grid.SetColumn(BtnTomarFoto, 0);
                 Grid.SetRow(PermissionDeniedOverlay, 1); Grid.SetColumn(PermissionDeniedOverlay, 0);
             }
