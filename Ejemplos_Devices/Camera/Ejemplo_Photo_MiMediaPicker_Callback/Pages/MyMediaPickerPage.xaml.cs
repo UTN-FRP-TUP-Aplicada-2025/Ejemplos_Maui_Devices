@@ -74,19 +74,27 @@ public partial class MyMediaPickerPage : ContentPage
 
     // PERMISOS
 
-    /// <summary>
-    /// Evalúa el estado del permiso y decide si mostrar el visor o el overlay.
-    /// </summary>
     private async Task EvaluarYMostrarEstadoPermisoAsync()
     {
         var status = await Permissions.CheckStatusAsync<Permissions.Camera>();
 
-        if (status is PermissionStatus.Granted or PermissionStatus.Limited)
+        // Si ya está concedido, mostrar cámara directo
+        if (status == PermissionStatus.Granted)
         {
             MostrarVisorCamara();
             return;
         }
 
+        // No concedido ? pedir (funciona tanto para Unknown como para Denied sin "no volver a preguntar")
+        status = await Permissions.RequestAsync<Permissions.Camera>();
+
+        if (status == PermissionStatus.Granted)
+        {
+            MostrarVisorCamara();
+            return;
+        }
+
+        // Restringido (control parental / MDM en iOS)
         if (status == PermissionStatus.Restricted)
         {
             MostrarOverlayPermiso(
@@ -97,33 +105,11 @@ public partial class MyMediaPickerPage : ContentPage
             return;
         }
 
-        // Unknown o Denied — en ambos casos intentamos pedir.
-        // En Android, una instalación nueva devuelve Denied (no Unknown),
-        // así que siempre hay que llamar a RequestAsync para que aparezca
-        // el diálogo nativo del sistema operativo.
-        await PedirPermisoYActualizarVistaAsync();
-    }
-
-    /// <summary>
-    /// Solicita el permiso al SO y actualiza la vista según el resultado.
-    /// </summary>
-    private async Task PedirPermisoYActualizarVistaAsync()
-    {
-        var status = await Permissions.RequestAsync<Permissions.Camera>();
-
-        if (status is PermissionStatus.Granted or PermissionStatus.Limited)
-        {
-            MostrarVisorCamara();
-            await SeleccionarCamaraAsync();
-            return;
-        }
-
-        // El usuario denegó. ¿Puede volver a preguntar el SO?
+        // Denegado — ¿se puede volver a pedir?
+        // IMPORTANTE: ShouldShowRationale ahora es confiable porque ya llamamos a RequestAsync
         bool puedeReintentar = false;
 
 #if ANDROID
-        // ShouldShowRationale devuelve true si el usuario denegó pero
-        // NO marcó "No volver a preguntar". En ese caso podemos reintentar.
         puedeReintentar = Permissions.ShouldShowRationale<Permissions.Camera>();
 #endif
 
@@ -138,7 +124,12 @@ public partial class MyMediaPickerPage : ContentPage
         );
     }
 
-    // OVERLAY — mostrar / ocultar
+    // HANDLERS DEL OVERLAY
+
+    private async void OnPedirPermisoClicked(object sender, EventArgs e)
+    {
+        await EvaluarYMostrarEstadoPermisoAsync();
+    }
 
     private void MostrarVisorCamara()
     {
@@ -172,10 +163,12 @@ public partial class MyMediaPickerPage : ContentPage
 
     // HANDLERS DEL OVERLAY
 
-    private async void OnPedirPermisoClicked(object sender, EventArgs e)
-    {
-        await PedirPermisoYActualizarVistaAsync();
-    }
+    //private async void OnPedirPermisoClicked(object sender, EventArgs e)
+    //{
+    //    //await PedirPermisoYActualizarVistaAsync();
+
+    //    await EvaluarYMostrarEstadoPermisoAsync();
+    //}
 
     private void OnGoToSettingsClicked(object sender, EventArgs e)
     {

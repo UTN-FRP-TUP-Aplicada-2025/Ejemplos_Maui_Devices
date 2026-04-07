@@ -27,7 +27,7 @@ env:
 
   DOTNET_VERSION_WORKLOAD: '10.0.100'
 
-  # ─── Datos específicos del proyecto QR Dialog ───────────────────────────────
+  # ─── Datos específicos del proyecto QR Dialog ─────────────────────────────── 
   PACKAGE_NAME: 'com.ejemplos.photo.mimediapicker.callback'
   SOLUTION_FOLDER: 'Ejemplos_Devices'
   PROJECTS_ROOT: 'Camera' 

@@ -127,7 +127,7 @@ echo "Limpieza total de atributos de cuarentena"
 chmod -R 755 "${APP_PATH}"
 xattr -rc "${APP_PATH}"
 #chmod +x "${APP_PATH}/${PROJECT_FOLDER}"
-chmod +x "${APP_PATH}/${PROJECTS_ROOT}/${PROJECT_NAME}"
+chmod +x "${APP_PATH}/${PROJECT_NAME}"
 sudo xattr -rd com.apple.quarantine "${APP_PATH}" 2>/dev/null || true
 # echo "Firma ad-hoc limpia (importante en Apple Silicon)"
 # codesign --force --deep --sign - "${APP_PATH}"
