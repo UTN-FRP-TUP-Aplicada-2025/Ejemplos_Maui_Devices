@@ -78,14 +78,13 @@ public partial class MyMediaPickerPage : ContentPage
     {
         var status = await Permissions.CheckStatusAsync<Permissions.Camera>();
 
-        // Si ya está concedido, mostrar cámara directo
         if (status == PermissionStatus.Granted)
         {
             MostrarVisorCamara();
             return;
         }
 
-        // No concedido ? pedir (funciona tanto para Unknown como para Denied sin "no volver a preguntar")
+        // Unknown como para Denied sin "no volver a preguntar"
         status = await Permissions.RequestAsync<Permissions.Camera>();
 
         if (status == PermissionStatus.Granted)
@@ -97,8 +96,7 @@ public partial class MyMediaPickerPage : ContentPage
         // Restringido (control parental / MDM en iOS)
         if (status == PermissionStatus.Restricted)
         {
-            MostrarOverlayPermiso(
-                titulo: "Acceso restringido",
+            MostrarOverlayPermiso( titulo: "Acceso restringido",
                 mensaje: "El acceso a la cámara está restringido por una política del dispositivo. Consultá con el administrador.",
                 puedeReintentar: false
             );
@@ -187,9 +185,22 @@ public partial class MyMediaPickerPage : ContentPage
         try
         {
             var cameras = await Camera.GetAvailableCameras(CancellationToken.None);
-            var rear = cameras.FirstOrDefault(c => c.Position == CameraPosition.Rear);
+          
+            var rear = cameras.FirstOrDefault(c => c.Position == CameraPosition.Rear)
+                            ?? cameras.FirstOrDefault(); // fallback a cualquier cámara
+
             if (rear != null)
+            {
                 MainThread.BeginInvokeOnMainThread(() => Camera.SelectedCamera = rear);
+            }
+            else
+            {
+                MostrarOverlayPermiso(
+                    titulo: "Cámara no disponible",
+                    mensaje: "Este dispositivo no tiene cámara disponible.",
+                    puedeReintentar: false
+                );
+            }
         }
         catch (Exception ex)
         {
