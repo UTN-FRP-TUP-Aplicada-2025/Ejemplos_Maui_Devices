@@ -4,7 +4,8 @@ namespace Ejemplo_GPS.Pages;
 
 public partial class MainPage : ContentPage
 {
-    GeoLocationsServices _geoLocationsServices=default!;
+    GpsService _gps = default!;
+    private CancellationTokenSource? _cts;
 
     string coordenadas;
     public string Coordenadas
@@ -20,30 +21,80 @@ public partial class MainPage : ContentPage
         }
     }
 
-    public MainPage(GeoLocationsServices geo)
+    public MainPage(GpsService gps)
     {
         InitializeComponent();
         BindingContext = this;
-        _geoLocationsServices = geo;
+        _gps = gps;
     }
 
-    async private void OnGetGeoLocalizacionClicked(object sender, EventArgs e)
+    async private void OnGetGeoLocalizacion_Clicked(object sender, EventArgs e)
     {
-        Coordenadas = "Tomando las coordeandas... espere!";
-        Location location=await _geoLocationsServices.GetCurrentLocation();
-        if (location != null)
+        _cts?.Cancel();
+        _cts?.Dispose();
+        _cts = new CancellationTokenSource();
+
+        btnMostrarCoordenadas.IsEnabled = false;
+        btnCancelarCoordenadas.IsVisible = true;
+        Coordenadas = "";
+
+        try
         {
-            Coordenadas = $"Latitude: {location.Latitude}, Longitude: {location.Longitude}, Altitude: {location.Altitude}";
+            //obtener la ubicacion gps
+            Coordenadas = "Obteniendo ubicación GPS...";
+            var location = await _gps.ObtenerUbicacionAsync(_cts.Token);
+
+            if (location == null)
+            {
+                Coordenadas = "No se pudo obtener ubicación (GPS sin señal).";
+                return;
+            }
+
+            Coordenadas = $"Lat: {location.Latitude:F6}, Lng: {location.Longitude:F6}";
+
         }
-        else
+        catch (OperationCanceledException)
         {
-            Coordenadas = "";
+            Coordenadas = "Operación cancelada por el usuario.";
+        }
+        catch (FeatureNotEnabledException)
+        {
+            Coordenadas = "El GPS está desactivado. Activalo desde ajustes.";
+        }
+        catch (PermissionException)                                    // ← FALTA ESTE
+        {
+            Coordenadas = "Permiso de ubicación denegado.";
+        }
+        catch (FeatureNotSupportedException)                           // ← opcional
+        {
+            Coordenadas = "Este dispositivo no soporta GPS.";
+        }
+        finally
+        {
+            btnMostrarCoordenadas.IsEnabled = true;
+            btnCancelarCoordenadas.IsVisible = false;
+            _cts?.Dispose();
+            _cts = null;
         }
     }
 
+   
+
+    private void OnCancelarGeoLocalizacion_Clicked(object sender, EventArgs e)
+    {
+        _cts?.Cancel();
+    }
+
+    protected override void OnDisappearing()
+    {
+        base.OnDisappearing();
+        _cts?.Cancel();
+        _cts?.Dispose();
+        _cts = null;
+    }
     async private void OnMostrarLocalizacionEnMapaClicked(object sender, EventArgs e)
     {
-        Location location = await _geoLocationsServices.GetCurrentLocation();
+        Location? location = await _gps.ObtenerUbicacionAsync();
 
         if (location == null)
         {

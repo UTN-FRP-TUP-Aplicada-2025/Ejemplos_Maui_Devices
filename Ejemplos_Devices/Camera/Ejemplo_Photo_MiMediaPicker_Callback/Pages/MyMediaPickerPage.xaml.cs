@@ -11,7 +11,7 @@ public partial class MyMediaPickerPage : ContentPage
     private CancellationTokenSource? _captureCancellationTokenSource;
     private CameraView? _cameraView;
 
-    public Action<Image>? OnPhotoCallback { get; set; }
+    public Action<Stream>? OnPhotoCallback { get; set; }
 
     private string _flashIcon = "flash_off";
     public string FlashIcon
@@ -260,8 +260,8 @@ public partial class MyMediaPickerPage : ContentPage
             {
                 if (e.Media != null)
                 {
-                    var image = new Image { Source = ImageSource.FromStream(() => e.Media) };
-                    OnPhotoCallback?.Invoke(image);
+                    //var image = new Image { Source = ImageSource.FromStream(() => e.Media) };
+                    OnPhotoCallback?.Invoke(e.Media);
                 }
                 await Shell.Current.GoToAsync("..");
             }

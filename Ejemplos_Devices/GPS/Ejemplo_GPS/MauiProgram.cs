@@ -26,8 +26,7 @@ public static class MauiProgram
 
     static public MauiAppBuilder AddServices(this MauiAppBuilder builder)
     {
-        builder.Services.AddSingleton<GeoLocationsServices>();
-
+        builder.Services.AddSingleton<GpsService>();
         return builder;
     }
 }

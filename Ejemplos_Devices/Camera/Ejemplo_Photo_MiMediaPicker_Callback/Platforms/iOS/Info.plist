@@ -58,6 +58,5 @@
 	<key>NSCameraUsageDescription</key>
 	<string>La app necesita acceso a la cámara para tomar fotos.</string>
 	
-	
 </dict>
 </plist>

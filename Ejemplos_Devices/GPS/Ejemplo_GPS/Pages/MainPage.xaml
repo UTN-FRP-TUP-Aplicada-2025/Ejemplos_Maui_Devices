@@ -7,7 +7,8 @@
 
         <VerticalStackLayout Spacing="10" Margin="10">
             <Label Text="{Binding Coordenadas}"/>
-            <Button Text="Geo Localizarme!" Clicked="OnGetGeoLocalizacionClicked"/>
+            <Button x:Name="btnMostrarCoordenadas" Text="Mostrar" Clicked="OnGetGeoLocalizacion_Clicked"/>
+            <Button x:Name="btnCancelarCoordenadas" Text="Cancelar" Clicked="OnCancelarGeoLocalizacion_Clicked"/>
             <Button Text="Mostrar en mapa" Clicked="OnMostrarLocalizacionEnMapaClicked"/>
         </VerticalStackLayout>
 
