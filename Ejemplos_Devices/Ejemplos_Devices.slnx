@@ -1,4 +1,12 @@
 <Solution>
+  <Folder Name="/Phone/">
+    <Project Path="Phone/Ejemplo_Maui_Dialer/Ejemplo_Maui_Dialer.csproj" Id="872b4a88-1620-4090-ae51-3d24083e9e7a">
+      <Deploy Solution="Debug|*" />
+    </Project>
+    <Project Path="Phone/Ejemplo_Maui_DirectCall/Ejemplo_Maui_DirectCall.csproj" Id="016990c8-ce16-4347-a0cf-77ae09b4603c">
+      <Deploy Solution="Debug|*" />
+    </Project>
+  </Folder>
   <Folder Name="/Printer/">
     <Project Path="Printer/Ejemplo_ThermalPrinter/Ejemplo_ThermalPrinter.csproj" Id="28245c93-21a9-4b06-8622-0baf1b16cdba">
       <Deploy Solution="Debug|*" />
@@ -6,10 +14,12 @@
   </Folder>
   <Folder Name="/.github/" />
   <Folder Name="/.github/workflows/">
-    <File Path="../.github/workflows/cd-ios-camera.Ejemplo_GPS.yml" />
     <File Path="../.github/workflows/cd-ios-camera.Ejemplo_Imagen_Normalizacion.yml" />
     <File Path="../.github/workflows/cd-ios-camera.Ejemplo_Photo_MiMediaPicker_Callback.yml" />
     <File Path="../.github/workflows/cd-ios-camera.Ejemplo_Photo_MiMediaPicker_Task.yml" />
+    <File Path="../.github/workflows/cd-ios-gps.Ejemplo_GPS.yml" />
+    <File Path="../.github/workflows/cd-ios-phone.Ejemplo_Dialer.yml" />
+    <File Path="../.github/workflows/cd-ios-phone.Ejemplo_DirectCall.yml" />
     <File Path="../.github/workflows/cd-ios-qr.Ejemplo_LectorQR_Dialog.yml" />
     <File Path="../.github/workflows/Readme.md" />
   </Folder>
