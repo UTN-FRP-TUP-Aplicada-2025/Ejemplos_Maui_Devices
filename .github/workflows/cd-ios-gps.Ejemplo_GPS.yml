@@ -7,7 +7,7 @@ on:
       - main
 
     paths:
-      - 'Ejemplos_Devices/Phone/Ejemplo_Maui_GPS/**'
+      - 'Ejemplos_Devices/GPS/Ejemplo_Maui_GPS/**'
       - '!**.md'
       - '!**/*.gitignore'
       - '!**/*.gitattributes'
@@ -28,7 +28,7 @@ env:
 
   DOTNET_VERSION_WORKLOAD: '10.0.100'
 
-  # ─── Datos específicos del proyecto QR Dialog ─────────────────────────────── 
+  # ─── Datos específicos del proyecto GPS ────────────────────────────────────── 
   PACKAGE_NAME: 'com.ejemplos.devices.gps'
   SOLUTION_FOLDER: 'Ejemplo_Maui_GPS'
   PROJECTS_ROOT: 'GPS' 
