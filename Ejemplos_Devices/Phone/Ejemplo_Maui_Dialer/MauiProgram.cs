@@ -2,7 +2,6 @@
 
 namespace Ejemplo_Maui_Dialer;
 
-//
 
 public static class MauiProgram
 {
