@@ -2,15 +2,15 @@
 
 on:
   
-  # push:
-  #   branches: 
-  #     - main
+  push:
+    branches: 
+      - main
 
-  #   paths:
-  #     - 'Ejemplos_Devices/Phone/Ejemplo_Maui_DirectCall/**'
-  #     - '!**.md'
-  #     - '!**/*.gitignore'
-  #     - '!**/*.gitattributes'
+    paths:
+      - 'Ejemplos_Devices/Phone/Ejemplo_Maui_DirectCall/**'
+      - '!**.md'
+      - '!**/*.gitignore'
+      - '!**/*.gitattributes'
 
   workflow_call:
 
@@ -28,11 +28,11 @@ env:
 
   DOTNET_VERSION_WORKLOAD: '10.0.100'
 
-  # ─── Datos específicos del proyecto QR Dialog ─────────────────────────────── 
+  # ─── Datos específicos del proyecto GPS ────────────────────────────────────── 
   PACKAGE_NAME: 'com.ejemplos.phone.directcall'
   SOLUTION_FOLDER: 'Ejemplo_Maui_DirectCall'
-  PROJECTS_ROOT: 'Phone' 
-  # PROJECT_FOLDER=${{ env.PROJECTS_ROOT }}/${{ env.PROJECT_NAME }}   
+  PROJECTS_ROOT: 'GPS' 
+  # PROJECT_FOLDER=${{ env.PROJECTS_ROOT }}/${{ env.PROJECT_NAME }}
   PROJECT_NAME: 'Ejemplo_Maui_DirectCall'
   PROJECT_FILE: 'Ejemplo_Maui_DirectCall.csproj'
   # ─────────────────────────────────────────────────────────────────────────────
@@ -49,7 +49,7 @@ env:
 jobs:
   publish-ios:
     runs-on: macos-15
-    name: iOS Publish - Phone - Ejemplo_Maui_DirectCall
+    name: iOS Publish - Phone - Ejemplo_Maui_Dialer
 
     steps:
     - name: Verificar arquitectura del runner (la mv) 
