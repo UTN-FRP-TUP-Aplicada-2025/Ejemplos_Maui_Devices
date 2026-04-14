@@ -88,7 +88,7 @@ jobs:
         echo "XCODE_GOOGLE_FILE_ID: ${{ env.XCODE_GOOGLE_FILE_INSTALLER_ID }}"
         FILE_ID="${{ env.XCODE_GOOGLE_FILE_INSTALLER_ID }}"
         echo "FILENAME: ${{ env.XCODE_FILE_INSTALLER }}"               
-        gdown --id ${{ env.XCODE_GOOGLE_FILE_INSTALLER_ID }} -O ${{ env.XCODE_FILE_INSTALLER }}
+        gdown ${{ env.XCODE_GOOGLE_FILE_INSTALLER_ID }} -O ${{ env.XCODE_FILE_INSTALLER }}
         ls -lsh ${{ env.XCODE_FILE_INSTALLER }}
 
     - name: "XCODE. Descomprimir Xcode instalador"
