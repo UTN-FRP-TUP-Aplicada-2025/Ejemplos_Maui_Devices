@@ -1,4 +1,4 @@
-﻿name: CD iOS - GPS - Ejemplo_GPS
+﻿name: CD iOS - Phone - Ejemplo_Maui_GPS
 
 on:
   
@@ -7,7 +7,7 @@ on:
       - main
 
     paths:
-      - 'Ejemplos_Devices/GPS/Ejemplo_GPS/**'
+      - 'Ejemplos_Devices/Phone/Ejemplo_Maui_GPS/**'
       - '!**.md'
       - '!**/*.gitignore'
       - '!**/*.gitattributes'
@@ -21,6 +21,7 @@ env:
 
   XCODE_FILE_INSTALLER: 'Xcode_26_Universal.xip'
   XCODE_GOOGLE_FILE_INSTALLER_ID: '1GoDmCUBOMKM5nnXCXxxnAgoKpSwZvaMP'
+  #XCODE_GOOGLE_FILE_INSTALLER_ID: '1BvZ_MSocNVtavljWLENUUc8YA5WPDAwt'
 
   DOTNET_VERSION: '10.0.102'
   DOTNET_TARGET_VERSION: 'net10.0'
@@ -29,14 +30,14 @@ env:
 
   # ─── Datos específicos del proyecto QR Dialog ─────────────────────────────── 
   PACKAGE_NAME: 'com.ejemplos.devices.gps'
-  SOLUTION_FOLDER: 'Ejemplo_GPS'
+  SOLUTION_FOLDER: 'Ejemplo_Maui_GPS'
   PROJECTS_ROOT: 'GPS' 
-  # PROJECT_FOLDER=${{ env.PROJECTS_ROOT }}/${{ env.PROJECT_NAME }} 
-  PROJECT_NAME: 'Ejemplo_GPS'
-  PROJECT_FILE: 'Ejemplo_GPS.csproj'
+  # PROJECT_FOLDER=${{ env.PROJECTS_ROOT }}/${{ env.PROJECT_NAME }}
+  PROJECT_NAME: 'Ejemplo_Maui_GPS'
+  PROJECT_FILE: 'Ejemplo_Maui_GPS.csproj'
   # ─────────────────────────────────────────────────────────────────────────────
 
-  VERSION_FECHA: '20260408'
+  VERSION_FECHA: '20260414'
 
   RUNTIME_IDENTIFIER_SIMULATOR: 'iossimulator-arm64' 
   BUILD_CONFIG_SIMULATOR: 'Release'
@@ -48,7 +49,7 @@ env:
 jobs:
   publish-ios:
     runs-on: macos-15
-    name: iOS Publish - GPS - Ejemplo_GPS
+    name: iOS Publish - Phone - Ejemplo_Maui_Dialer
 
     steps:
     - name: Verificar arquitectura del runner (la mv) 

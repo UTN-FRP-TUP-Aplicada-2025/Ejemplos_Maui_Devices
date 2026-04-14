@@ -1,4 +1,4 @@
-﻿namespace Ejemplo_GPS;
+﻿namespace Ejemplo_Maui_GPS;
 
 public partial class AppShell : Shell
 {

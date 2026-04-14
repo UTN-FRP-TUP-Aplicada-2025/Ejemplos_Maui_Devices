@@ -1,6 +1,7 @@
-﻿using GPS.Services;
+﻿
+using Ejemplo_Maui_GPS.Services;
 
-namespace Ejemplo_GPS.Pages;
+namespace Ejemplo_Maui_GPS.Pages;
 
 public partial class MainPage : ContentPage
 {

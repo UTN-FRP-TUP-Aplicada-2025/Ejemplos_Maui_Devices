@@ -1,4 +1,4 @@
-﻿namespace GPS.Services;
+﻿namespace Ejemplo_Maui_GPS.Services;
 
 public class GpsService
 {
