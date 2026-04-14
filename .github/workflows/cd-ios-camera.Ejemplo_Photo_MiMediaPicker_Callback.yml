@@ -28,7 +28,7 @@ env:
 
   DOTNET_VERSION_WORKLOAD: '10.0.100'
 
-  # ─── Datos específicos del proyecto QR Dialog ─────────────────────────────── 
+  # ─── Datos específicos del proyecto Mi Media Picker Callback ─────────────────
   PACKAGE_NAME: 'com.ejemplos.photo.mimediapicker.callback'
   SOLUTION_FOLDER: 'Ejemplos_Devices'
   PROJECTS_ROOT: 'Camera' 
@@ -49,7 +49,7 @@ env:
 jobs:
   publish-ios:
     runs-on: macos-15
-    name: iOS Publish - QR Dialog
+    name: iOS Publish - CAMERA - Ejemplo_Photo_MiMediaPicker_Callback
 
     steps:
     - name: Verificar arquitectura del runner (la mv) 

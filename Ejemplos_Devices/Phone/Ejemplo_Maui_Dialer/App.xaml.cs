@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace Ejemplo_Maui_Dialer;
+namespace Ejemplo_Maui_Dialer; 
 
 public partial class App : Application
 {
