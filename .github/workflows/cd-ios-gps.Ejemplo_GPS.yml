@@ -7,7 +7,7 @@ on:
       - main
 
     paths:
-      - 'Ejemplos_Devices/Camera/Ejemplo_GPS/**'
+      - 'Ejemplos_Devices/GPS/Ejemplo_GPS/**'
       - '!**.md'
       - '!**/*.gitignore'
       - '!**/*.gitattributes'
@@ -30,7 +30,7 @@ env:
   # ─── Datos específicos del proyecto QR Dialog ─────────────────────────────── 
   PACKAGE_NAME: 'com.ejemplos.devices.gps'
   SOLUTION_FOLDER: 'Ejemplo_GPS'
-  PROJECTS_ROOT: 'Camera' 
+  PROJECTS_ROOT: 'GPS' 
   # PROJECT_FOLDER=${{ env.PROJECTS_ROOT }}/${{ env.PROJECT_NAME }} 
   PROJECT_NAME: 'Ejemplo_GPS'
   PROJECT_FILE: 'Ejemplo_GPS.csproj'
