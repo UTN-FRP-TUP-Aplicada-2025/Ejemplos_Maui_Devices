@@ -28,7 +28,7 @@ env:
 
   DOTNET_VERSION_WORKLOAD: '10.0.100'
 
-  # ─── Datos específicos del proyecto QR Dialog ─────────────────────────────── 
+  # ─── Datos específicos del proyecto Phone ──────────────────────────────────── 
   PACKAGE_NAME: 'com.ejemplos.phone.dialer'
   SOLUTION_FOLDER: 'Ejemplos_Devices'
   PROJECTS_ROOT: 'Phone' 

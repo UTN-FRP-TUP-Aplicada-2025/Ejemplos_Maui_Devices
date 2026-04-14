@@ -28,10 +28,10 @@ env:
 
   DOTNET_VERSION_WORKLOAD: '10.0.100'
 
-  # ─── Datos específicos del proyecto GPS ────────────────────────────────────── 
+  # ─── Datos específicos del proyecto Phone ──────────────────────────────────── 
   PACKAGE_NAME: 'com.ejemplos.phone.directcall'
   SOLUTION_FOLDER: 'Ejemplo_Maui_DirectCall'
-  PROJECTS_ROOT: 'GPS' 
+  PROJECTS_ROOT: 'Phone' 
   # PROJECT_FOLDER=${{ env.PROJECTS_ROOT }}/${{ env.PROJECT_NAME }}
   PROJECT_NAME: 'Ejemplo_Maui_DirectCall'
   PROJECT_FILE: 'Ejemplo_Maui_DirectCall.csproj'
