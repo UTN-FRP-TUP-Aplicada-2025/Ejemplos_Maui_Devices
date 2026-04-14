@@ -31,7 +31,7 @@ env:
   PACKAGE_NAME: 'com.ejemplos.phone.dialer'
   SOLUTION_FOLDER: 'Ejemplos_Devices'
   PROJECTS_ROOT: 'Phone' 
-  # PROJECT_FOLDER=${{ env.PROJECTS_ROOT }}/${{ env.PROJECT_NAME }}   
+  # PROJECT_FOLDER=${{ env.PROJECTS_ROOT }}/${{ env.PROJECT_NAME }}
   PROJECT_NAME: 'Ejemplo_Maui_Dialer'
   PROJECT_FILE: 'Ejemplo_Maui_Dialer.csproj'
   # ─────────────────────────────────────────────────────────────────────────────
