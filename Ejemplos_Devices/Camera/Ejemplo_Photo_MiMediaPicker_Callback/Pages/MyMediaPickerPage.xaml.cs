@@ -85,6 +85,18 @@ public partial class MyMediaPickerPage : ContentPage
 
     private async Task EvaluarYMostrarEstadoPermisoAsync()
     {
+        // Guardia: simulador de iOS no soporta CameraView
+#if IOS
+        if (DeviceInfo.Current.DeviceType == DeviceType.Virtual)
+        {
+            MostrarOverlayPermiso(
+                "Cámara no disponible",
+                "La cámara no está disponible en el simulador de iOS. Probá en un dispositivo físico.",
+                puedeReintentar: false);
+            return;
+        }
+#endif
+
         var status = await Permissions.CheckStatusAsync<Permissions.Camera>();
 
         if (status == PermissionStatus.Granted)
@@ -241,6 +253,14 @@ public partial class MyMediaPickerPage : ContentPage
             });
         }
         catch (OperationCanceledException) { }
+        catch (InvalidCastException)
+        {
+            // CameraView no disponible en este dispositivo/simulador
+            MostrarOverlayPermiso(
+                "Cámara no disponible",
+                "Este dispositivo no soporta la cámara integrada.",
+                puedeReintentar: false);
+        }
         catch (Exception ex)
         {
             Debug.WriteLine($"OnTomarFotoClicked error: {ex}");
