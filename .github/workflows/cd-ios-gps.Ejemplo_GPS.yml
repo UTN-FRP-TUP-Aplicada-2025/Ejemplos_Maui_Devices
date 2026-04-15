@@ -49,7 +49,7 @@ env:
 jobs:
   publish-ios:
     runs-on: macos-15
-    name: iOS Publish - Phone - Ejemplo_Maui_Dialer
+    name: iOS Publish - GPS - Ejemplo_Maui_GPS
 
     steps:
     - name: Verificar arquitectura del runner (la mv) 

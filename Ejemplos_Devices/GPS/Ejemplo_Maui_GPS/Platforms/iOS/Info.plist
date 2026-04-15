@@ -45,7 +45,7 @@
 	<string>Mi MediaPicker Callback</string>
 
 	<key>CFBundleIdentifier</key>
-	<string>com.ejemplos.photo.mimediapicker.callback</string>
+	<string>com.ejemplos.devices.gps</string>
 
 	<key>CFBundleVersion</key>
 	<string>1.0</string>
