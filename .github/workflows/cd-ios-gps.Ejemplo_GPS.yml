@@ -30,7 +30,7 @@ env:
 
   # ─── Datos específicos del proyecto GPS ────────────────────────────────────── 
   PACKAGE_NAME: 'com.ejemplos.devices.gps'
-  SOLUTION_FOLDER: 'Ejemplo_Maui_GPS'
+  SOLUTION_FOLDER: 'Ejemplos_Devices'
   PROJECTS_ROOT: 'GPS' 
   # PROJECT_FOLDER=${{ env.PROJECTS_ROOT }}/${{ env.PROJECT_NAME }}
   PROJECT_NAME: 'Ejemplo_Maui_GPS'

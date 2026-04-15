@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Logging;
 
 namespace Ejemplo_Maui_GPS;
-
+ 
 public static class MauiProgram
 {
     public static MauiApp CreateMauiApp()
