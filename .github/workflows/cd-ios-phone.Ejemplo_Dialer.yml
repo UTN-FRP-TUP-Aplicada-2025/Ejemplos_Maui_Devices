@@ -2,15 +2,15 @@
 
 on:
   
-  # push:
-  #   branches: 
-  #     - main
+  push:
+    branches: 
+      - main
 
-  #   paths:
-  #     - 'Ejemplos_Devices/Phone/Ejemplo_Maui_Dialer/**'
-  #     - '!**.md'
-  #     - '!**/*.gitignore'
-  #     - '!**/*.gitattributes'
+    paths:
+      - 'Ejemplos_Devices/Phone/Ejemplo_Maui_Dialer/**'
+      - '!**.md'
+      - '!**/*.gitignore'
+      - '!**/*.gitattributes'
 
   workflow_call:
 
@@ -28,7 +28,7 @@ env:
 
   DOTNET_VERSION_WORKLOAD: '10.0.100'
 
-  # ─── Datos específicos del proyecto Phone ──────────────────────────────────── 
+  # ─── Datos específicos del proyecto Camera ─────────────────────────────────── 
   PACKAGE_NAME: 'com.ejemplos.phone.dialer'
   SOLUTION_FOLDER: 'Ejemplos_Devices'
   PROJECTS_ROOT: 'Phone' 
@@ -37,7 +37,7 @@ env:
   PROJECT_FILE: 'Ejemplo_Maui_Dialer.csproj'
   # ─────────────────────────────────────────────────────────────────────────────
 
-  VERSION_FECHA: '20260414'
+  VERSION_FECHA: '20260415'
 
   RUNTIME_IDENTIFIER_SIMULATOR: 'iossimulator-arm64' 
   BUILD_CONFIG_SIMULATOR: 'Release'
@@ -49,7 +49,7 @@ env:
 jobs:
   publish-ios:
     runs-on: macos-15
-    name: iOS Publish - Phone - Ejemplo_Maui_Dialer
+    name: iOS Publish - Phone - Ejemplo_Photo_MiMediaPicker_Callback
 
     steps:
     - name: Verificar arquitectura del runner (la mv) 
