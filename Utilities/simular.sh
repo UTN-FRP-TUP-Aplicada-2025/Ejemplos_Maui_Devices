@@ -147,6 +147,7 @@ if xcrun simctl install $UUID "${APP_PATH}"; then
     }
 
     xcrun simctl spawn $UUID notifyutil -p com.apple.SpringBoard.icons-changed || echo "?? No se pudo refrescar iconos, continuando..."
+    #xcrun simctl spawn $UUID log stream --level info > "$LOG_FILE" 2>&1 &
 
 else
     echo "? Falló la instalación"
@@ -170,7 +171,8 @@ echo "Captura de logs"
 
 echo "Iniciar captura de logs en background"
 LOG_FILE="app_stream_full.txt"
-xcrun simctl spawn $UUID log stream --level debug > "$LOG_FILE" 2>&1 &
+#xcrun simctl spawn $UUID log stream --level debug > "$LOG_FILE" 2>&1 &
+xcrun simctl spawn $UUID log stream --level info > "$LOG_FILE" 2>&1 &
 LOG_PID=$!
 echo "Log stream iniciado (PID: $LOG_PID)"
 
@@ -193,8 +195,8 @@ sleep 5
 
 echo ""
 echo "Captura de frames"
-FRAME_COUNT=25
-FRAME_DELAY=1
+FRAME_COUNT=15
+FRAME_DELAY=0.5
 
 for i in $(seq 1 $FRAME_COUNT); do
     printf "Frame %2d/%d\r" $i $FRAME_COUNT
@@ -268,7 +270,8 @@ echo "Capturando logs de la app (por proceso)..."
 run_with_timeout 30 xcrun simctl spawn $UUID log show --last 5m --predicate 'process == "${PROJECTS_ROOT}/${PROJECT_NAME}"' > debug_logs/app_process_log.txt 2>&1 || echo "Timeout/error en ${PROJECTS_ROOT}/${PROJECT_NAME} log"
 
 echo "Capturando logs del sistema..."
-run_with_timeout 30 xcrun simctl spawn $UUID log show --last 5m --info --debug > debug_logs/system_log_full.txt 2>&1 || echo "Timeout/error en system log"
+#run_with_timeout 30 xcrun simctl spawn $UUID log show --last 5m --info --debug > debug_logs/system_log_full.txt 2>&1 || echo "Timeout/error en system log"
+run_with_timeout 30 xcrun simctl spawn $UUID log show --last 2m > debug_logs/system_log_full.txt 2>&1 || true
 
 echo ""
 echo "Busqueda de crash reports"

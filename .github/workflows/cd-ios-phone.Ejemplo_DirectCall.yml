@@ -371,7 +371,7 @@ jobs:
     
     - name: RELEASE SIMULADOR. GRABAR VIDEO Y CREAR GIF
       continue-on-error: true
-      timeout-minutes: 15
+      timeout-minutes: 30
       run: |
         echo "Esperando algo como (Signature=adhoc): "
         codesign -vvv --display "${APP_PATH}"

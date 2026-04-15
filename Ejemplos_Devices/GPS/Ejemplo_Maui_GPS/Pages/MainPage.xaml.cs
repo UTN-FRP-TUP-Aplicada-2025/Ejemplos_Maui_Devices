@@ -78,9 +78,7 @@ public partial class MainPage : ContentPage
             _cts = null;
         }
     }
-
-   
-
+    
     private void OnCancelarGeoLocalizacion_Clicked(object sender, EventArgs e)
     {
         _cts?.Cancel();
@@ -93,6 +91,7 @@ public partial class MainPage : ContentPage
         _cts?.Dispose();
         _cts = null;
     }
+
     async private void OnMostrarLocalizacionEnMapaClicked(object sender, EventArgs e)
     {
         Location? location = await _gps.ObtenerUbicacionAsync();
