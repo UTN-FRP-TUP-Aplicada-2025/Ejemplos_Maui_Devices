@@ -25,10 +25,7 @@
                      HorizontalOptions="Fill" VerticalOptions="Fill" />
 
         <!-- Overlay de permiso denegado -->
-        <Grid x:Name="PermissionDeniedOverlay"
-              Grid.Row="1" Grid.Column="0"
-              IsVisible="False"
-              BackgroundColor="#CC000000"
+        <Grid x:Name="PermissionDeniedOverlay" Grid.Row="1" Grid.Column="0" IsVisible="False" BackgroundColor="#CC000000"
               HorizontalOptions="Fill" VerticalOptions="Fill">
 
             <VerticalStackLayout Spacing="20"
@@ -37,20 +34,11 @@
                                  Padding="32">
 
                 <!-- Ícono de cámara tachada -->
-                <Label Text="no_photography"
-                       FontFamily="MaterialIconsOutlined"
-                       FontSize="80"
-                       TextColor="#AAAAAA"
-                       HorizontalOptions="Center"/>
+                <Label Text="no_photography" FontFamily="MaterialIconsOutlined" FontSize="80" TextColor="#AAAAAA" HorizontalOptions="Center"/>
 
                 <!-- Título -->
-                <Label x:Name="LblPermissionTitle"
-                       Text="Sin acceso a la cámara"
-                       FontSize="20"
-                       FontAttributes="Bold"
-                       TextColor="White"
-                       HorizontalOptions="Center"
-                       HorizontalTextAlignment="Center"/>
+                <Label x:Name="LblPermissionTitle" Text="Sin acceso a la cámara" FontSize="20"
+                       FontAttributes="Bold" TextColor="White" HorizontalOptions="Center" HorizontalTextAlignment="Center"/>
 
                 <!-- Descripción -->
                 <Label x:Name="LblPermissionMessage"

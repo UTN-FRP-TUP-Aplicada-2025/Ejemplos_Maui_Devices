@@ -1,17 +1,95 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Ejemplo_Maui_GPS.Pages.MainPage">
+             x:Class="Ejemplo_Maui_GPS.Pages.MainPage"
+             Title="GPS">
 
-    <ScrollView>
+    <Grid>
+        <!-- Contenido principal -->
+        <VerticalStackLayout x:Name="MainContent" Spacing="20" Padding="30"
+                             VerticalOptions="Center" HorizontalOptions="Center">
 
-        <VerticalStackLayout Spacing="10" Margin="10">
-            <Label Text="{Binding Coordenadas}"/>
-            <Button x:Name="btnMostrarCoordenadas" Text="Mostrar" Clicked="OnGetGeoLocalizacion_Clicked"/>
-            <Button x:Name="btnCancelarCoordenadas" Text="Cancelar" Clicked="OnCancelarGeoLocalizacion_Clicked"/>
-            <Button Text="Mostrar en mapa" Clicked="OnMostrarLocalizacionEnMapaClicked"/>
+            <Label x:Name="lblCoordenadas"
+                   Text="{Binding Coordenadas}"
+                   FontSize="18"
+                   HorizontalTextAlignment="Center"/>
+
+            <Button x:Name="btnMostrarCoordenadas"
+                    Text="Obtener ubicación"
+                    Clicked="OnGetGeoLocalizacion_Clicked"/>
+
+            <Button x:Name="btnCancelarCoordenadas"
+                    Text="Cancelar"
+                    IsVisible="False"
+                    Clicked="OnCancelarGeoLocalizacion_Clicked"/>
+
+            <Button x:Name="btnMostrarEnMapa"
+                    Text="Mostrar en mapa"
+                    Clicked="OnMostrarLocalizacionEnMapaClicked"/>
         </VerticalStackLayout>
 
-    </ScrollView>
+        <!-- Overlay de permiso denegado (mismo patrón que cámara) -->
+        <Grid x:Name="PermissionDeniedOverlay"
+              IsVisible="False"
+              BackgroundColor="#CC000000"
+              HorizontalOptions="Fill" VerticalOptions="Fill">
 
+            <VerticalStackLayout Spacing="20"
+                                 HorizontalOptions="Center"
+                                 VerticalOptions="Center"
+                                 Padding="32">
+
+                <!-- Ícono de ubicación deshabilitada -->
+                <Label Text="location_off"
+                       FontFamily="MaterialIconsOutlined"
+                       FontSize="80"
+                       TextColor="#AAAAAA"
+                       HorizontalOptions="Center"/>
+
+                <Label x:Name="LblPermissionTitle"
+                       Text="Sin acceso a la ubicación"
+                       FontSize="20"
+                       FontAttributes="Bold"
+                       TextColor="White"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center"/>
+
+                <Label x:Name="LblPermissionMessage"
+                       Text="Para obtener coordenadas necesitamos acceso a la ubicación."
+                       FontSize="14"
+                       TextColor="#CCCCCC"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center"/>
+
+                <Button x:Name="BtnPedirPermiso"
+                        Text="Pedir permiso"
+                        Clicked="OnPedirPermisoClicked"
+                        BackgroundColor="#512BD4"
+                        TextColor="White"
+                        CornerRadius="8"
+                        Padding="20,12"
+                        HorizontalOptions="Center"
+                        IsVisible="False"/>
+
+                <Button x:Name="BtnGoToSettings"
+                        Text="Abrir configuración"
+                        Clicked="OnGoToSettingsClicked"
+                        BackgroundColor="#512BD4"
+                        TextColor="White"
+                        CornerRadius="8"
+                        Padding="20,12"
+                        HorizontalOptions="Center"/>
+
+                <Button Text="Cerrar"
+                        Clicked="OnCerrarOverlayClicked"
+                        BackgroundColor="Transparent"
+                        TextColor="#AAAAAA"
+                        BorderColor="#555555"
+                        BorderWidth="1"
+                        CornerRadius="8"
+                        Padding="20,12"
+                        HorizontalOptions="Center"/>
+            </VerticalStackLayout>
+        </Grid>
+    </Grid>
 </ContentPage>
