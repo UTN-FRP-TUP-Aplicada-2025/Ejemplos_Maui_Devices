@@ -39,10 +39,10 @@
 	<string>15.0</string>
 
 	<key>CFBundleName</key>
-	<string>Ejemplo_Mi_MediaPickerCallback</string>
+	<string>Ejemplo_Maui_GPS</string>
 
 	<key>CFBundleDisplayName</key>
-	<string>Mi MediaPicker Callback</string>
+	<string>GPS</string>
 
 	<key>CFBundleIdentifier</key>
 	<string>com.ejemplos.devices.gps</string>
