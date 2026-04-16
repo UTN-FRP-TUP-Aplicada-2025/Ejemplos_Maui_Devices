@@ -128,10 +128,20 @@ public partial class MainPage : ContentPage
 
     private async void OnGetGeoLocalizacion_Clicked(object sender, EventArgs e)
     {
-        // Evalúa permisos antes de iniciar la búsqueda.
-        // Si se deniegan, MostrarOverlayPermiso ya activa EsperandoGPS y DeniedGPS.
+        // Muestra el panel de espera animada inmediatamente al presionar el botón,
+        // antes de evaluar permisos. Si el permiso está denegado, MostrarOverlayPermiso
+        // lo reemplazará con el overlay de permisos (EsperandoGPS queda true, DeniedGPS=true).
+        _mainPageViewModel.EsperandoGPS = true;
+        _mainPageViewModel.DeniedGPS = false;
+
         if (!await EvaluarPermisosGpsAsync())
             return;
+
+        // OcultarOverlayPermiso (llamado internamente cuando el permiso se concede)
+        // resetea EsperandoGPS = false. Lo reactivamos para mantener el panel de espera
+        // visible durante todo el fetch GPS.
+        _mainPageViewModel.EsperandoGPS = true;
+        _mainPageViewModel.DeniedGPS = false;
 
         _cts?.Cancel();
         _cts?.Dispose();
@@ -143,9 +153,6 @@ public partial class MainPage : ContentPage
 
         try
         {
-            // Escenario 4: muestra el panel de espera animada mientras se obtiene la coordenada
-            _mainPageViewModel.EsperandoGPS = true;
-            _mainPageViewModel.DeniedGPS = false;
             _mainPageViewModel.Coordenadas = "Obteniendo ubicación GPS...";
 
             var location = await _gps.ObtenerUbicacionAsync(_cts.Token);

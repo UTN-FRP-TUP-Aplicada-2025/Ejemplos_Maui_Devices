@@ -28,12 +28,12 @@
         <Grid IsVisible="{Binding EsperandoGPS}">
 
             <!-- Panel de espera animada
-                 Visible cuando DeniedGPS = false.
+                 Visible cuando DeniedGPS = false (MostrandoPanelEspera = true).
                  VerticalOptions/HorizontalOptions="Center" centra el contenido en la pantalla.
                  Se eliminó RowDefinitions="Auto, *" que dejaba todo en una fila * de alto 0. -->
-            <!-- DeniedGPS=false → panel espera visible; DeniedGPS=true → overlay permisos visible -->
+            <!-- MostrandoPanelEspera=true → panel espera visible; MostrandoPanelEspera=false → overlay permisos visible -->
             <VerticalStackLayout x:Name="PanelEsperaGPS"
-                                 IsVisible="{Binding DeniedGPS, Converter={StaticResource InverseBoolConverter}}"
+                                 IsVisible="{Binding MostrandoPanelEspera}"
                                  HorizontalOptions="Center" VerticalOptions="Center"
                                  Spacing="10" Padding="30,24">
                 <Image Source="satelite.gif" HorizontalOptions="Center" Scale="0.5" IsAnimationPlaying="true"/>

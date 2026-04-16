@@ -28,15 +28,31 @@ class MainPageViewModel : INotifyPropertyChanged, IDisposable
     public bool EsperandoGPS
     {
         get => _esperandoGPS;
-        set => SetProperty(ref _esperandoGPS, value);
+        set
+        {
+            if (SetProperty(ref _esperandoGPS, value))
+                OnPropertyChanged(nameof(MostrandoContenido));
+        }
     }
+
+    // MostrandoContenido = !EsperandoGPS
+    // Evita depender de InverseBoolConverter en el XAML.
+    public bool MostrandoContenido => !_esperandoGPS;
 
     private bool _deniedGPS = false;
     public bool DeniedGPS
     {
         get => _deniedGPS;
-        set => SetProperty(ref _deniedGPS, value);
+        set
+        {
+            if (SetProperty(ref _deniedGPS, value))
+                OnPropertyChanged(nameof(MostrandoPanelEspera));
+        }
     }
+
+    // MostrandoPanelEspera = !DeniedGPS
+    // Evita depender de InverseBoolConverter en el XAML.
+    public bool MostrandoPanelEspera => !_deniedGPS;
     #endregion
 
     #region changed event
