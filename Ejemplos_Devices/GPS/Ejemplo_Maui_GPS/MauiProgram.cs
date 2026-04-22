@@ -27,7 +27,16 @@ public static class MauiProgram
 
     static public MauiAppBuilder AddServices(this MauiAppBuilder builder)
     {
+        // Servicios
+        builder.Services.AddSingleton<LocationPermissionService>();
         builder.Services.AddSingleton<GpsService>();
+
+        // ViewModels
+        builder.Services.AddTransient<ViewModels.MainPageViewModel>();
+
+        // Pages
+        builder.Services.AddTransient<Pages.MainPage>();
+
         return builder;
     }
 }

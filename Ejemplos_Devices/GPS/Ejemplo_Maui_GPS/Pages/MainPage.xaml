@@ -1,55 +1,26 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:Ejemplo_Maui_GPS.Controls"
              x:Class="Ejemplo_Maui_GPS.Pages.MainPage"
              Title="GPS">
 
-    <!--
-        Grid raíz sin RowDefinitions (= una sola fila "*") para que ocupe toda la pantalla.
-        RowDefinitions="Auto" causaba que la fila colapsara a 0px cuando MainContent
-        estaba oculto, dejando los paneles de espera/permisos en blanco.
-    -->
     <Grid>
 
-        <!-- Contenido principal
-             MostrandoContenido = !EsperandoGPS → evita depender de InverseBoolConverter externo -->
-        <VerticalStackLayout x:Name="MainContent" IsVisible="{Binding MostrandoContenido}" Spacing="20" Padding="30" VerticalOptions="Center" HorizontalOptions="Center">
-            <Label x:Name="lblCoordenadas" Text="{Binding Coordenadas}" FontSize="18" HorizontalTextAlignment="Center"/>
-            <Button x:Name="btnMostrarCoordenadas" Text="Obtener ubicación" Clicked="OnGetGeoLocalizacion_Clicked"/>
-            <Button x:Name="btnCancelarCoordenadas" Text="Cancelar" IsVisible="False" Clicked="OnCancelarGeoLocalizacion_Clicked"/>
-            <Button x:Name="btnMostrarEnMapa" Text="Mostrar en mapa" Clicked="OnMostrarLocalizacionEnMapaClicked"/>
+        <!-- Contenido principal: visible cuando el overlay está oculto. -->
+        <VerticalStackLayout IsVisible="{Binding MostrandoContenido}"
+                             Spacing="20" Padding="30"
+                             VerticalOptions="Center" HorizontalOptions="Center">
+            <Label Text="{Binding Coordenadas}" FontSize="18" HorizontalTextAlignment="Center"/>
+            <Button Text="Obtener ubicación" Command="{Binding ObtenerUbicacionCommand}"/>
+            <Button Text="Cancelar" Command="{Binding CancelarCommand}"/>
+            <Button Text="Mostrar en mapa" Command="{Binding MostrarEnMapaCommand}"/>
         </VerticalStackLayout>
 
-        <!-- Contenedor de paneles superpuestos (espera + permisos denegados) Solo visible cuando EsperandoGPS = true -->
-        <Grid IsVisible="{Binding EsperandoGPS}">
+        <!-- Componente reutilizable: maneja espera + permisos.
+             Su BindingContext es el GpsOverlayViewModel del VM padre. -->
+        <controls:GpsStatusOverlayView BindingContext="{Binding Overlay}"/>
 
-            <!-- Panel de espera animada
-                 Visible cuando DeniedGPS = false (MostrandoPanelEspera = true).
-                 VerticalOptions/HorizontalOptions="Center" centra el contenido en la pantalla.
-                 Se eliminó RowDefinitions="Auto, *" que dejaba todo en una fila * de alto 0. -->
-            <!-- MostrandoPanelEspera=true → panel espera visible; MostrandoPanelEspera=false → overlay permisos visible -->
-            <VerticalStackLayout x:Name="PanelEsperaGPS" IsVisible="{Binding MostrandoPanelEspera}"  HorizontalOptions="Center" VerticalOptions="Center" Spacing="10" Padding="30,24">
-                <Image Source="satelite.gif" HorizontalOptions="Center" Scale="0.5" IsAnimationPlaying="true"/>
-                <Label Text="Buscando posición GPS" FontSize="Title" HorizontalTextAlignment="Center"/>
-                <Label Text="Aguarde unos segundos, y será redirigido automáticamente" HorizontalTextAlignment="Center" FontSize="20" Margin="0,40,0,0"/>
-            </VerticalStackLayout>
-
-            <!-- Panel de solicitud de permisos denegados  Visible cuando DeniedGPS = true -->
-            <Grid x:Name="PermissionDeniedOverlay" IsVisible="{Binding DeniedGPS}" BackgroundColor="#CC000000" HorizontalOptions="Fill" VerticalOptions="Fill">
-                <VerticalStackLayout Spacing="20" HorizontalOptions="Center" VerticalOptions="Center" Padding="32">
-                    <Label Text="location_off" FontFamily="MaterialIconsOutlined" FontSize="80" TextColor="#AAAAAA" HorizontalOptions="Center"/>
-                    <Label x:Name="LblPermissionTitle" Text="Sin acceso a la ubicación" FontSize="20" FontAttributes="Bold" TextColor="White" HorizontalOptions="Center" HorizontalTextAlignment="Center"/>
-                    <Label x:Name="LblPermissionMessage" Text="Para obtener coordenadas necesitamos acceso a la ubicación."  FontSize="14" TextColor="#CCCCCC" HorizontalOptions="Center" HorizontalTextAlignment="Center"/>
-                    <!-- Android: permiso denegado pero se puede volver a pedir -->
-                    <Button x:Name="BtnPedirPermiso" Text="Pedir permiso"  Clicked="OnPedirPermisoClicked" BackgroundColor="#512BD4" TextColor="White" CornerRadius="8" Padding="20,12" HorizontalOptions="Center" IsVisible="False"/>
-                    <!-- Android "no volver a preguntar" / iOS: ir a ajustes del sistema -->
-                    <Button x:Name="BtnGoToSettings" Text="Abrir configuración" Clicked="OnGoToSettingsClicked" BackgroundColor="#512BD4" TextColor="White" CornerRadius="8" Padding="20,12" HorizontalOptions="Center"/>
-                    <Button Text="Cerrar" Clicked="OnCerrarOverlayClicked" BackgroundColor="Transparent" TextColor="#AAAAAA"
-                            BorderColor="#555555" BorderWidth="1" CornerRadius="8" Padding="20,12" HorizontalOptions="Center"/>
-                </VerticalStackLayout>
-            </Grid>
-
-        </Grid>
     </Grid>
 
 </ContentPage>

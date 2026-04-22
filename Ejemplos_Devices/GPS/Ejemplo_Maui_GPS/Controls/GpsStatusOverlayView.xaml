@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Ejemplo_Maui_GPS.Controls.GpsStatusOverlayView"
+             IsVisible="{Binding IsVisible}">
+
+    <!--
+        Componente reutilizable que muestra:
+          - Panel de espera animada (IsBusy = true)
+          - Overlay de permisos denegados / restringidos (IsDenied = true)
+
+        BindingContext esperado: GpsOverlayViewModel
+        Se enlaza desde la página padre con BindingContext="{Binding Overlay}".
+    -->
+    <Grid>
+
+        <!-- Panel de espera animada -->
+        <VerticalStackLayout IsVisible="{Binding IsBusy}"
+                             HorizontalOptions="Center"
+                             VerticalOptions="Center"
+                             Spacing="10"
+                             Padding="30,24">
+            <Image Source="satelite.gif" HorizontalOptions="Center" Scale="0.5" IsAnimationPlaying="True"/>
+            <Label Text="Buscando posición GPS" FontSize="Title" HorizontalTextAlignment="Center"/>
+            <Label Text="Aguarde unos segundos, y será redirigido automáticamente"
+                   HorizontalTextAlignment="Center" FontSize="20" Margin="0,40,0,0"/>
+        </VerticalStackLayout>
+
+        <!-- Overlay de permisos denegados / restringidos -->
+        <Grid IsVisible="{Binding IsDenied}"
+              BackgroundColor="#CC000000"
+              HorizontalOptions="Fill"
+              VerticalOptions="Fill">
+            <VerticalStackLayout Spacing="20" HorizontalOptions="Center" VerticalOptions="Center" Padding="32">
+                <Label Text="location_off"
+                       FontFamily="MaterialIconsOutlined"
+                       FontSize="80"
+                       TextColor="#AAAAAA"
+                       HorizontalOptions="Center"/>
+                <Label Text="{Binding Title}"
+                       FontSize="20" FontAttributes="Bold" TextColor="White"
+                       HorizontalOptions="Center" HorizontalTextAlignment="Center"/>
+                <Label Text="{Binding Message}"
+                       FontSize="14" TextColor="#CCCCCC"
+                       HorizontalOptions="Center" HorizontalTextAlignment="Center"/>
+
+                <!-- Android: permiso denegado pero se puede volver a pedir -->
+                <Button Text="Pedir permiso"
+                        Command="{Binding PedirPermisoCommand}"
+                        IsVisible="{Binding CanRetry}"
+                        BackgroundColor="#512BD4" TextColor="White" CornerRadius="8" Padding="20,12"
+                        HorizontalOptions="Center"/>
+
+                <!-- Android "no volver a preguntar" / iOS / Restricted: ir a ajustes -->
+                <Button Text="Abrir configuración"
+                        Command="{Binding AbrirAjustesCommand}"
+                        IsVisible="{Binding MustOpenSettings}"
+                        BackgroundColor="#512BD4" TextColor="White" CornerRadius="8" Padding="20,12"
+                        HorizontalOptions="Center"/>
+
+                <Button Text="Cerrar"
+                        Command="{Binding CerrarOverlayCommand}"
+                        BackgroundColor="Transparent" TextColor="#AAAAAA"
+                        BorderColor="#555555" BorderWidth="1" CornerRadius="8" Padding="20,12"
+                        HorizontalOptions="Center"/>
+            </VerticalStackLayout>
+        </Grid>
+    </Grid>
+</ContentView>
