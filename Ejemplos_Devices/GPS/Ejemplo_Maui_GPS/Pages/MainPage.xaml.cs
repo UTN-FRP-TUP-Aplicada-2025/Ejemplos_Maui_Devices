@@ -103,11 +103,8 @@ public partial class MainPage : ContentPage
     // EsperandoGPS = false oculta el contenedor externo y, por binding inverso, muestra el contenido principal.
     private void OcultarOverlayPermiso()
     {
-        MainThread.BeginInvokeOnMainThread(() =>
-        {
-            _mainPageViewModel.DeniedGPS = false;
-            _mainPageViewModel.EsperandoGPS = false;
-        });
+        _mainPageViewModel.DeniedGPS = false;
+        _mainPageViewModel.EsperandoGPS = false;
     }
 
     // ── HANDLERS DEL OVERLAY ──

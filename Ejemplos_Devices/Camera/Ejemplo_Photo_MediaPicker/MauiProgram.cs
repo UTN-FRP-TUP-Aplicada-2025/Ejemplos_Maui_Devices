@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Ejemplo_Photo_MediaPicker.Services;
+using Microsoft.Extensions.Logging;
 
 namespace Ejemplo_Photo_MediaPicker;
 
@@ -9,6 +10,7 @@ public static class MauiProgram
         var builder = MauiApp.CreateBuilder();
         builder
             .UseMauiApp<App>()
+            .AddServices()
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -20,5 +22,13 @@ public static class MauiProgram
 #endif
 
         return builder.Build();
+    }
+
+    public static MauiAppBuilder AddServices(this MauiAppBuilder builder)
+    {
+        builder.Services.AddSingleton<ICamaraService, CamaraService>();
+
+
+        return builder;
     }
 }
