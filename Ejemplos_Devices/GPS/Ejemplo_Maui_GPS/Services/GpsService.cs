@@ -32,12 +32,21 @@ public class GpsService
         // 2) Leer ubicación
         try
         {
+            /*
             var request = new GeolocationRequest(GeolocationAccuracy.Best, DefaultTimeout);
             var location = await Geolocation.Default.GetLocationAsync(request, ct);
 
-            return location is null
-                ? new GpsResult.NoSignal()
-                : new GpsResult.Success(location);
+            return location is null  ? new GpsResult.NoSignal() : new GpsResult.Success(location);
+            */
+
+            var location = await Geolocation.GetLastKnownLocationAsync();
+            if (!(location != null && (DateTimeOffset.Now - location.Timestamp) < TimeSpan.FromMinutes(1)))
+            {
+                var req = new GeolocationRequest(GeolocationAccuracy.Medium, TimeSpan.FromSeconds(10));
+                location = await Geolocation.GetLocationAsync(req, ct);
+            }
+
+            return location is null  ? new GpsResult.NoSignal() : new GpsResult.Success(location);
         }
         catch (OperationCanceledException)
         {

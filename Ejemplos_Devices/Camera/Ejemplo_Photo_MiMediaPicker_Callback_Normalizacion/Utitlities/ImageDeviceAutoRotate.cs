@@ -64,6 +64,30 @@ class ImageDeviceAutoRotate : IImageDevice
         return imageData;
     }
 
+    /// <summary>
+    /// Sobrecarga path -> path. Reusa la implementación basada en Stream:
+    /// abre el archivo de entrada, procesa, escribe el resultado en
+    /// <paramref name="outputPath"/> (o en un archivo nuevo en CacheDirectory
+    /// si es null), y devuelve el path final.
+    /// </summary>
+    public async Task<string?> ProcesarPhotoAsync(string inputPath, string? outputPath = null)
+    {
+        if (string.IsNullOrEmpty(inputPath) || !File.Exists(inputPath))
+            return null;
+
+        byte[]? processed;
+        using var fs = File.OpenRead(inputPath);
+        
+        processed = await ProcesarPhotoAsync(fs);        
+
+        if (processed is null) return null;
+
+        outputPath ??= Path.Combine( FileSystem.CacheDirectory,  $"photo_norm_{Guid.NewGuid():N}.jpg");
+
+        await File.WriteAllBytesAsync(outputPath, processed);
+        return outputPath;
+    }
+
     private SKBitmap AplicarOrientation(SKBitmap originalBitmap, int? orientation)
     {
         if (!orientation.HasValue) return originalBitmap;

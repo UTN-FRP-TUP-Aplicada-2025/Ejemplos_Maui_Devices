@@ -1,8 +1,9 @@
+using Android.Text;
 using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Views;
 using System.Diagnostics;
 
-namespace Ejemplo_Photo_MiMediaPicker_Callback.Pages;
+namespace Ejemplo_Photo_MiMediaPicker_Callback_Normalizacion.Pages;
 
 [QueryProperty(nameof(OnPhotoCallback), "OnPhotoCallback")]
 public partial class MyMediaPickerPage : ContentPage

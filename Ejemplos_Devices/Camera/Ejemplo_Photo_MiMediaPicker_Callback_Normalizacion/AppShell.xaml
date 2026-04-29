@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Shell
-    x:Class="Ejemplo_Imagen_Normalizacion.AppShell"
+    x:Class="Ejemplo_Photo_MiMediaPicker_Callback_Normalizacion.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"    
-    xmlns:local="clr-namespace:Ejemplo_Imagen_Normalizacion"
-    xmlns:pages="clr-namespace:Ejemplo_Imagen_Normalizacion.Pages"
+    xmlns:local="clr-namespace:Ejemplo_Photo_MiMediaPicker_Callback_Normalizacion"
+    xmlns:pages="clr-namespace:Ejemplo_Photo_MiMediaPicker_Callback_Normalizacion.Pages"
     Shell.NavBarIsVisible="False"
-    Title="Ejemplo_Imagen_Normalizacion">
+    Title="Ejemplo_Photo_MiMediaPicker_Callback_Normalizacion">
 
     <ShellContent
         Title="Home"

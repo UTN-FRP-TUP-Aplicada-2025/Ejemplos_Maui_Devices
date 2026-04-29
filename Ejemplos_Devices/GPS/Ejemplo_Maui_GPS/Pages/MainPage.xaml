@@ -8,17 +8,14 @@
     <Grid>
 
         <!-- Contenido principal: visible cuando el overlay está oculto. -->
-        <VerticalStackLayout IsVisible="{Binding MostrandoContenido}"
-                             Spacing="20" Padding="30"
-                             VerticalOptions="Center" HorizontalOptions="Center">
+        <VerticalStackLayout IsVisible="{Binding MostrandoContenido}" Spacing="20" Padding="30" VerticalOptions="Center" HorizontalOptions="Center">
             <Label Text="{Binding Coordenadas}" FontSize="18" HorizontalTextAlignment="Center"/>
             <Button Text="Obtener ubicación" Command="{Binding ObtenerUbicacionCommand}"/>
             <Button Text="Cancelar" Command="{Binding CancelarCommand}"/>
             <Button Text="Mostrar en mapa" Command="{Binding MostrarEnMapaCommand}"/>
         </VerticalStackLayout>
 
-        <!-- Componente reutilizable: maneja espera + permisos.
-             Su BindingContext es el GpsOverlayViewModel del VM padre. -->
+        <!-- Componente reutilizable: maneja espera + permisos. Su BindingContext es el GpsOverlayViewModel del VM padre. -->
         <controls:GpsStatusOverlayView BindingContext="{Binding Overlay}"/>
 
     </Grid>
