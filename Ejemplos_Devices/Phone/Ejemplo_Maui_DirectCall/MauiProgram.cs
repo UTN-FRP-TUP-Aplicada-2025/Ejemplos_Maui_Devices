@@ -1,4 +1,7 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Ejemplo_Maui_DirectCall.Pages;
+using Ejemplo_Maui_DirectCall.Services;
+using Ejemplo_Maui_DirectCall.ViewModels;
+using Microsoft.Extensions.Logging;
 
 namespace Ejemplo_Maui_DirectCall;
 
@@ -9,6 +12,7 @@ public static class MauiProgram
         var builder = MauiApp.CreateBuilder();
         builder
             .UseMauiApp<App>()
+            .AddServices()
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -20,5 +24,15 @@ public static class MauiProgram
 #endif
 
         return builder.Build();
+    }
+
+    static public MauiAppBuilder AddServices(this MauiAppBuilder builder)
+    {
+        builder.Services.AddSingleton<PhoneDialerDevice>();
+
+        builder.Services.AddSingleton<MainPageViewModel>();
+        builder.Services.AddTransient<MainPage>();
+
+        return builder;
     }
 }

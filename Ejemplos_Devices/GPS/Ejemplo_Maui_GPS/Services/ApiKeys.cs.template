@@ -1,0 +1,14 @@
+// PLANTILLA - Copiar este archivo como "ApiKeys.cs" en la misma carpeta
+// y reemplazar el valor con tu propia API key.
+//
+// El archivo "ApiKeys.cs" está en .gitignore y NO debe subirse al repo.
+//
+// Cómo obtener una key de Google Maps Geocoding:
+//   https://developers.google.com/maps/documentation/geocoding/get-api-key
+
+namespace Ejemplo_Maui_GPS.Services;
+
+internal static class ApiKeys
+{
+    public const string GoogleMaps = "REEMPLAZAR_CON_TU_API_KEY";
+}

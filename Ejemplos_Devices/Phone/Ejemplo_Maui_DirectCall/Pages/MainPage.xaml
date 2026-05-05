@@ -9,7 +9,7 @@
             <Label Text="Número de telefono: Ej: 1155551234"/>
             <Entry Text="{Binding Telefono}"  Placeholder=""/>
 
-            <Button x:Name="btnRealizarLLamada" Text="LLamar" Clicked="btnRealizarLLamada_Clicked" />
+            <Button x:Name="btnRealizarLLamada" Text="LLamar" Command="{Binding RealizarLLamadaCommand}"  />
 
         </VerticalStackLayout>
     </ScrollView>

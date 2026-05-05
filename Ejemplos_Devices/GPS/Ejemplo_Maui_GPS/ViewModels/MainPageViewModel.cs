@@ -1,38 +1,13 @@
-﻿using System.Windows.Input;
+using System.Windows.Input;
 using Ejemplo_Maui_GPS.Services;
 
 namespace Ejemplo_Maui_GPS.ViewModels;
 
-// Orquesta la página principal: dispara GpsService, traduce GpsResult a estado
-// del Overlay y a la propiedad Coordenadas. Maneja cancelación con CancellationTokenSource
-// (de ahí que sí implemente IDisposable).
-public class MainPageViewModel : ViewModelBase, IDisposable
+// Solo orquesta texto y comandos: el overlay y la cancelación viven en GpsCoordinator (singleton).
+public class MainPageViewModel : ViewModelBase
 {
-    private readonly GpsService _gps;
-    private readonly LocationPermissionService _permissions;
-    private CancellationTokenSource? _cts;
-
-    public MainPageViewModel(GpsService gps, LocationPermissionService permissions)
-    {
-        _gps = gps;
-        _permissions = permissions;
-        Overlay = new GpsOverlayViewModel(
-            onRetry: () => ObtenerUbicacionAsync(CancellationToken.None),
-            onOpenSettings: () => _permissions.OpenAppSettings());
-
-        // Reflejar cambios de visibilidad del overlay en MostrandoContenido.
-        Overlay.PropertyChanged += (_, e) =>
-        {
-            if (e.PropertyName == nameof(GpsOverlayViewModel.IsVisible))
-                OnPropertyChanged(nameof(MostrandoContenido));
-        };
-
-        ObtenerUbicacionCommand = new AsyncRelayCommand(ObtenerUbicacionAsync);
-        CancelarCommand = new RelayCommand(Cancelar, () => _cts is not null);
-        MostrarEnMapaCommand = new AsyncRelayCommand(MostrarEnMapaAsync);
-    }
-
-    // ── Propiedades enlazadas ─────────────────────────────
+    private readonly GpsCoordinator _coord;
+    private readonly GoogleMapService _mapService;
 
     public GpsOverlayViewModel Overlay { get; }
 
@@ -43,132 +18,99 @@ public class MainPageViewModel : ViewModelBase, IDisposable
         set => SetProperty(ref _coordenadas, value);
     }
 
-    // Mostrar contenido principal cuando el overlay no es visible.
-    // Se notifica desde Overlay.PropertyChanged.
+    private string _domicilio = "";
+    public string Domicilio
+    {
+        get => _domicilio;
+        set => SetProperty(ref _coordenadas, value);
+    }
+
     public bool MostrandoContenido => !Overlay.IsVisible;
-
-    // ── Comandos ──────────────────────────────────────────
-
+     
     public ICommand ObtenerUbicacionCommand { get; }
     public ICommand CancelarCommand { get; }
     public ICommand MostrarEnMapaCommand { get; }
-
-    // ── Acciones ──────────────────────────────────────────
-
-    private async Task ObtenerUbicacionAsync(CancellationToken _)
+     
+    public MainPageViewModel(GpsCoordinator coord, GoogleMapService mapService)
     {
-        Overlay.ShowBusy();
-        OnPropertyChanged(nameof(MostrandoContenido));
+        _coord = coord;
+        Overlay = _coord.Overlay;
+        _mapService = mapService;
 
-        _cts?.Cancel();
-        _cts?.Dispose();
-        _cts = new CancellationTokenSource();
-        (CancelarCommand as RelayCommand)?.RaiseCanExecuteChanged();
+        // Reflejar cambios de visibilidad del overlay en MostrandoContenido.
+        Overlay.PropertyChanged += (_, e) =>
+        {
+            if (e.PropertyName == nameof(GpsOverlayViewModel.IsVisible))
+                OnPropertyChanged(nameof(MostrandoContenido));
+        };
 
-        try
-        {
-            Coordenadas = "Obteniendo ubicación GPS...";
-            var result = await _gps.ObtenerUbicacionAsync(_cts.Token);
-            AplicarResultado(result);
-        }
-        finally
-        {
-            _cts?.Dispose();
-            _cts = null;
-            (CancelarCommand as RelayCommand)?.RaiseCanExecuteChanged();
-            OnPropertyChanged(nameof(MostrandoContenido));
-        }
+        ObtenerUbicacionCommand = new AsyncRelayCommand(ObtenerUbicacionAsync);
+        CancelarCommand = new RelayCommand(() => _coord.Cancelar());
+        MostrarEnMapaCommand = new AsyncRelayCommand(MostrarEnMapaAsync);
+        ObtenerDominicilioCommand = new AsyncRelayCommand(ObtenerDominicilioAsync);
     }
+    private async Task ObtenerUbicacionAsync(CancellationToken ct)
+    {
+        Coordenadas = "Obteniendo ubicación GPS...";
+        var result = await _coord.CapturarAsync(ct);
+        ActualizarTexto(result);
+    }
+
 
     private async Task MostrarEnMapaAsync()
     {
-        Overlay.ShowBusy();
-        OnPropertyChanged(nameof(MostrandoContenido));
+        var result = await _coord.CapturarAsync();
 
-        try
+        if (result is GpsResult.Success s)
         {
-            var result = await _gps.ObtenerUbicacionAsync();
-
-            if (result is GpsResult.Success s)
+            try
             {
-                Overlay.Hide();
-                try
-                {
-                    var url = $"https://maps.google.com/?q={s.Location.Latitude},{s.Location.Longitude}";
-                    await Browser.Default.OpenAsync(url, BrowserLaunchMode.SystemPreferred);
-                }
-                catch (Exception ex)
-                {
-                    Coordenadas = $"No se pudo abrir Google Maps: {ex.Message}";
-                }
+                var url = $"https://maps.google.com/?q={s.Location.Latitude},{s.Location.Longitude}";
+                await Browser.Default.OpenAsync(url, BrowserLaunchMode.SystemPreferred);
             }
-            else
+            catch (Exception ex)
             {
-                AplicarResultado(result);
+                Coordenadas = $"No se pudo abrir Google Maps: {ex.Message}";
             }
         }
-        finally
+        else
         {
-            OnPropertyChanged(nameof(MostrandoContenido));
+            ActualizarTexto(result);
         }
     }
 
-    private void Cancelar()
+    // El overlay ya lo manejó el coordinator; acá solo se traduce a texto.
+    private void ActualizarTexto(GpsResult result)
     {
-        _cts?.Cancel();
+        Coordenadas = result switch
+        {
+            GpsResult.Success s => $"Lat: {s.Location.Latitude:F6}, Lng: {s.Location.Longitude:F6}",
+            GpsResult.PermissionDenied => "Permiso de ubicación necesario.",
+            GpsResult.PermissionRestricted => "Acceso a la ubicación restringido.",
+            GpsResult.GpsDisabled => "El GPS está desactivado. Activalo desde ajustes.",
+            GpsResult.NotSupported => "Este dispositivo no soporta GPS.",
+            GpsResult.NoSignal => "No se pudo obtener ubicación (GPS sin señal).",
+            GpsResult.Cancelled => "Operación cancelada por el usuario.",
+            GpsResult.Failure f => $"Error: {f.Message}",
+            _ => ""
+        };
     }
 
-    // ── Mapeo de GpsResult a UI ───────────────────────────
+    public ICommand ObtenerDominicilioCommand { get; }
 
-    private void AplicarResultado(GpsResult result)
+    public async Task ObtenerDominicilioAsync(CancellationToken ct = default)
     {
-        switch (result)
+        Coordenadas = "Obteniendo ubicación GPS...";
+        var result = await _coord.CapturarAsync(ct);
+        if (result is GpsResult.Success s)
         {
-            case GpsResult.Success s:
-                Coordenadas = $"Lat: {s.Location.Latitude:F6}, Lng: {s.Location.Longitude:F6}";
-                Overlay.Hide();
-                break;
-
-            case GpsResult.PermissionDenied d:
-                Overlay.ShowPermissionDenied(d.CanRetry);
-                break;
-
-            case GpsResult.PermissionRestricted:
-                Overlay.ShowRestricted();
-                break;
-
-            case GpsResult.GpsDisabled:
-                Coordenadas = "El GPS está desactivado. Activalo desde ajustes.";
-                Overlay.Hide();
-                break;
-
-            case GpsResult.NotSupported:
-                Coordenadas = "Este dispositivo no soporta GPS.";
-                Overlay.Hide();
-                break;
-
-            case GpsResult.NoSignal:
-                Coordenadas = "No se pudo obtener ubicación (GPS sin señal).";
-                Overlay.Hide();
-                break;
-
-            case GpsResult.Cancelled:
-                Coordenadas = "Operación cancelada por el usuario.";
-                Overlay.Hide();
-                break;
-
-            case GpsResult.Failure f:
-                Coordenadas = $"Error: {f.Message}";
-                Overlay.Hide();
-                break;
+            var domicilio = await _mapService.GetDomicilioAsync(s.Location.Latitude, s.Location.Longitude);
+            Coordenadas = domicilio;           
+        }
+        else
+        {
+            ActualizarTexto(result);
         }
     }
 
-    public void Dispose()
-    {
-        _cts?.Cancel();
-        _cts?.Dispose();
-        _cts = null;
-        GC.SuppressFinalize(this);
-    }
 }

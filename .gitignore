@@ -416,3 +416,6 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# API keys locales (no subir al repo)
+**/Services/ApiKeys.cs

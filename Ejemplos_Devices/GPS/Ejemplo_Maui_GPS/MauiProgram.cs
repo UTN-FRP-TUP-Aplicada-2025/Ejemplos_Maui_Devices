@@ -30,7 +30,10 @@ public static class MauiProgram
         // Servicios
         builder.Services.AddSingleton<LocationPermissionService>();
         builder.Services.AddSingleton<GpsService>();
-
+        builder.Services.AddSingleton<GpsCoordinator>();
+        builder.Services.AddSingleton<TestService>();
+        builder.Services.AddSingleton<GoogleMapService>();
+        
         // ViewModels
         builder.Services.AddTransient<ViewModels.MainPageViewModel>();
 

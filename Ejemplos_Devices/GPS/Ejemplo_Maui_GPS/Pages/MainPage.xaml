@@ -7,12 +7,23 @@
 
     <Grid>
 
-        <!-- Contenido principal: visible cuando el overlay está oculto. -->
-        <VerticalStackLayout IsVisible="{Binding MostrandoContenido}" Spacing="20" Padding="30" VerticalOptions="Center" HorizontalOptions="Center">
-            <Label Text="{Binding Coordenadas}" FontSize="18" HorizontalTextAlignment="Center"/>
-            <Button Text="Obtener ubicación" Command="{Binding ObtenerUbicacionCommand}"/>
-            <Button Text="Cancelar" Command="{Binding CancelarCommand}"/>
-            <Button Text="Mostrar en mapa" Command="{Binding MostrarEnMapaCommand}"/>
+        <VerticalStackLayout IsVisible="{Binding MostrandoContenido}" >
+            
+            <!-- Contenido principal: visible cuando el overlay está oculto. -->
+            <VerticalStackLayout Spacing="20" Padding="30" VerticalOptions="Center" HorizontalOptions="Center">
+                <Label Text="{Binding Coordenadas}" FontSize="18" HorizontalTextAlignment="Center"/>
+                <Button Text="Obtener ubicación" Command="{Binding ObtenerUbicacionCommand}"/>
+                <Button Text="Cancelar" Command="{Binding CancelarCommand}"/>
+                <Button Text="Mostrar en mapa" Command="{Binding MostrarEnMapaCommand}"/>
+                <Button Text="Prueba" Clicked="Button_Clicked"  />
+                <Label x:Name="lbSalida" FontSize="18" HorizontalTextAlignment="Center"/>
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Spacing="20" Padding="30" VerticalOptions="Center" HorizontalOptions="Center">
+                <Label Text="{Binding Domicilio}" FontSize="18" HorizontalTextAlignment="Center"/>
+                <Button Text="Obtener Domicilio" Command="{Binding ObtenerDominicilioCommand}"/>
+            </VerticalStackLayout>
+            
         </VerticalStackLayout>
 
         <!-- Componente reutilizable: maneja espera + permisos. Su BindingContext es el GpsOverlayViewModel del VM padre. -->
