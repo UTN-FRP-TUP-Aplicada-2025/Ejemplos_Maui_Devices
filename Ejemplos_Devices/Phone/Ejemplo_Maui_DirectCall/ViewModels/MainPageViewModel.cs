@@ -1,59 +1,43 @@
-﻿using Ejemplo_Maui_DirectCall.Services;
-using Ejemplo_Maui_GPS.ViewModels;
+using Ejemplo_Maui_DirectCall.Services;
 using System.Windows.Input;
-
-
 
 namespace Ejemplo_Maui_DirectCall.ViewModels;
 
-public class MainPageViewModel: ViewModelBase
+public class MainPageViewModel : ViewModelBase
 {
+    private readonly CallCoordinator _calls;
 
-    PhoneDialerDevice _phoneDialerDevice;
+    // El overlay vive en el coordinador (singleton).
+    // La página lo enlaza con BindingContext="{Binding CallOverlay}".
+    public CallOverlayViewModel CallOverlay => _calls.Overlay;
 
     public ICommand RealizarLLamadaCommand { get; }
 
-    public MainPageViewModel(PhoneDialerDevice phoneDialerDevice)
+    public MainPageViewModel(CallCoordinator calls)
     {
+        _calls = calls;
         RealizarLLamadaCommand = new AsyncRelayCommand(RealizarLLamadaAsync);
-
-        _phoneDialerDevice = phoneDialerDevice;
     }
 
-    string telefono;
+    private string _telefono = "";
     public string Telefono
     {
-        get => telefono;
+        get => _telefono;
         set
         {
-            if (telefono != value) //importante! evita que entre en un bucle
+            if (_telefono != value)
             {
-                telefono = value;
-                OnPropertyChanged(); //para que funcione la bidireccionalidad
+                _telefono = value;
+                OnPropertyChanged();
             }
         }
     }
 
-    async private Task RealizarLLamadaAsync()
+    private async Task RealizarLLamadaAsync()
     {
-        if (string.IsNullOrWhiteSpace(Telefono))
-        {
-            await Shell.Current.DisplayAlertAsync("Atención", "Ingresá un número de teléfono", "OK");
-            return;
-        }
-
-        try
-        {
-            await _phoneDialerDevice.CallPhoneAsync(telefono);
-        }
-        catch (FeatureNotSupportedException)
-        {
-            await Shell.Current.DisplayAlertAsync("Error", "Este dispositivo no puede hacer llamadas.", "OK");
-        }
-        catch (Exception ex)
-        {
-            await Shell.Current.DisplayAlertAsync("Error", $"No se pudo abrir el marcador: {ex.Message}", "OK");
-        }
+        // Toda la lógica (validación, permisos, overlay, errores) la maneja
+        // el coordinador. El VM solo dispara la operación; el resultado se
+        // refleja en el overlay.
+        await _calls.CallAsync(Telefono);
     }
-
 }

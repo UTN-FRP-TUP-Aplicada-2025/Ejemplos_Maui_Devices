@@ -23,7 +23,7 @@
 
         <!-- Overlay de permiso denegado -->
         <Grid x:Name="PermissionDeniedOverlay" Grid.Row="1" Grid.Column="0" IsVisible="False" BackgroundColor="#CC000000"
-              HorizontalOptions="Fill" VerticalOptions="Fill">
+              HorizontalOptions="Fill" VerticalOptions="Fill" Opacity="1">
 
             <VerticalStackLayout Spacing="20" HorizontalOptions="Center" VerticalOptions="Center" Padding="32">
 

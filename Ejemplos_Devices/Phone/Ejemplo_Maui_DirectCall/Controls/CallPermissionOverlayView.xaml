@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Ejemplo_Maui_DirectCall.Controls.CallPermissionOverlayView"
+             IsVisible="{Binding IsVisible}"
+             HorizontalOptions="Fill"
+             VerticalOptions="Fill"
+             Opacity="1"
+             CascadeInputTransparent="False"
+             InputTransparent="False">
+
+    <!--
+        Componente reutilizable para llamadas directas:
+          - Panel de espera (IsBusy = true)
+          - Overlay de permisos / soporte / error (IsDenied = true)
+
+        BindingContext esperado: CallOverlayViewModel
+        Se enlaza desde la página padre con BindingContext="{Binding CallOverlay}".
+
+        Notas:
+        - El backdrop oscuro vive en el Grid raíz (no en los paneles), así
+          siempre cubre todo el área visible y bloquea el input al contenido
+          de atrás (CascadeInputTransparent=False evita que los hijos lo anulen).
+        - Alpha 0xE6 (~90%) deja pasar apenas un hint de la página detrás;
+          subir a 0xFF para opacidad total.
+    -->
+    <Grid BackgroundColor="#E6000000" HorizontalOptions="Fill" VerticalOptions="Fill" InputTransparent="False" CascadeInputTransparent="False">
+
+        <!-- Panel de espera (IsBusy) -->
+        <VerticalStackLayout IsVisible="{Binding IsBusy}" HorizontalOptions="Center" VerticalOptions="Center" Spacing="16" Padding="32">
+            <ActivityIndicator IsRunning="True" Color="White" HeightRequest="48" WidthRequest="48" HorizontalOptions="Center"/>
+            <Label Text="{Binding Title}" FontSize="20" FontAttributes="Bold" TextColor="White" HorizontalTextAlignment="Center"/>
+            <Label Text="Aguardá unos segundos" FontSize="14" TextColor="#CCCCCC" HorizontalTextAlignment="Center"/>
+        </VerticalStackLayout>
+
+        <!-- Panel de denegado / restringido / no soportado / error (IsDenied) -->
+        <VerticalStackLayout IsVisible="{Binding IsDenied}"
+                             Spacing="20"
+                             HorizontalOptions="Center"
+                             VerticalOptions="Center"
+                             Padding="32">
+            <Label Text="phone_disabled" FontFamily="MaterialIconsOutlined" FontSize="80" TextColor="#AAAAAA" HorizontalOptions="Center"/>
+            <Label Text="{Binding Title}" FontSize="20" FontAttributes="Bold" TextColor="White" HorizontalOptions="Center" HorizontalTextAlignment="Center"/>
+            <Label Text="{Binding Message}" FontSize="14" TextColor="#CCCCCC" HorizontalOptions="Center" HorizontalTextAlignment="Center"/>
+
+            <!-- Permiso denegado pero se puede volver a pedir (Android) -->
+            <Button Text="Pedir permiso"
+                    Command="{Binding PedirPermisoCommand}"
+                    IsVisible="{Binding CanRetry}"
+                    BackgroundColor="#512BD4" TextColor="White"
+                    CornerRadius="8" Padding="20,12" HorizontalOptions="Center"/>
+
+            <!-- Reintentar la operación (post-ajustes, error transitorio).
+                 No coexiste con "Pedir permiso" para no duplicar acción. -->
+            <Button Text="Reintentar"
+                    Command="{Binding ReintentarCommand}"
+                    IsVisible="{Binding CanRetryAction}"
+                    BackgroundColor="#512BD4" TextColor="White"
+                    CornerRadius="8" Padding="20,12" HorizontalOptions="Center"/>
+
+            <!-- Atajo a ajustes de la app: visible siempre que el problema sea de permisos
+                 (Denied, DeniedPermanent, Restricted). Oculto en NotSupported / Failure. -->
+            <Button Text="Abrir configuración"
+                    Command="{Binding AbrirAjustesCommand}"
+                    IsVisible="{Binding CanOpenSettings}"
+                    BackgroundColor="Transparent" TextColor="White"
+                    BorderColor="#512BD4" BorderWidth="1"
+                    CornerRadius="8" Padding="20,12" HorizontalOptions="Center"/>
+
+            <Button Text="Cerrar"
+                    Command="{Binding CerrarOverlayCommand}"
+                    BackgroundColor="Transparent" TextColor="#AAAAAA"
+                    BorderColor="#555555" BorderWidth="1"
+                    CornerRadius="8" Padding="20,12" HorizontalOptions="Center"/>
+        </VerticalStackLayout>
+    </Grid>
+</ContentView>

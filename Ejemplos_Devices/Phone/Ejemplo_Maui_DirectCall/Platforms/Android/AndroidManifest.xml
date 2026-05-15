@@ -12,6 +12,7 @@
 
 	<!-- Para llamada directa (Intent.ActionCall) → SÍ necesita permiso -->
 	<uses-permission android:name="android.permission.CALL_PHONE" />
+	<uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
 	<queries>
 		<intent>

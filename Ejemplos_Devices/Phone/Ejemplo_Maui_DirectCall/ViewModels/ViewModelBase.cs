@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace Ejemplo_Maui_GPS.ViewModels;
+namespace Ejemplo_Maui_DirectCall.ViewModels;
 
 // Base reutilizable para ViewModels: implementa INotifyPropertyChanged
 // y expone SetProperty<T> para reducir boilerplate sin librerías externas.

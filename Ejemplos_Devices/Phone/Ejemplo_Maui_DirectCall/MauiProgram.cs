@@ -17,6 +17,7 @@ public static class MauiProgram
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+                fonts.AddFont("MaterialIconsOutlined-Regular.otf", "MaterialIconsOutlined");
             });
          
 #if DEBUG
@@ -28,9 +29,16 @@ public static class MauiProgram
 
     static public MauiAppBuilder AddServices(this MauiAppBuilder builder)
     {
-        builder.Services.AddSingleton<PhoneDialerDevice>();
+        // Servicios de dispositivo
+        builder.Services.AddTransient<PhoneDialerDevice>();
 
-        builder.Services.AddSingleton<MainPageViewModel>();
+        // Coordinador y overlay: singleton para que el estado del overlay
+        // sea compartido entre todos los callers (botón, otros servicios, etc.).
+        builder.Services.AddSingleton<CallCoordinator>();
+
+        // ViewModel de la página principal: transient para no arrastrar estado
+        // entre navegaciones.
+        builder.Services.AddTransient<MainPageViewModel>();
         builder.Services.AddTransient<MainPage>();
 
         return builder;

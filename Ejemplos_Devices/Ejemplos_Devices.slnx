@@ -126,4 +126,7 @@
   <Folder Name="/Red/Docs/">
     <File Path="Red/Ejemplo_Docs_Red/Readme.md" />
   </Folder>
+  <Folder Name="/Utilities/">
+    <File Path="../Utilities/simular.sh" />
+  </Folder>
 </Solution>

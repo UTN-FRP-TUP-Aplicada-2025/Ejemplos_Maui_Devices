@@ -1,17 +1,28 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:Ejemplo_Maui_DirectCall.Controls"
              x:Class="Ejemplo_Maui_DirectCall.Pages.MainPage">
 
-    <ScrollView>
-        <VerticalStackLayout Padding="30,0" Spacing="25">
+    <!-- Root Grid: el overlay se superpone al contenido (z-order). -->
+    <Grid>
 
-            <Label Text="Número de telefono: Ej: 1155551234"/>
-            <Entry Text="{Binding Telefono}"  Placeholder=""/>
+        <ScrollView>
+            <VerticalStackLayout Padding="30,0" Spacing="25">
 
-            <Button x:Name="btnRealizarLLamada" Text="LLamar" Command="{Binding RealizarLLamadaCommand}"  />
+                <Label Text="Número de telefono: Ej: 1155551234"/>
+                <Entry Text="{Binding Telefono}" Placeholder=""/>
 
-        </VerticalStackLayout>
-    </ScrollView>
+                <Button x:Name="btnRealizarLLamada"
+                        Text="LLamar"
+                        Command="{Binding RealizarLLamadaCommand}" />
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Overlay de permisos / espera / errores. BindingContext apunta al overlay del coordinador. -->
+        <controls:CallPermissionOverlayView BindingContext="{Binding CallOverlay}" />
+
+    </Grid>
 
 </ContentPage>
