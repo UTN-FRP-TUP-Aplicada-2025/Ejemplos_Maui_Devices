@@ -1,6 +1,38 @@
          
 # Errores en compilación
 
+	<!--
+	<PropertyGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">
+		<AndroidLdFlags>-Wl,-z,max-page-size=16384</AndroidLdFlags>
+		<AndroidUseAapt2>true</AndroidUseAapt2>
+		<RuntimeIdentifiers>android-arm;android-arm64;android-x86;android-x64</RuntimeIdentifiers>
+		<InvariantGlobalization>false</InvariantGlobalization>
+	</PropertyGroup>
+	
+
+	<PropertyGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">
+		<AndroidLdFlags>-Wl,-z,max-page-size=16384</AndroidLdFlags>
+		<RuntimeIdentifiers>android-arm;android-arm64;android-x86;android-x64</RuntimeIdentifiers>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="$(TargetFramework.Contains('-ios')) and '$(Configuration)' == 'Release'">
+		<UseInterpreter>true</UseInterpreter>
+		<PublishTrimmed>true</PublishTrimmed>
+
+		<MtouchLink>SdkOnly</MtouchLink>
+		<MtouchExtraArgs>--linkskip=System.Net.Mail --linkskip=System.Net.Ping</MtouchExtraArgs>
+		<EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
+
+		<RunAOTCompilation Condition="'$(RuntimeIdentifier)' == 'ios-arm64'">true</RunAOTCompilation>
+		<RunAOTCompilation Condition="'$(RuntimeIdentifier)' != 'ios-arm64'">false</RunAOTCompilation>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="$(TargetFramework.Contains('-ios')) AND '$(RuntimeIdentifier)' == 'iossimulator-arm64'">
+		<MtouchExtraArgs>$(MtouchExtraArgs) --setenv:DYLD_LIBRARY_PATH=/usr/lib/system/introspection -gcc_flags "-Wl,-ignore_auto_link -Wl,-read_only_relocs,suppress"</MtouchExtraArgs>
+		<MtouchLink>SdkOnly</MtouchLink>
+		<NoWarn>$(NoWarn);MT5209;MT5212;MT5213</NoWarn>
+	</PropertyGroup>
+	-->
 
 ## pipeline:
 ```log

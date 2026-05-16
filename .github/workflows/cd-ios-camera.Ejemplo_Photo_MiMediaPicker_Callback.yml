@@ -28,7 +28,7 @@ env:
 
   DOTNET_VERSION_WORKLOAD: '10.0.100'
 
-  # ─── Datos específicos del proyecto Camera ─────────────────────────────────── 
+  # ─── Datos específicos del proyecto ────────────────────────────────────────── 
   PACKAGE_NAME: 'com.ejemplos.photo.mimediapicker.callback'
   SOLUTION_FOLDER: 'Ejemplos_Devices'
   PROJECTS_ROOT: 'Camera' 
@@ -37,7 +37,7 @@ env:
   PROJECT_FILE: 'Ejemplo_Photo_MiMediaPicker_Callback.csproj'
   # ─────────────────────────────────────────────────────────────────────────────
 
-  VERSION_FECHA: '20260415'
+  VERSION_FECHA: '20260515'
 
   RUNTIME_IDENTIFIER_SIMULATOR: 'iossimulator-arm64' 
   BUILD_CONFIG_SIMULATOR: 'Release'
@@ -49,7 +49,7 @@ env:
 jobs:
   publish-ios:
     runs-on: macos-15
-    name: iOS Publish - Phone - Ejemplo_Photo_MiMediaPicker_Callback
+    name: iOS Publish - Camera - Ejemplo_Photo_MiMediaPicker_Callback
 
     steps:
     - name: Verificar arquitectura del runner (la mv) 
@@ -79,14 +79,16 @@ jobs:
         #  Ejemplo_LectorQR_Dialog.csproj
         #  ...
 
-    - name: "instalando utilidades para descarga desde google drive gdown"
+    # XCODE
+
+    - name: "XCODE: nstalando utilidades para descarga desde google drive gdown"
       run: |
         set -euxo pipefail
         df -h /
         pipx install gdown
         which gdown
-
-    - name: "Xcode: Descarga instalador desde google drive"
+            
+    - name: "XCODE: Descarga instalador desde google drive"
       run: |
         echo "XCODE_GOOGLE_FILE_ID: ${{ env.XCODE_GOOGLE_FILE_INSTALLER_ID }}"
         FILE_ID="${{ env.XCODE_GOOGLE_FILE_INSTALLER_ID }}"
@@ -148,6 +150,8 @@ jobs:
         echo "carpeta que luego el sdk en el build busca el actool "
         ls /Applications/Xcode_${{ env.XCODE_VERSION_SHORT }}.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/
 
+    # NETCORE
+
     - name: .NETCORE. Elimina las versiones de net que no se usan
       run: |
         sudo rm -rf /Users/runner/.dotnet
@@ -184,6 +188,8 @@ jobs:
         echo "Runtimes dotnet version: $(dotnet --list-runtimes)"
         echo "Sdks disponibles: $(ls /Users/runner/.dotnet/sdk)"
     
+    # WORKLOADS
+
     - name: WORKLOADS. Verificar disponibles
       run: |
         echo "Imprime todo lo que tiene: $(dotnet workload search)"
@@ -207,6 +213,8 @@ jobs:
       run: |
         dotnet workload list --verbosity detailed
          
+    # WORKLOADS
+
     - name: PATH PROJECT AND SOLUTION.
       run: |
         # workspace/Ejemplos_Devices/QR/Ejemplo_LectorQR_Dialog  <- SOLUTION_PATH
@@ -236,12 +244,16 @@ jobs:
         APP_VERSION_BUILD="${SHORT_VERSION}_${BUNDLE_VERSION}"
         echo "APP_VERSION_BUILD=$APP_VERSION_BUILD" >> $GITHUB_ENV
 
-    - name: PRE-BUILD. Validar manifests iOS
+    # MANIFEST
+
+    - name: MANIFEST. Validar manifests iOS
       run: |
         echo "Validando plists"
         plutil -lint "${{ env.PROJECT_PATH }}/Platforms/iOS/Info.plist" || { echo "ERROR: Info.plist inválido"; exit 1; }      
         echo "Todos los plists válidos"
-        
+       
+    # BUILD SIMULADOR
+
     - name: BUILD SIMULADOR. Limpiar proyecto
       run: |
         cd ${{ env.SOLUTION_PATH }}
@@ -298,6 +310,8 @@ jobs:
         echo "BASE_PATH=$BASE_PATH" >> $GITHUB_ENV
         echo "APP_PATH=$APP_PATH" >> $GITHUB_ENV
            
+    # BUILD SIMULADOR
+
     - name: BUILD SIMULADOR. Firma robusta 
       run: |
         
@@ -343,6 +357,8 @@ jobs:
         #codesign -d --entitlements :- "${{ env.APP_PATH }}/${{ env.PROJECT_FOLDER }}"
         codesign -d --entitlements :- "${{ env.APP_PATH }}/${{ env.PROJECT_NAME }}"
         
+    # PUBLISH SIMULADOR
+
     - name: BUILD RELEASE SIMULADOR. Zip del .app
       run: |  
         echo "APP_PATH: ${{ env.APP_PATH }}"
@@ -351,7 +367,6 @@ jobs:
         echo "ZIP NAME: $ZIP_NAME"
 
         cd "${{ env.BASE_PATH }}"
-        # zip -ry "$ZIP_NAME" "${{ env.PROJECT_FOLDER }}.app"
         zip -ry "$ZIP_NAME" "${{ env.PROJECT_NAME }}.app"
                         
         echo "ZIP_NAME=$ZIP_NAME" >> $GITHUB_ENV
@@ -364,6 +379,8 @@ jobs:
         path: |          
           ${{ env.ZIP_PATH}}
         retention-days: 1
+
+     # RUN SIMULADOR
 
     - name: Install ffmpeg
       run: |    

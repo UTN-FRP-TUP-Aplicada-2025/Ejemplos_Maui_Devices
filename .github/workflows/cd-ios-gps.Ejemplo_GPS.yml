@@ -81,7 +81,7 @@ jobs:
 
     # XCODE
 
-    - name: "instalando utilidades para descarga desde google drive gdown"
+    - name: "XCODE: nstalando utilidades para descarga desde google drive gdown"
       run: |
         set -euxo pipefail
         df -h /
