@@ -46,12 +46,13 @@
 		<key>CFBundleVersion</key>
 		<string>1.0</string>
 
-		<key>CFBundleShortVersionString</key>vvvv
+		<key>CFBundleShortVersionString</key>
 		<string>1.0</string>
 
 		<key>UILaunchStoryboardName</key>
 		<string>LaunchScreen</string>
 
+		<!-- Permisos necesarios para la captura de medios -->
 		<key>LSRequiresIPhoneOS</key>
 		<true/>
 
