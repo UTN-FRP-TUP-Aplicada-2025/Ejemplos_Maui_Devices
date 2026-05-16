@@ -37,7 +37,7 @@ env:
   PROJECT_FILE: 'Ejemplo_Maui_GPS.csproj'
   # ─────────────────────────────────────────────────────────────────────────────
 
-  VERSION_FECHA: '20260414'
+  VERSION_FECHA: '20260515'
 
   RUNTIME_IDENTIFIER_SIMULATOR: 'iossimulator-arm64' 
   BUILD_CONFIG_SIMULATOR: 'Release'

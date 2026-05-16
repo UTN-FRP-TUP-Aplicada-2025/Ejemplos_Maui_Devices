@@ -1,4 +1,4 @@
-﻿name: CD iOS - Camera - Ejemplo_Imagen_Normalizacion
+﻿name: CD iOS - Camera - Ejemplo_Photo_MiMediaPicker_Callback_Normalizacion
 
 on:
   
@@ -7,7 +7,7 @@ on:
       - main
       
     paths:
-      - 'Ejemplos_Devices\Camera\Ejemplo_Imagen_Normalizacion/**'
+      - 'Ejemplos_Devices\Camera\Ejemplo_Photo_MiMediaPicker_Callback_Normalizacion/**'
       - '!**.md'
       - '!**/*.gitignore'
       - '!**/*.gitattributes'
@@ -49,7 +49,7 @@ env:
 jobs:
   publish-ios:
     runs-on: macos-15
-    name: iOS Publish - Camera - Ejemplo_Imagen_Normalizacion
+    name: iOS Publish - Camera - Ejemplo_Photo_MiMediaPicker_Callback_Normalizacion
 
     steps:
     - name: Verificar arquitectura del runner (la mv) 

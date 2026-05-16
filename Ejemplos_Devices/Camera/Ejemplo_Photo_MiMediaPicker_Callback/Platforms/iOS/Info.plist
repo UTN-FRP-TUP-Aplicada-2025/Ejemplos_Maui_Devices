@@ -1,62 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-<dict>
-	<key>LSRequiresIPhoneOS</key>
-	<true/>
-	
-	<key>UIDeviceFamily</key>
-	<array>
-		<integer>1</integer>
-		<integer>2</integer>
-	</array>
-	
-	<key>UIRequiredDeviceCapabilities</key>
-	<array>
-		<string>arm64</string>
-	</array>
-	
-	<key>UISupportedInterfaceOrientations</key>
-	<array>
-		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
-	</array>
-	
-	<key>UISupportedInterfaceOrientations~ipad</key>
-	<array>
-		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationPortraitUpsideDown</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
-	</array>
-	
-	<key>XSAppIconAssets</key>
-	<string>Assets.xcassets/appicon.appiconset</string>
+	<dict>
+		<key>LSRequiresIPhoneOS</key>
+		<true/>
 
-	<key>MinimumOSVersion</key>
-	<string>15.0</string>
+		<key>UIDeviceFamily</key>
+		<array>
+			<integer>1</integer>
+			<integer>2</integer>
+		</array>
 
-	<key>CFBundleName</key>
-	<string>Ejemplo_Mi_MediaPickerCallback</string>
+		<key>UIRequiredDeviceCapabilities</key>
+		<array>
+			<string>arm64</string>
+		</array>
 
-	<key>CFBundleDisplayName</key>
-	<string>Mi MediaPicker Callback</string>
+		<key>UISupportedInterfaceOrientations</key>
+		<array>
+			<string>UIInterfaceOrientationPortrait</string>
+			<string>UIInterfaceOrientationLandscapeLeft</string>
+			<string>UIInterfaceOrientationLandscapeRight</string>
+		</array>
 
-	<key>CFBundleIdentifier</key>
-	<string>com.ejemplos.photo.mimediapicker.callback</string>
+		<key>UISupportedInterfaceOrientations~ipad</key>
+		<array>
+			<string>UIInterfaceOrientationPortrait</string>
+			<string>UIInterfaceOrientationPortraitUpsideDown</string>
+			<string>UIInterfaceOrientationLandscapeLeft</string>
+			<string>UIInterfaceOrientationLandscapeRight</string>
+		</array>
 
-	<key>CFBundleVersion</key>
-	<string>1.0</string>
-	
-	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+		<key>XSAppIconAssets</key>
+		<string>Assets.xcassets/appicon.appiconset</string>
 
-	<key>UILaunchStoryboardName</key>
-	<string>LaunchScreen</string>
+		<key>MinimumOSVersion</key>
+		<string>15.0</string>
 
-	<key>NSCameraUsageDescription</key>
-	<string>La app necesita acceso a la cámara para tomar fotos.</string>
-	
-</dict>
+		<key>CFBundleName</key>
+		<string>Ejemplo_Photo_MiMediaPicker_Callback</string>
+
+		<key>CFBundleDisplayName</key>
+		<string>Mi MediaPicker Callback</string>
+
+		<key>CFBundleIdentifier</key>
+		<string>com.ejemplos.photo.mimediapicker.callback</string>
+
+		<key>CFBundleVersion</key>
+		<string>1.0</string>
+
+		<key>CFBundleShortVersionString</key>
+		<string>1.0</string>
+
+		<key>UILaunchStoryboardName</key>
+		<string>LaunchScreen</string>
+
+		<!-- Permisos necesarios para la captura de medios -->
+		<key>NSCameraUsageDescription</key>
+		<string>Esta aplicación necesita acceso a la cámara para tomar fotos.</string>
+
+		<key>NSMicrophoneUsageDescription</key>
+		<string>Esta aplicación necesita acceso al micrófono para la captura de medios.</string>
+
+	</dict>
 </plist>
