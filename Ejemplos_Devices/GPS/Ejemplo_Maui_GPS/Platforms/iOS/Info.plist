@@ -52,9 +52,11 @@
 
 		<key>UILaunchStoryboardName</key>
 		<string>LaunchScreen</string>
-		
+
+		<!-- Permisos necesarios para la captura de medios -->
 		<key>LSRequiresIPhoneOS</key>
 		<true/>
+
 		<!--
 		OBLIGATORIO para ubicación en primer plano.
 		Sin esta clave la app crashea al pedir ubicación.
@@ -65,7 +67,6 @@
 		<!--
 		Solo necesario si pedís ubicación en SEGUNDO PLANO (Always).
 		-->
-		<!-- <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>La app necesita acceso permanente a tu ubicación para tracking en segundo plano.</string> -->
+		<!-- <key>NSLocationAlwaysAndWhenInUseUsageDescription</key> <string>La app necesita acceso permanente a tu ubicación para tracking en segundo plano.</string> -->
 	</dict>
 </plist>

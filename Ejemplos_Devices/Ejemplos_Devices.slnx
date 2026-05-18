@@ -46,6 +46,7 @@
   <Folder Name="/Docs/">
     <File Path="../README.md" />
     <File Path="Docs/AsyncRelayCommandOptions.md" />
+    <File Path="Docs/GetEnviromentVersion.md" />
   </Folder>
   <Folder Name="/GPS/">
     <Project Path="GPS/Ejemplo_Maui_GPS/Ejemplo_Maui_GPS.csproj" Id="96dab9f5-6476-4338-b50d-473a33b0eefd">
@@ -130,6 +131,7 @@
   <Folder Name="/Utils/Scripts/">
     <File Path="scripts/Ejemplo_Maui_GPS_launch.bat" />
     <File Path="scripts/Ejemplo_Photo_MediaPicker_launch.bat" />
+    <File Path="scripts/GetEnviromentVersion.bat" />
   </Folder>
   <Folder Name="/Utils/Utilities/">
     <File Path="../Utilities/simular.sh" />

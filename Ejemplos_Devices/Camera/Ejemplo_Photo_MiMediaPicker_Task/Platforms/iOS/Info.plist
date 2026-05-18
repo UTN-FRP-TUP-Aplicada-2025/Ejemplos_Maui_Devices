@@ -2,9 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 	<dict>
-		<key>LSRequiresIPhoneOS</key>
-		<true/>
-
 		<key>UIDeviceFamily</key>
 		<array>
 			<integer>1</integer>
@@ -56,6 +53,9 @@
 		<string>LaunchScreen</string>
 
 		<!-- Permisos necesarios para la captura de medios -->
+		<key>LSRequiresIPhoneOS</key>
+		<true/>
+		
 		<key>NSCameraUsageDescription</key>
 		<string>Usamos la cámara para que puedas adjuntar fotos a los formularios que lo requieran.</string>
 

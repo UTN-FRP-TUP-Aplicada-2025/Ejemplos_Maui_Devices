@@ -52,6 +52,7 @@
 		<key>UILaunchStoryboardName</key>
 		<string>LaunchScreen</string>
 
+		<!-- Permisos necesarios para la captura de medios -->
 		<key>LSRequiresIPhoneOS</key>
 		<true/>
 		

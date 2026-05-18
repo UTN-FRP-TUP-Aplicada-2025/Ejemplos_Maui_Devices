@@ -7,7 +7,7 @@ on:
       - main
       
     paths:
-      - 'Ejemplos_Devices\Camera\Ejemplo_Photo_MiMediaPicker_Callback_Normalizacion/**'
+      - 'Ejemplos_Devices/Camera/Ejemplo_Photo_MiMediaPicker_Callback_Normalizacion/**'
       - '!**.md'
       - '!**/*.gitignore'
       - '!**/*.gitattributes'
