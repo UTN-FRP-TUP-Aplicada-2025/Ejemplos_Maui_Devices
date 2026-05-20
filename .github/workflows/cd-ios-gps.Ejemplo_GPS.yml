@@ -2,30 +2,32 @@
 
 on:
   
-  # push:
-  #   branches: 
-  #     - main
+  push:
+    branches: 
+      - main
 
-  #   paths:
-  #     - 'Ejemplos_Devices/GPS/Ejemplo_Maui_GPS/**'
-  #     - '!**.md'
-  #     - '!**/*.gitignore'
-  #     - '!**/*.gitattributes'
+    paths:
+      - 'Ejemplos_Devices/GPS/Ejemplo_Maui_GPS/**'
+      - '!**.md'
+      - '!**/*.gitignore'
+      - '!**/*.gitattributes'
 
   workflow_call:
 
 env:
+  #XCODE_VERSION: '26.3' 
+  #XCODE_VERSION_SHORT: '26.3'
+  #XCODE_FILE_INSTALLER: 'Xcode_26.3_Universal.xip'
+  #XCODE_GOOGLE_FILE_INSTALLER_ID: '1bOvw-C1WBBoTR1mlg1o5t8ZYdjvB95gB'
+  
   XCODE_VERSION: '26.0' 
-
   XCODE_VERSION_SHORT: '26.0'
-
   XCODE_FILE_INSTALLER: 'Xcode_26_Universal.xip'
   XCODE_GOOGLE_FILE_INSTALLER_ID: '1GoDmCUBOMKM5nnXCXxxnAgoKpSwZvaMP'
-  #XCODE_GOOGLE_FILE_INSTALLER_ID: '1BvZ_MSocNVtavljWLENUUc8YA5WPDAwt'
-
-  DOTNET_VERSION: '10.0.102'
+  
+  #DOTNET_VERSION: '10.0.102'
+  DOTNET_VERSION: '10.0.300'
   DOTNET_TARGET_VERSION: 'net10.0'
-
   DOTNET_VERSION_WORKLOAD: '10.0.100'
 
   # ─── Datos específicos del proyecto GPS ────────────────────────────────────── 
@@ -37,7 +39,7 @@ env:
   PROJECT_FILE: 'Ejemplo_Maui_GPS.csproj'
   # ─────────────────────────────────────────────────────────────────────────────
 
-  VERSION_FECHA: '20260515'
+  VERSION_FECHA: '20260519'
 
   RUNTIME_IDENTIFIER_SIMULATOR: 'iossimulator-arm64' 
   BUILD_CONFIG_SIMULATOR: 'Release'
