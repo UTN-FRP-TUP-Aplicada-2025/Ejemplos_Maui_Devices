@@ -1,9 +1,9 @@
 ﻿using BarcodeScanner.Mobile;
 using Microsoft.Extensions.Logging;
 
-namespace Ejemplo_LectorQR_Dialog;
+namespace Ejemplo_LectorQR_Dialog; 
 
-public static class MauiProgram
+public static class MauiProgram 
 {
     public static MauiApp CreateMauiApp()
     {

@@ -51,7 +51,7 @@ env:
 jobs:
   publish-ios:
     runs-on: macos-15
-    name: iOS Publish - GPS - Ejemplo_Maui_GPS
+    name: iOS Publish - Phone - Ejemplo_Maui_Dialer
 
     steps:
     - name: Verificar arquitectura del runner (la mv) 

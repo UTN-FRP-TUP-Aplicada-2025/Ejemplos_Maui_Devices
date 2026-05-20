@@ -1,5 +1,7 @@
 using BarcodeScanner.Mobile;
+
 using Ejemplo_LectorQR_Dialog.Models;
+
 using System.Diagnostics;
 
 namespace Ejemplo_LectorQR_Dialog.Pages;

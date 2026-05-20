@@ -1,11 +1,12 @@
 ﻿using Ejemplo_Maui_DirectCall.Pages;
 using Ejemplo_Maui_DirectCall.Services;
 using Ejemplo_Maui_DirectCall.ViewModels;
+
 using Microsoft.Extensions.Logging;
 
 namespace Ejemplo_Maui_DirectCall;
 
-public static class MauiProgram
+public static class MauiProgram 
 {
     public static MauiApp CreateMauiApp()
     {

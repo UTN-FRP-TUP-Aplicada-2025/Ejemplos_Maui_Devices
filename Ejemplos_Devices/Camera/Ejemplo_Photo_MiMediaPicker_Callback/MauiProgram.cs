@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Ejemplo_Photo_MiMediaPicker_Callback;
 
-public static class MauiProgram
+public static class MauiProgram 
 { 
     public static MauiApp CreateMauiApp()
     {

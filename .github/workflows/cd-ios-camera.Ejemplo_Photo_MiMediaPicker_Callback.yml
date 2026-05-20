@@ -50,7 +50,7 @@ env:
 jobs:
   publish-ios:
     runs-on: macos-15
-    name: iOS Publish - GPS - Ejemplo_Maui_GPS
+    name: iOS Publish - Camera - Ejemplo_Photo_MiMediaPicker_Callback
 
     steps:
     - name: Verificar arquitectura del runner (la mv) 

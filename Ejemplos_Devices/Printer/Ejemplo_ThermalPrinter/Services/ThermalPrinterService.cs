@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ESCPOS_NET;
-using ESCPOS_NET.Emitters;
+﻿using ESCPOS_NET.Emitters;
 using ESCPOS_NET.Utilities;
 
 #if ANDROID
