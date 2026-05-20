@@ -40,7 +40,7 @@ env:
   PROJECT_FILE: 'Ejemplo_Photo_MiMediaPicker_Callback.csproj'
   # ─────────────────────────────────────────────────────────────────────────────
 
-    RUNTIME_IDENTIFIER_SIMULATOR: 'iossimulator-arm64' 
+  RUNTIME_IDENTIFIER_SIMULATOR: 'iossimulator-arm64' 
   BUILD_CONFIG_SIMULATOR: 'Release'
   DEVICE_SIMULATOR: 'iPhone 17 Pro Max'
 
