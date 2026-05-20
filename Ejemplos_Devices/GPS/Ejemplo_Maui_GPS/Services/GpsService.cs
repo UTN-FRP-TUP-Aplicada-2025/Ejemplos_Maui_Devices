@@ -14,7 +14,7 @@ public class GpsService
 
     public async Task<GpsResult> ObtenerUbicacionAsync(CancellationToken ct = default)
     {
-        // 1) Resolver permisos
+        #region Resolver permisos
         var perm = await _permissions.RequestAsync();
         switch (perm)
         {
@@ -28,8 +28,9 @@ public class GpsService
             default:
                 return new GpsResult.PermissionDenied(CanRetry: false);
         }
+        #endregion 
 
-        // 2) Leer ubicación
+        #region Leer ubicación
         try
         {
             /*
@@ -64,5 +65,6 @@ public class GpsService
         {
             return new GpsResult.Failure(ex.Message);
         }
+        #endregion 
     }
 }

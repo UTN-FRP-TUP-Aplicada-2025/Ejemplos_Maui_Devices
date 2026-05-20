@@ -27,22 +27,16 @@
 
             <VerticalStackLayout Spacing="20" HorizontalOptions="Center" VerticalOptions="Center" Padding="32">
 
-                <!-- Ícono de cámara tachada -->
                 <Label Text="no_photography" FontFamily="MaterialIconsOutlined" FontSize="80" TextColor="#AAAAAA" HorizontalOptions="Center"/>
 
-                <!-- Título -->
                 <Label x:Name="LblPermissionTitle" Text="Sin acceso a la cámara" FontSize="20" FontAttributes="Bold" TextColor="White" HorizontalOptions="Center" HorizontalTextAlignment="Center"/>
 
-                <!-- Descripción -->
                 <Label x:Name="LblPermissionMessage" Text="Para tomar fotos necesitamos acceso a la cámara." FontSize="14" TextColor="#CCCCCC" HorizontalOptions="Center" HorizontalTextAlignment="Center"/>
 
-                <!-- Botón pedir permiso (visible cuando se puede reintentar) -->
                 <Button x:Name="BtnPedirPermiso" Text="Pedir permiso" Clicked="OnPedirPermisoClicked" BackgroundColor="#512BD4" TextColor="White" CornerRadius="8" Padding="20,12" HorizontalOptions="Center" IsVisible="False"/>
 
-                <!-- Botón ir a Settings (visible cuando es denegado permanente) -->
                 <Button x:Name="BtnGoToSettings" Text="Abrir configuración" Clicked="OnGoToSettingsClicked" BackgroundColor="#512BD4" TextColor="White" CornerRadius="8" Padding="20,12" HorizontalOptions="Center"/>
 
-                <!-- Botón volver -->
                 <Button Text="Volver" Clicked="OnVolverClicked" BackgroundColor="Transparent" TextColor="#AAAAAA" BorderColor="#555555" BorderWidth="1" CornerRadius="8" Padding="20,12" HorizontalOptions="Center"/>
 
             </VerticalStackLayout>

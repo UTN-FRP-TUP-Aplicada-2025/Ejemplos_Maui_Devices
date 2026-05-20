@@ -1,5 +1,4 @@
-﻿using AndroidX.Navigation;
-using Ejemplo_Imagen_Normalizacion.Utilities;
+﻿using Ejemplo_Photo_MiMediaPicker_Callback_Normalizacion.Utilities;
 
 namespace Ejemplo_Photo_MiMediaPicker_Callback_Normalizacion.Pages;
 

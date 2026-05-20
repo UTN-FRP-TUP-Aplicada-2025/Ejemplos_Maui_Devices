@@ -2,15 +2,15 @@
 
 on:
   
-  # push:
-  #   branches: 
-  #     - main
+  push:
+    branches: 
+      - main
 
-  #   paths:
-  #     - 'Ejemplos_Devices/QR/Ejemplo_LectorQR_Dialog/**'
-  #     - '!**.md'
-  #     - '!**/*.gitignore'
-  #     - '!**/*.gitattributes'
+    paths:
+      - 'Ejemplos_Devices/QR/Ejemplo_LectorQR_Dialog/**'
+      - '!**.md'
+      - '!**/*.gitignore'
+      - '!**/*.gitattributes'
 
   workflow_call:
 
@@ -40,9 +40,7 @@ env:
   PROJECT_FILE: 'Ejemplo_LectorQR_Dialog.csproj'
   # ─────────────────────────────────────────────────────────────────────────────
 
-  VERSION_FECHA: '20260414'
-
-  RUNTIME_IDENTIFIER_SIMULATOR: 'iossimulator-arm64' 
+    RUNTIME_IDENTIFIER_SIMULATOR: 'iossimulator-arm64' 
   BUILD_CONFIG_SIMULATOR: 'Release'
   DEVICE_SIMULATOR: 'iPhone 17 Pro Max'
 
@@ -52,7 +50,7 @@ env:
 jobs:
   publish-ios:
     runs-on: macos-15
-    name: iOS Publish - QR - Ejemplo_LectorQR_Dialog
+    name: iOS Publish - GPS - Ejemplo_Maui_GPS
 
     steps:
     - name: Verificar arquitectura del runner (la mv) 
@@ -216,7 +214,7 @@ jobs:
       run: |
         dotnet workload list --verbosity detailed
          
-    # WORKLOADS
+    # SET PATH PROJECT
 
     - name: PATH PROJECT AND SOLUTION.
       run: |
@@ -226,15 +224,23 @@ jobs:
         echo "....> $(pwd)"
         
         SOLUTION_PATH=${{ github.workspace }}/${{ env.SOLUTION_FOLDER }}
-        #PROJECT_PATH=$SOLUTION_PATH/${{ env.PROJECT_FOLDER }}
+        SOLUTION_PATH=$(realpath "$SOLUTION_PATH")
+
         PROJECT_PATH=$SOLUTION_PATH/${{ env.PROJECTS_ROOT }}/${{ env.PROJECT_NAME}}
-                
+        PROJECT_PATH=$(realpath "$PROJECT_PATH")
+
+        PLIST_PATH=$SOLUTION_PATH/${{ env.PROJECTS_ROOT }}/${{ env.PROJECT_NAME}}/Platforms/iOS/Info.plist
+        PLIST_PATH=$(realpath "$PLIST_PATH")
+        
         echo "PROJECT_PATH=$PROJECT_PATH" >> $GITHUB_ENV
         echo "SOLUTION_PATH=$SOLUTION_PATH" >> $GITHUB_ENV
+        echo "PLIST_PATH=$PLIST_PATH" >> $GITHUB_ENV
 
         echo "Recursive path: $(ls -lshR $SOLUTION_PATH)"
 
-    - name: PRE-BUILD. Versionado del bundle desde la version del app
+    # VERSIONADO BUNDLE
+
+    - name: VERSIONADO. PROFILE. Versionado del bundle desde la version del app
       run: |  
         PLIST_PATH=${{ env.PROJECT_PATH }}/Platforms/iOS/Info.plist
                 
@@ -246,6 +252,12 @@ jobs:
         
         APP_VERSION_BUILD="${SHORT_VERSION}_${BUNDLE_VERSION}"
         echo "APP_VERSION_BUILD=$APP_VERSION_BUILD" >> $GITHUB_ENV
+
+    - name: VERSIONADO. FECHA
+      run: |
+        VERSION_FECHA=$(date +"%Y%m%d%H%M")
+        echo "version fecha: $VERSION_FECHA"
+        echo "VERSION_FECHA=$VERSION_FECHA" >> $GITHUB_ENV
 
     # MANIFEST
 
@@ -264,6 +276,14 @@ jobs:
         #dotnet clean "${{ env.PROJECT_FOLDER }}/${{ env.PROJECT_FILE }}" -f ${{ env.DOTNET_TARGET_VERSION }}-ios
         dotnet clean "${{ env.PROJECTS_ROOT }}/${{ env.PROJECT_NAME}}/${{ env.PROJECT_FILE }}" -f ${{ env.DOTNET_TARGET_VERSION }}-ios
         # dotnet clean Ejemplo_LectorQR_Dialog.csproj -f net10.0-ios
+
+    # - name: PRE-BUILD. Generar ApiKeys.cs desde secreto
+    #   run: |
+    #     APIKEYS_PATH=${{ env.PROJECT_PATH }}/Services/ApiKeys.cs
+    #     cat "$APIKEYS_PATH.template" \
+    #       | sed 's/REEMPLAZAR_CON_TU_API_KEY/${{ secrets.GOOGLE_MAPS_API_KEY }}/' \
+    #       > "$APIKEYS_PATH"
+    #     echo "ApiKeys.cs generado en: $APIKEYS_PATH"
 
     - name: BUILD SIMULADOR. Restaurar dependencias
       run: |
@@ -305,7 +325,7 @@ jobs:
         BASE_PATH=${{ env.PROJECT_PATH }}/bin/${{ env.BUILD_CONFIG_SIMULATOR }}/${{ env.DOTNET_TARGET_VERSION }}-ios/${{ env.RUNTIME_IDENTIFIER_SIMULATOR }}
         #APP_PATH=${BASE_PATH}/${{ env.PROJECT_FOLDER }}.app
         APP_PATH=${BASE_PATH}/${{ env.PROJECT_NAME }}.app
-        
+        APP_PATH=$(realpath "$APP_PATH")
 
         echo "BASE_PATH: $BASE_PATH"      
         echo "APP_PATH: $APP_PATH"

@@ -29,9 +29,7 @@ public class GpsCoordinator
     {
         _cts?.Cancel();
         _cts?.Dispose();
-        _cts = ct == default
-            ? new CancellationTokenSource()
-            : CancellationTokenSource.CreateLinkedTokenSource(ct);
+        _cts = ct == default ? new CancellationTokenSource() : CancellationTokenSource.CreateLinkedTokenSource(ct);
 
         await MainThread.InvokeOnMainThreadAsync(Overlay.ShowBusy);
         try

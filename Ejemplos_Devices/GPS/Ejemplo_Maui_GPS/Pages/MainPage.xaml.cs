@@ -21,8 +21,6 @@ public partial class MainPage : ContentPage
     private async void Button_Clicked(object sender, EventArgs e)
     {
         var result = await _coord.CapturarAsync();
-        lbSalida.Text = result is GpsResult.Success s
-            ? $"Lat: {s.Location.Latitude:F6}, Lon: {s.Location.Longitude:F6}"
-            : "Sin ubicación.";
+        lbSalida.Text = result is GpsResult.Success s ? $"Lat: {s.Location.Latitude:F6}, Lon: {s.Location.Longitude:F6}" : "Sin ubicación.";
     }
 }

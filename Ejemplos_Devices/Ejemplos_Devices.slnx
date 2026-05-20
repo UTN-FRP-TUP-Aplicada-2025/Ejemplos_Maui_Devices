@@ -1,32 +1,14 @@
 <Solution>
-  <Folder Name="/Phone/">
-    <Project Path="Phone/Ejemplo_Maui_Dialer/Ejemplo_Maui_Dialer.csproj" Id="872b4a88-1620-4090-ae51-3d24083e9e7a">
-      <Deploy Solution="Debug|*" />
-    </Project>
-    <Project Path="Phone/Ejemplo_Maui_DirectCall/Ejemplo_Maui_DirectCall.csproj" Id="016990c8-ce16-4347-a0cf-77ae09b4603c">
-      <Deploy Solution="Debug|*" />
-    </Project>
-  </Folder>
-  <Folder Name="/Printer/">
-    <Project Path="Printer/Ejemplo_ThermalPrinter/Ejemplo_ThermalPrinter.csproj" Id="28245c93-21a9-4b06-8622-0baf1b16cdba">
-      <Deploy Solution="Debug|*" />
-    </Project>
-  </Folder>
-  <Folder Name="/.github/" />
-  <Folder Name="/.github/workflows/">
-    <File Path="../.github/workflows/cd-ios-camera.Ejemplo_Photo_MiMediaPicker_Callback_Normalizacion.yml" />
-    <File Path="../.github/workflows/cd-ios-camera.Ejemplo_Photo_MiMediaPicker_Callback.yml" />
-    <File Path="../.github/workflows/cd-ios-camera.Ejemplo_Photo_MiMediaPicker_Task.yml" />
-    <File Path="../.github/workflows/cd-ios-gps.Ejemplo_GPS.yml" />
-    <File Path="../.github/workflows/cd-ios-phone.Ejemplo_Dialer.yml" />
-    <File Path="../.github/workflows/cd-ios-phone.Ejemplo_DirectCall.yml" />
-    <File Path="../.github/workflows/cd-ios-qr.Ejemplo_LectorQR_Dialog.yml" />
-    <File Path="../.github/workflows/Readme.md" />
-  </Folder>
   <Folder Name="/.Utilities/">
     <File Path="../Utilities/simular.sh" />
   </Folder>
-  <Folder Name="/Camera/">
+  <Folder Name="/Docs/">
+    <File Path="../README.md" />
+    <File Path="Docs/AsyncRelayCommandOptions.md" />
+    <File Path="Docs/GetEnviromentVersion.md" />
+  </Folder>
+  <Folder Name="/Ejemplos/" />
+  <Folder Name="/Ejemplos/Camera/">
     <Project Path="Camera/Ejemplo_Photo_MediaPicker/Ejemplo_Photo_MediaPicker.csproj" Id="b9e9559a-bfbf-45e1-be27-127f510308b2">
       <Deploy Solution="Debug|*" />
     </Project>
@@ -39,49 +21,60 @@
     <Project Path="Camera/Ejemplo_Photo_MiMediaPicker_Task/Ejemplo_Photo_MiMediaPicker_Task.csproj" Id="c009f442-a562-47e7-bdbd-faf3eee64eba">
       <Deploy Solution="Debug|*" />
     </Project>
+    <Project Path="Camera/Ejemplo_Photo_MiMediaSelfie_Callback_Normalizacion/Ejemplo_Photo_MiMediaSelfie_Callback_Normalizacion.csproj" Id="658bf61f-be5a-473e-97c6-e30d96cbb78e">
+      <Deploy Solution="Debug|*" />
+    </Project>
   </Folder>
-  <Folder Name="/Camera/Docs/">
+  <Folder Name="/Ejemplos/Camera/Docs/">
     <File Path="Camera/Ejemplo_Docs_Photo/Readme.md" />
   </Folder>
-  <Folder Name="/Docs/">
-    <File Path="../README.md" />
-    <File Path="Docs/AsyncRelayCommandOptions.md" />
-    <File Path="Docs/GetEnviromentVersion.md" />
-  </Folder>
-  <Folder Name="/GPS/">
+  <Folder Name="/Ejemplos/GPS/">
     <Project Path="GPS/Ejemplo_Maui_GPS/Ejemplo_Maui_GPS.csproj" Id="96dab9f5-6476-4338-b50d-473a33b0eefd">
       <Deploy Solution="Debug|*" />
     </Project>
   </Folder>
-  <Folder Name="/GPS/Docs/">
+  <Folder Name="/Ejemplos/GPS/Docs/">
     <File Path="GPS/Docs_GPS/Readme.md" />
   </Folder>
-  <Folder Name="/Maps/">
+  <Folder Name="/Ejemplos/Maps/">
     <Project Path="Maps/Ejemplo_Maui_Mapas/Ejemplo_Maui_Mapas.csproj" Id="d2accbd4-c163-4f24-b1e1-f7eb49a6582d">
       <Deploy Solution="Debug|*" />
     </Project>
   </Folder>
-  <Folder Name="/Maps/Docs/">
+  <Folder Name="/Ejemplos/Maps/Docs/">
     <File Path="Maps/Ejemplo_Docs_Maps/Readme.md" />
   </Folder>
-  <Folder Name="/Printer/Docs/">
+  <Folder Name="/Ejemplos/Phone/">
+    <Project Path="Phone/Ejemplo_Maui_Dialer/Ejemplo_Maui_Dialer.csproj" Id="872b4a88-1620-4090-ae51-3d24083e9e7a">
+      <Deploy Solution="Debug|*" />
+    </Project>
+    <Project Path="Phone/Ejemplo_Maui_DirectCall/Ejemplo_Maui_DirectCall.csproj" Id="016990c8-ce16-4347-a0cf-77ae09b4603c">
+      <Deploy Solution="Debug|*" />
+    </Project>
+  </Folder>
+  <Folder Name="/Ejemplos/Printer/">
+    <Project Path="Printer/Ejemplo_ThermalPrinter/Ejemplo_ThermalPrinter.csproj" Id="28245c93-21a9-4b06-8622-0baf1b16cdba">
+      <Deploy Solution="Debug|*" />
+    </Project>
+  </Folder>
+  <Folder Name="/Ejemplos/Printer/Docs/">
     <File Path="Printer/Ejemplo_Docs_Printer/Readme.md" />
   </Folder>
-  <Folder Name="/Printer/Docs/Borradores/">
+  <Folder Name="/Ejemplos/Printer/Docs/Borradores/">
     <File Path="Printer/Ejemplo_Docs_Maps/Borradores/Readme.md" />
   </Folder>
-  <Folder Name="/Printer/Docs/Manuales/">
+  <Folder Name="/Ejemplos/Printer/Docs/Manuales/">
     <File Path="Printer/Ejemplo_Docs_Printer/Manuales/01_MANUAL_USUARIO.md" />
     <File Path="Printer/Ejemplo_Docs_Printer/Manuales/02_MANUAL_TECNICO_ESC_POS.md" />
     <File Path="Printer/Ejemplo_Docs_Printer/Manuales/03_GUIA_INTEGRACION_ESCPOS_NET.md" />
     <File Path="Printer/Ejemplo_Docs_Printer/Manuales/04_Borrador_Manual.md" />
     <File Path="Printer/Ejemplo_Docs_Printer/Manuales/Readme.md" />
   </Folder>
-  <Folder Name="/Printer/Docs/Prompts_Generacion_Apk_ejemplo/">
+  <Folder Name="/Ejemplos/Printer/Docs/Prompts_Generacion_Apk_ejemplo/">
     <File Path="Printer/Ejemplo_Docs_Printer/Prompts_Generacion_Apk_ejemplo/Imagen_dispositivo_mercadolibre.jpg" />
     <File Path="Printer/Ejemplo_Docs_Printer/Prompts_Generacion_Apk_ejemplo/Readme.md" />
   </Folder>
-  <Folder Name="/Printer/Docs/Prompts_Generacion_Apk_ejemplo/ficheros_claude.ia/">
+  <Folder Name="/Ejemplos/Printer/Docs/Prompts_Generacion_Apk_ejemplo/ficheros_claude.ia/">
     <File Path="Printer/Ejemplo_Docs_Printer/Prompts_Generacion_Apk_ejemplo/ficheros_claude.ia/Advancedprintingexamples.cs" />
     <File Path="Printer/Ejemplo_Docs_Printer/Prompts_Generacion_Apk_ejemplo/ficheros_claude.ia/Androidmanifest.XML" />
     <File Path="Printer/Ejemplo_Docs_Printer/Prompts_Generacion_Apk_ejemplo/ficheros_claude.ia/Instalacion.md" />
@@ -93,19 +86,19 @@
     <File Path="Printer/Ejemplo_Docs_Printer/Prompts_Generacion_Apk_ejemplo/ficheros_claude.ia/Thermalprintermaui_readme.md" />
     <File Path="Printer/Ejemplo_Docs_Printer/Prompts_Generacion_Apk_ejemplo/ficheros_claude.ia/Thermalprinterservice.cs" />
   </Folder>
-  <Folder Name="/Printer/Docs/Prompts_Generacion_Documentacion/">
+  <Folder Name="/Ejemplos/Printer/Docs/Prompts_Generacion_Documentacion/">
     <File Path="Printer/Ejemplo_Docs_Printer/Prompts_generacion_documentacion/01_Prompt_chatgpt.md" />
     <File Path="Printer/Ejemplo_Docs_Printer/Prompts_generacion_documentacion/02_Prompt_copilot.md" />
     <File Path="Printer/Ejemplo_Docs_Printer/Prompts_generacion_documentacion/03_Prompt_copilot_manual_borrador.md" />
     <File Path="Printer/Ejemplo_Docs_Printer/Prompts_generacion_documentacion/Imagen_dispositivo_mercadolibre.jpg" />
     <File Path="Printer/Ejemplo_Docs_Printer/Prompts_generacion_documentacion/Readme.md" />
   </Folder>
-  <Folder Name="/Printer/Docs/Pruebas_realizadas/">
+  <Folder Name="/Ejemplos/Printer/Docs/Pruebas_realizadas/">
     <File Path="Printer/Ejemplo_Docs_Printer/Pruebas_realizadas/ejemplo_impresion.jpg" />
     <File Path="Printer/Ejemplo_Docs_Printer/Pruebas_realizadas/ejemplo_print_thermal.gif" />
     <File Path="Printer/Ejemplo_Docs_Printer/Pruebas_realizadas/Readme.md" />
   </Folder>
-  <Folder Name="/QR/">
+  <Folder Name="/Ejemplos/QR/">
     <Project Path="QR/Ejemplo_LectorQR/Ejemplo_LectorQR.csproj" Id="42e80caf-5f94-42b4-be26-a16c162d64ab">
       <Deploy Solution="Debug|*" />
     </Project>
@@ -113,27 +106,38 @@
       <Deploy Solution="Debug|*" />
     </Project>
   </Folder>
-  <Folder Name="/QR/Docs/">
+  <Folder Name="/Ejemplos/QR/Docs/">
     <File Path="QR/Ejemplo_Docs_QR/cicd.md" />
     <File Path="QR/Ejemplo_Docs_QR/QR_frase.png" />
     <File Path="QR/Ejemplo_Docs_QR/QR_pirincho.png" />
     <File Path="QR/Ejemplo_Docs_QR/Readme.md" />
   </Folder>
-  <Folder Name="/Red/">
+  <Folder Name="/Ejemplos/Red/">
     <Project Path="Red/Ejemplo_Maui_Connectivity/Ejemplo_Maui_Connectivity.csproj" Id="48f94d6b-5fca-47d6-8b02-bea1a35ba5f2">
       <Deploy Solution="Debug|*" />
     </Project>
   </Folder>
-  <Folder Name="/Red/Docs/">
+  <Folder Name="/Ejemplos/Red/Docs/">
     <File Path="Red/Ejemplo_Docs_Red/Readme.md" />
   </Folder>
-  <Folder Name="/Utils/" />
-  <Folder Name="/Utils/Scripts/">
+  <Folder Name="/Ejemplos/Utils/" />
+  <Folder Name="/Ejemplos/Utils/Scripts/">
     <File Path="scripts/Ejemplo_Maui_GPS_launch.bat" />
     <File Path="scripts/Ejemplo_Photo_MediaPicker_launch.bat" />
     <File Path="scripts/GetEnviromentVersion.bat" />
   </Folder>
-  <Folder Name="/Utils/Utilities/">
+  <Folder Name="/Ejemplos/Utils/Utilities/">
     <File Path="../Utilities/simular.sh" />
+  </Folder>
+  <Folder Name="/github.workflow/" />
+  <Folder Name="/github.workflow/workflows/">
+    <File Path="../.github/workflows/cd-ios-camera.Ejemplo_Photo_MiMediaPicker_Callback.yml" />
+    <File Path="../.github/workflows/cd-ios-camera.Ejemplo_Photo_MiMediaPicker_Callback_Normalizacion.yml" />
+    <File Path="../.github/workflows/cd-ios-camera.Ejemplo_Photo_MiMediaPicker_Task.yml" />
+    <File Path="../.github/workflows/cd-ios-gps.Ejemplo_GPS.yml" />
+    <File Path="../.github/workflows/cd-ios-phone.Ejemplo_Dialer.yml" />
+    <File Path="../.github/workflows/cd-ios-phone.Ejemplo_DirectCall.yml" />
+    <File Path="../.github/workflows/cd-ios-qr.Ejemplo_LectorQR_Dialog.yml" />
+    <File Path="../.github/workflows/Readme.md" />
   </Folder>
 </Solution>

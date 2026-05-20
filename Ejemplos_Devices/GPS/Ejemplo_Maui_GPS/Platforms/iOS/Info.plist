@@ -63,7 +63,8 @@
 		-->
 		<key>NSLocationWhenInUseUsageDescription</key>
 		<string>La app necesita tu ubicación para registrar la posición de las infracciones de tránsito.</string>
-
+		<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+		<string>La app necesita tu ubicación para registrar la posición de las infracciones de tránsito.</string>
 		<!--
 		Solo necesario si pedís ubicación en SEGUNDO PLANO (Always).
 		-->

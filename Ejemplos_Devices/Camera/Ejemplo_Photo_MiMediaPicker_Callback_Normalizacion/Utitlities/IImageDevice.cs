@@ -1,4 +1,4 @@
-﻿namespace Ejemplo_Imagen_Normalizacion.Utilities;
+﻿namespace Ejemplo_Photo_MiMediaPicker_Callback_Normalizacion.Utilities;
 
 public interface IImageDevice
 {

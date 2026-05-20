@@ -15,7 +15,9 @@
                 <Button Text="Obtener ubicación" Command="{Binding ObtenerUbicacionCommand}"/>
                 <Button Text="Cancelar" Command="{Binding CancelarCommand}"/>
                 <Button Text="Mostrar en mapa" Command="{Binding MostrarEnMapaCommand}"/>
+                
                 <Button Text="Prueba" Clicked="Button_Clicked"  />
+                
                 <Label x:Name="lbSalida" FontSize="18" HorizontalTextAlignment="Center"/>
             </VerticalStackLayout>
 

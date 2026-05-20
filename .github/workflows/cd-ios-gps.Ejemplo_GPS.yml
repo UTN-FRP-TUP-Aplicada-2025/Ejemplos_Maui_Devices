@@ -38,9 +38,7 @@ env:
   PROJECT_NAME: 'Ejemplo_Maui_GPS'
   PROJECT_FILE: 'Ejemplo_Maui_GPS.csproj'
   # ─────────────────────────────────────────────────────────────────────────────
-
-  VERSION_FECHA: '20260519'
-
+  
   RUNTIME_IDENTIFIER_SIMULATOR: 'iossimulator-arm64' 
   BUILD_CONFIG_SIMULATOR: 'Release'
   DEVICE_SIMULATOR: 'iPhone 17 Pro Max'
@@ -215,7 +213,7 @@ jobs:
       run: |
         dotnet workload list --verbosity detailed
          
-    # WORKLOADS
+    # SET PATH PROJECT
 
     - name: PATH PROJECT AND SOLUTION.
       run: |
@@ -225,15 +223,23 @@ jobs:
         echo "....> $(pwd)"
         
         SOLUTION_PATH=${{ github.workspace }}/${{ env.SOLUTION_FOLDER }}
-        #PROJECT_PATH=$SOLUTION_PATH/${{ env.PROJECT_FOLDER }}
+        SOLUTION_PATH=$(realpath "$SOLUTION_PATH")
+
         PROJECT_PATH=$SOLUTION_PATH/${{ env.PROJECTS_ROOT }}/${{ env.PROJECT_NAME}}
-                
+        PROJECT_PATH=$(realpath "$PROJECT_PATH")
+
+        PLIST_PATH=$SOLUTION_PATH/${{ env.PROJECTS_ROOT }}/${{ env.PROJECT_NAME}}/Platforms/iOS/Info.plist
+        PLIST_PATH=$(realpath "$PLIST_PATH")
+        
         echo "PROJECT_PATH=$PROJECT_PATH" >> $GITHUB_ENV
         echo "SOLUTION_PATH=$SOLUTION_PATH" >> $GITHUB_ENV
+        echo "PLIST_PATH=$PLIST_PATH" >> $GITHUB_ENV
 
         echo "Recursive path: $(ls -lshR $SOLUTION_PATH)"
 
-    - name: PRE-BUILD. Versionado del bundle desde la version del app
+    # VERSIONADO BUNDLE
+
+    - name: VERSIONADO. PROFILE. Versionado del bundle desde la version del app
       run: |  
         PLIST_PATH=${{ env.PROJECT_PATH }}/Platforms/iOS/Info.plist
                 
@@ -245,6 +251,12 @@ jobs:
         
         APP_VERSION_BUILD="${SHORT_VERSION}_${BUNDLE_VERSION}"
         echo "APP_VERSION_BUILD=$APP_VERSION_BUILD" >> $GITHUB_ENV
+
+    - name: VERSIONADO. FECHA
+      run: |
+        VERSION_FECHA=$(date +"%Y%m%d%H%M")
+        echo "version fecha: $VERSION_FECHA"
+        echo "VERSION_FECHA=$VERSION_FECHA" >> $GITHUB_ENV
 
     # MANIFEST
 
@@ -312,7 +324,7 @@ jobs:
         BASE_PATH=${{ env.PROJECT_PATH }}/bin/${{ env.BUILD_CONFIG_SIMULATOR }}/${{ env.DOTNET_TARGET_VERSION }}-ios/${{ env.RUNTIME_IDENTIFIER_SIMULATOR }}
         #APP_PATH=${BASE_PATH}/${{ env.PROJECT_FOLDER }}.app
         APP_PATH=${BASE_PATH}/${{ env.PROJECT_NAME }}.app
-        
+        APP_PATH=$(realpath "$APP_PATH")
 
         echo "BASE_PATH: $BASE_PATH"      
         echo "APP_PATH: $APP_PATH"

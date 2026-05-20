@@ -2,7 +2,7 @@
 using MetadataExtractor.Formats.Exif;
 using SkiaSharp;
 
-namespace Ejemplo_Imagen_Normalizacion.Utilities;
+namespace Ejemplo_Photo_MiMediaPicker_Callback_Normalizacion.Utilities;
 
 class ImageDeviceAutoRotate : IImageDevice
 {

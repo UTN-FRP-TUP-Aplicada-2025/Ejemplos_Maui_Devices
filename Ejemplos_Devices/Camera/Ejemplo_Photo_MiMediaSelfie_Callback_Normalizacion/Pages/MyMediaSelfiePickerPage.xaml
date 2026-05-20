@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:util="clr-namespace:Ejemplo_Photo_MiMediaSelfie_Callback_Normalizacion.Utilities"
+             x:Class="Ejemplo_Photo_MiMediaPicker_Callback_Normalizacion.Pages.MyMediaSelfiePickerPage"
+             Title="Camera Page"
+             BackgroundColor="{AppThemeBinding Light=White, Dark=Black}">
+
+    <ContentPage.Resources>
+        <util:SelfieMaskDrawable x:Key="SelfieMask"/>
+    </ContentPage.Resources>
+
+    <Grid x:Name="DynamicLayout" RowDefinitions="Auto,*,Auto" ColumnDefinitions="*" HorizontalOptions="Fill" VerticalOptions="Fill">
+
+        <!-- barra de botones -->
+        <Button x:Name="BtnFlashButton" Grid.Row="0" Grid.Column="0" Clicked="OnActiveFlashClicked" IsVisible="False" HorizontalOptions="Center" VerticalOptions="Center"
+                Background="{AppThemeBinding Light=#aa000000, Dark=#aaFFFFFF}" CornerRadius="8">
+            <Button.ImageSource>
+                <FontImageSource Glyph="{Binding FlashIcon}" FontFamily="MaterialIconsOutlined" Color="{AppThemeBinding Light=White, Dark=Black}"/>
+            </Button.ImageSource>
+        </Button>
+
+        <!-- Contenedor para CameraView (se crea desde código) + máscara dibujada -->
+        <Grid Grid.Row="1" Grid.Column="0" >
+            <ContentView x:Name="CameraContainer" IsVisible="False" HorizontalOptions="Fill" VerticalOptions="Fill" />
+            <GraphicsView x:Name="MaskOverlay" Drawable="{StaticResource SelfieMask}" HorizontalOptions="Fill" VerticalOptions="Fill" InputTransparent="True"/>
+        </Grid>
+
+        <!-- Overlay de permiso denegado -->
+        <Grid x:Name="PermissionDeniedOverlay" Grid.Row="1" Grid.Column="0" IsVisible="False" BackgroundColor="#CC000000"
+              HorizontalOptions="Fill" VerticalOptions="Fill" Opacity="1">
+
+            <VerticalStackLayout Spacing="20" HorizontalOptions="Center" VerticalOptions="Center" Padding="32">
+
+                <Label Text="no_photography" FontFamily="MaterialIconsOutlined" FontSize="80" TextColor="#AAAAAA" HorizontalOptions="Center"/>
+
+                <Label x:Name="LblPermissionTitle" Text="Sin acceso a la cámara" FontSize="20" FontAttributes="Bold" TextColor="White" HorizontalOptions="Center" HorizontalTextAlignment="Center"/>
+
+                <Label x:Name="LblPermissionMessage" Text="Para tomar fotos necesitamos acceso a la cámara." FontSize="14" TextColor="#CCCCCC" HorizontalOptions="Center" HorizontalTextAlignment="Center"/>
+
+                <Button x:Name="BtnPedirPermiso" Text="Pedir permiso" Clicked="OnPedirPermisoClicked" BackgroundColor="#512BD4" TextColor="White" CornerRadius="8" Padding="20,12" HorizontalOptions="Center" IsVisible="False"/>
+
+                <Button x:Name="BtnGoToSettings" Text="Abrir configuración" Clicked="OnGoToSettingsClicked" BackgroundColor="#512BD4" TextColor="White" CornerRadius="8" Padding="20,12" HorizontalOptions="Center"/>
+
+                <Button Text="Volver" Clicked="OnVolverClicked" BackgroundColor="Transparent" TextColor="#AAAAAA" BorderColor="#555555" BorderWidth="1" CornerRadius="8" Padding="20,12" HorizontalOptions="Center"/>
+
+            </VerticalStackLayout>
+        </Grid>
+
+        <!-- barra de botones -->
+        <Button x:Name="BtnTomarFoto" Grid.Row="2" Grid.Column="0" Clicked="OnTomarFotoClicked" IsVisible="False" HorizontalOptions="Center" VerticalOptions="Center"
+                Background="{AppThemeBinding Light=#aa000000, Dark=#aaFFFFFF}" CornerRadius="8">
+            <Button.ImageSource>
+                <FontImageSource Glyph="photo_camera" Size="50" FontFamily="MaterialIconsOutlined" Color="{AppThemeBinding Light=White, Dark=Black}"/>
+            </Button.ImageSource>
+        </Button>
+
+    </Grid>
+</ContentPage>

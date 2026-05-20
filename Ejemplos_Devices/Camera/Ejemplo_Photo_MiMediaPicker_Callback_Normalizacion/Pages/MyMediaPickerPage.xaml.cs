@@ -1,4 +1,3 @@
-using Android.Text;
 using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Views;
 using System.Diagnostics;
