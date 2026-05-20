@@ -5,7 +5,7 @@ using Ejemplo_Maui_DirectCall.ViewModels;
 using Microsoft.Extensions.Logging;
 
 namespace Ejemplo_Maui_DirectCall;
-
+ 
 public static class MauiProgram 
 {
     public static MauiApp CreateMauiApp()
