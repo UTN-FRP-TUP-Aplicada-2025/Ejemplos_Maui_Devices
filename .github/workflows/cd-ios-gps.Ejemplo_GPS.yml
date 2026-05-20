@@ -264,6 +264,14 @@ jobs:
         dotnet clean "${{ env.PROJECTS_ROOT }}/${{ env.PROJECT_NAME}}/${{ env.PROJECT_FILE }}" -f ${{ env.DOTNET_TARGET_VERSION }}-ios
         # dotnet clean Ejemplo_LectorQR_Dialog.csproj -f net10.0-ios
 
+    - name: PRE-BUILD. Generar ApiKeys.cs desde secreto
+      run: |
+        APIKEYS_PATH=${{ env.PROJECT_PATH }}/Services/ApiKeys.cs
+        cat "$APIKEYS_PATH.template" \
+          | sed 's/REEMPLAZAR_CON_TU_API_KEY/${{ secrets.GOOGLE_MAPS_API_KEY }}/' \
+          > "$APIKEYS_PATH"
+        echo "ApiKeys.cs generado en: $APIKEYS_PATH"
+
     - name: BUILD SIMULADOR. Restaurar dependencias
       run: |
         cd ${{ env.SOLUTION_PATH }}

@@ -6,9 +6,9 @@ namespace Ejemplo_Maui_GPS.Services;
 // Es dueño del GpsOverlayViewModel (singleton) y de la cancelación.
 // Cualquier caller (página, comando, deep link, navegación por URL) hace:
 //     await _coord.CapturarAsync();
-// y el overlay aparece/desaparece automáticamente según el resultado.
+// y el overlay aparece/desaparece automáticamente según el resultado. .
 public class GpsCoordinator
-{
+{ 
     private readonly GpsService _gps;
     private readonly LocationPermissionService _permissions;
     private CancellationTokenSource? _cts;
