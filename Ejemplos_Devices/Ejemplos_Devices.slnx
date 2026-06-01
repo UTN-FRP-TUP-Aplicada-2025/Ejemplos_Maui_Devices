@@ -36,6 +36,12 @@
   <Folder Name="/Ejemplos/GPS/Docs/">
     <File Path="GPS/Docs_GPS/Readme.md" />
   </Folder>
+  <Folder Name="/Ejemplos/Integrada/">
+    <Project Path="Integrada/Ejemplo_Maui_Hibrida/Ejemplo_Maui_Hibrida.csproj" Id="bd1dcdcc-6dd2-41f3-a8a1-cc245bc8439b">
+      <Deploy Solution="Debug|*" />
+    </Project>
+    <Project Path="Integrada/Ejemplo_ws_Blazor/Ejemplo_ws_Blazor.csproj" Id="69b60a89-13a5-4f77-81ca-26725f0758da" />
+  </Folder>
   <Folder Name="/Ejemplos/Maps/">
     <Project Path="Maps/Ejemplo_Maui_Mapas/Ejemplo_Maui_Mapas.csproj" Id="d2accbd4-c163-4f24-b1e1-f7eb49a6582d">
       <Deploy Solution="Debug|*" />
@@ -134,7 +140,9 @@
     <File Path="../.github/workflows/cd-ios-camera.Ejemplo_Photo_MiMediaPicker_Callback.yml" />
     <File Path="../.github/workflows/cd-ios-camera.Ejemplo_Photo_MiMediaPicker_Callback_Normalizacion.yml" />
     <File Path="../.github/workflows/cd-ios-camera.Ejemplo_Photo_MiMediaPicker_Task.yml" />
+    <File Path="../.github/workflows/cd-ios-camera.Ejemplo_Photo_MiMediaSelfie_Callback_Normalizacion.yml" />
     <File Path="../.github/workflows/cd-ios-gps.Ejemplo_GPS.yml" />
+    <File Path="../.github/workflows/cd-ios-gps.Ejemplo_Maui_Hibrida.yml" />
     <File Path="../.github/workflows/cd-ios-phone.Ejemplo_Dialer.yml" />
     <File Path="../.github/workflows/cd-ios-phone.Ejemplo_DirectCall.yml" />
     <File Path="../.github/workflows/cd-ios-qr.Ejemplo_LectorQR_Dialog.yml" />

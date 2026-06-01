@@ -1,0 +1,48 @@
+﻿@page "/"
+
+@rendermode InteractiveServer
+@attribute [StreamRendering]
+
+@inject NavigationManager Navigation
+
+<PageTitle>Home</PageTitle>
+
+
+<button @onclick="OnSolicitarCoordenadas" class="btn btn-primary">Solicitar Coordenadas</button>    
+
+<div>@contenido</div>
+
+
+@code {
+
+    //".../geolocate?Latitud=-31.7496689&Longitud=-60.5213019&"
+    [SupplyParameterFromQuery]
+    public double Latitud { get; set; }
+
+    [SupplyParameterFromQuery]
+    public double Longitud { get; set; }
+
+    string contenido { get; set; }
+
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            if(Latitud != 0 && Longitud != 0)
+            {
+                contenido = $"Latitud: {Latitud}, Longitud: {Longitud}";                
+            }
+            else
+            {
+                contenido = "No se han recibido coordenadas.";
+            }
+            StateHasChanged();
+        }
+        return base.OnAfterRenderAsync(firstRender);
+    }
+
+    public void OnSolicitarCoordenadas()
+    {
+        Navigation.NavigateTo("/geolocate?geo=1", forceLoad: true);
+    }
+}

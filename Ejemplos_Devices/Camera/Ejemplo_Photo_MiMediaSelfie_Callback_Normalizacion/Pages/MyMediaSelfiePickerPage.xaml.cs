@@ -68,6 +68,7 @@ public partial class MyMediaSelfiePickerPage : ContentPage
             {
                 _cameraView.MediaCaptured -= OnMediaCaptured;
                 _cameraView.MediaCaptureFailed -= OnMediaCaptureFailed;
+                _cameraView.Loaded -= OnCameraViewLoaded;
                 CameraContainer.Content = null;
                 _cameraView = null;
             }
@@ -116,7 +117,7 @@ public partial class MyMediaSelfiePickerPage : ContentPage
             if (MediaPicker.Default.IsCaptureSupported)
                 MostrarVisorCamara();
             else
-                MostrarOverlayPermiso("Cámara no disponible",  "Este dispositivo no tiene c�mara disponible.", puedeReintentar: false);
+                MostrarOverlayPermiso("Cámara no disponible", "Este dispositivo no tiene c�mara disponible.", puedeReintentar: false);
             return;
         }
 
@@ -143,8 +144,8 @@ public partial class MyMediaSelfiePickerPage : ContentPage
         puedeReintentar = Permissions.ShouldShowRationale<Permissions.Camera>();
 #endif
 
-        MostrarOverlayPermiso( titulo: puedeReintentar ? "Permiso de c�mara necesario" : "Acceso a la c�mara denegado",
-            mensaje: puedeReintentar ? "Para tomar fotos necesitamos acceso a la c�mara. Pod�s intentar conceder el permiso."  : "Para tomar fotos necesitamos acceso a la c�mara. Habilitalo desde los ajustes de la aplicaci�n.",
+        MostrarOverlayPermiso(titulo: puedeReintentar ? "Permiso de c�mara necesario" : "Acceso a la c�mara denegado",
+            mensaje: puedeReintentar ? "Para tomar fotos necesitamos acceso a la c�mara. Pod�s intentar conceder el permiso." : "Para tomar fotos necesitamos acceso a la c�mara. Habilitalo desde los ajustes de la aplicaci�n.",
             puedeReintentar: puedeReintentar);
     }
 
@@ -166,6 +167,7 @@ public partial class MyMediaSelfiePickerPage : ContentPage
                 };
                 _cameraView.MediaCaptured += OnMediaCaptured;
                 _cameraView.MediaCaptureFailed += OnMediaCaptureFailed;
+                _cameraView.Loaded += OnCameraViewLoaded;
                 CameraContainer.Content = _cameraView;
             }
 
@@ -213,6 +215,11 @@ public partial class MyMediaSelfiePickerPage : ContentPage
     }
 
     // C�MARA
+
+    private async void OnCameraViewLoaded(object? sender, EventArgs e)
+    {
+        await SeleccionarCamaraAsync();
+    }
 
     private async Task SeleccionarCamaraAsync()
     {
@@ -277,7 +284,7 @@ public partial class MyMediaSelfiePickerPage : ContentPage
 
         if (e.Media != null)
         {
-            tempPath = Path.Combine( FileSystem.CacheDirectory,  $"photo_{Guid.NewGuid():N}.jpg");
+            tempPath = Path.Combine(FileSystem.CacheDirectory, $"photo_{Guid.NewGuid():N}.jpg");
 
             try
             {
@@ -332,7 +339,8 @@ public partial class MyMediaSelfiePickerPage : ContentPage
 
         _cameraView.CameraFlashMode = _cameraView.CameraFlashMode switch
         {
-            CameraFlashMode.Off => CameraFlashMode.On, CameraFlashMode.On => CameraFlashMode.Auto,
+            CameraFlashMode.Off => CameraFlashMode.On,
+            CameraFlashMode.On => CameraFlashMode.Auto,
             _ => CameraFlashMode.Off
         };
         StatusFlashToIcons();
