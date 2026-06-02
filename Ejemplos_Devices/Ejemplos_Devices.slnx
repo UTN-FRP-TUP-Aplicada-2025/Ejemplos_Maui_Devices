@@ -5,24 +5,25 @@
   <Folder Name="/Docs/">
     <File Path="../README.md" />
     <File Path="Docs/AsyncRelayCommandOptions.md" />
+    <File Path="Docs/Eventos.md" />
     <File Path="Docs/GetEnviromentVersion.md" />
   </Folder>
   <Folder Name="/Ejemplos/" />
   <Folder Name="/Ejemplos/Camera/">
     <Project Path="Camera/Ejemplo_Photo_MediaPicker/Ejemplo_Photo_MediaPicker.csproj" Id="b9e9559a-bfbf-45e1-be27-127f510308b2">
-      <Deploy Solution="Debug|*" />
+      <Deploy />
     </Project>
     <Project Path="Camera/Ejemplo_Photo_MiMediaPicker_Callback/Ejemplo_Photo_MiMediaPicker_Callback.csproj" Id="bae08ccd-ae28-4ee5-bbcf-7067c0d65fe6">
-      <Deploy Solution="Debug|*" />
+      <Deploy />
     </Project>
     <Project Path="Camera/Ejemplo_Photo_MiMediaPicker_Callback_Normalizacion/Ejemplo_Photo_MiMediaPicker_Callback_Normalizacion.csproj" Id="c322c7dc-65ff-4689-b244-80937c7e8522">
-      <Deploy Solution="Debug|*" />
+      <Deploy />
     </Project>
     <Project Path="Camera/Ejemplo_Photo_MiMediaPicker_Task/Ejemplo_Photo_MiMediaPicker_Task.csproj" Id="c009f442-a562-47e7-bdbd-faf3eee64eba">
-      <Deploy Solution="Debug|*" />
+      <Deploy />
     </Project>
     <Project Path="Camera/Ejemplo_Photo_MiMediaSelfie_Callback_Normalizacion/Ejemplo_Photo_MiMediaSelfie_Callback_Normalizacion.csproj" Id="658bf61f-be5a-473e-97c6-e30d96cbb78e">
-      <Deploy Solution="Debug|*" />
+      <Deploy />
     </Project>
   </Folder>
   <Folder Name="/Ejemplos/Camera/Docs/">
@@ -30,7 +31,7 @@
   </Folder>
   <Folder Name="/Ejemplos/GPS/">
     <Project Path="GPS/Ejemplo_Maui_GPS/Ejemplo_Maui_GPS.csproj" Id="96dab9f5-6476-4338-b50d-473a33b0eefd">
-      <Deploy Solution="Debug|*" />
+      <Deploy />
     </Project>
   </Folder>
   <Folder Name="/Ejemplos/GPS/Docs/">
@@ -38,13 +39,13 @@
   </Folder>
   <Folder Name="/Ejemplos/Integrada/">
     <Project Path="Integrada/Ejemplo_Maui_Hibrida/Ejemplo_Maui_Hibrida.csproj" Id="bd1dcdcc-6dd2-41f3-a8a1-cc245bc8439b">
-      <Deploy Solution="Debug|*" />
+      <Deploy />
     </Project>
     <Project Path="Integrada/Ejemplo_ws_Blazor/Ejemplo_ws_Blazor.csproj" Id="69b60a89-13a5-4f77-81ca-26725f0758da" />
   </Folder>
   <Folder Name="/Ejemplos/Maps/">
     <Project Path="Maps/Ejemplo_Maui_Mapas/Ejemplo_Maui_Mapas.csproj" Id="d2accbd4-c163-4f24-b1e1-f7eb49a6582d">
-      <Deploy Solution="Debug|*" />
+      <Deploy />
     </Project>
   </Folder>
   <Folder Name="/Ejemplos/Maps/Docs/">
@@ -52,15 +53,15 @@
   </Folder>
   <Folder Name="/Ejemplos/Phone/">
     <Project Path="Phone/Ejemplo_Maui_Dialer/Ejemplo_Maui_Dialer.csproj" Id="872b4a88-1620-4090-ae51-3d24083e9e7a">
-      <Deploy Solution="Debug|*" />
+      <Deploy />
     </Project>
     <Project Path="Phone/Ejemplo_Maui_DirectCall/Ejemplo_Maui_DirectCall.csproj" Id="016990c8-ce16-4347-a0cf-77ae09b4603c">
-      <Deploy Solution="Debug|*" />
+      <Deploy />
     </Project>
   </Folder>
   <Folder Name="/Ejemplos/Printer/">
     <Project Path="Printer/Ejemplo_ThermalPrinter/Ejemplo_ThermalPrinter.csproj" Id="28245c93-21a9-4b06-8622-0baf1b16cdba">
-      <Deploy Solution="Debug|*" />
+      <Deploy />
     </Project>
   </Folder>
   <Folder Name="/Ejemplos/Printer/Docs/">
@@ -106,10 +107,10 @@
   </Folder>
   <Folder Name="/Ejemplos/QR/">
     <Project Path="QR/Ejemplo_LectorQR/Ejemplo_LectorQR.csproj" Id="42e80caf-5f94-42b4-be26-a16c162d64ab">
-      <Deploy Solution="Debug|*" />
+      <Deploy />
     </Project>
     <Project Path="QR/Ejemplo_LectorQR_Dialog/Ejemplo_LectorQR_Dialog.csproj" Id="6f651d01-372e-45a6-808d-5ff5854a6075">
-      <Deploy Solution="Debug|*" />
+      <Deploy />
     </Project>
   </Folder>
   <Folder Name="/Ejemplos/QR/Docs/">
@@ -120,7 +121,7 @@
   </Folder>
   <Folder Name="/Ejemplos/Red/">
     <Project Path="Red/Ejemplo_Maui_Connectivity/Ejemplo_Maui_Connectivity.csproj" Id="48f94d6b-5fca-47d6-8b02-bea1a35ba5f2">
-      <Deploy Solution="Debug|*" />
+      <Deploy />
     </Project>
   </Folder>
   <Folder Name="/Ejemplos/Red/Docs/">

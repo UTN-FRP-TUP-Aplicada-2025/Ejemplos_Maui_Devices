@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+
 using Ejemplo_Maui_Hibrida.Models;
 
 namespace Ejemplo_Maui_Hibrida.ViewModels;
@@ -42,7 +43,6 @@ public partial class MainViewModel : ObservableObject
     [RelayCommand]
     private void Navigating(WebNavigatingEventArgs e)
     {
-        IsRefreshing = false;
         Url = e.Url;
 
         if (Url.Contains("geo=1", StringComparison.OrdinalIgnoreCase))
@@ -50,12 +50,14 @@ public partial class MainViewModel : ObservableObject
             e.Cancel = true;
             Task task = GoUrl();
             task.GetAwaiter().GetResult();
+            IsRefreshing = false;
         }
     }
 
     [RelayCommand]
     private void Navigated(WebNavigatedEventArgs e)
     {
+        IsRefreshing = false;
         // lógica post-navegación
     }
 }

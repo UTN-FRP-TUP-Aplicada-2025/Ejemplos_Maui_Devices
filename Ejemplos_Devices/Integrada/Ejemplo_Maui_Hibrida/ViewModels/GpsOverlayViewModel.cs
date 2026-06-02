@@ -1,8 +1,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
+
 using Ejemplo_Maui_Hibrida.Models;
 using Ejemplo_Maui_Hibrida.Services;
-using System.Windows.Input;
-using static Android.Telephony.CarrierConfigManager;
 
 namespace Ejemplo_Maui_Hibrida.ViewModels;
 

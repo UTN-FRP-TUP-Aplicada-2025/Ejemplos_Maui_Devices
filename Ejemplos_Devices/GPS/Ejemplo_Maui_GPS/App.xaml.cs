@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-
-namespace Ejemplo_Maui_GPS; 
+﻿namespace Ejemplo_Maui_GPS; 
 
 public partial class App : Application
 {

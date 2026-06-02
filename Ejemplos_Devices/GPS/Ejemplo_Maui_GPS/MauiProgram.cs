@@ -1,4 +1,5 @@
 ﻿using Ejemplo_Maui_GPS.Services;
+
 using Microsoft.Extensions.Logging;
 
 namespace Ejemplo_Maui_GPS;

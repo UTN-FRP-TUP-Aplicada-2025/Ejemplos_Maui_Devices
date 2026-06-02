@@ -3,25 +3,45 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="Ejemplo_Maui_Hibrida.MainPage"
-             xmlns:controls="clr-namespace:Ejemplo_Maui_Hibrida.Controls">
+             xmlns:controls="clr-namespace:Ejemplo_Maui_Hibrida.Controls"
+             xmlns:pageModels="clr-namespace:Ejemplo_Maui_Hibrida.ViewModels"
+              xmlns:conv="clr-namespace:Ejemplo_Maui_Hibrida.Converters"
+             x:DataType="pageModels:MainViewModel"
+             NavigationPage.HasNavigationBar="False"
+             x:Name="page"
+             BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource OffBlack}}">
+
+    <ContentPage.Resources>
+        <conv:WebNavigatingEventArgsConverter x:Key="NavigatingConverter" />
+        <conv:WebNavigatedEventArgsConverter  x:Key="NavigatedConverter" />
+    </ContentPage.Resources>
 
     <Grid>
-        <Grid RowDefinitions="Auto, *">
-            <HorizontalStackLayout Grid.Row="0">
-                <Button Text="Go URL" Command="{Binding GoUrlCommand}" Margin="10"/>
-            </HorizontalStackLayout>
+        <RefreshView  IsRefreshing="{Binding IsRefreshing}" IsVisible="{Binding MostrarNavegador}">
+            <WebView x:Name="webView" Source="{Binding Url}">
+                <WebView.Behaviors>
+                    <toolkit:EventToCommandBehavior
+        EventName="Navigating"
+        EventArgsConverter="{StaticResource NavigatingConverter}"
+        Command="{Binding BindingContext.NavigatingCommand,
+                          Source={x:Reference page}}" />
 
-            <RefreshView Grid.Row="1" IsRefreshing="{Binding IsRefreshing}" IsVisible="{Binding MostrarNavegador}">
-                <WebView x:Name="webView" Source="{Binding Url}">
-                    <WebView.Behaviors>
-                        <toolkit:EventToCommandBehavior EventName="Navigating" Command="{Binding NavigatingCommand}" />
-                        <toolkit:EventToCommandBehavior EventName="Navigated" Command="{Binding NavigatedCommand}" />
-                    </WebView.Behaviors>
-                </WebView>
-            </RefreshView>
-        </Grid>
+                    <toolkit:EventToCommandBehavior
+        EventName="Navigated"
+        EventArgsConverter="{StaticResource NavigatedConverter}"
+        Command="{Binding BindingContext.NavigatedCommand,
+                          Source={x:Reference page}}" />
+                </WebView.Behaviors>
+            </WebView>
+        </RefreshView>
 
         <controls:GpsStatusOverlayView BindingContext="{Binding GpsOverlayViewModel}"/>
+
     </Grid>
+
+    <!--<HorizontalStackLayout Grid.Row="1">
+            <Button Text="Go URL" Command="{Binding GoUrlCommand}" Margin="10"/>
+        </HorizontalStackLayout>-->
+
 
 </ContentPage>
