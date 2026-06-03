@@ -1,5 +1,4 @@
-﻿
-using System.Globalization;
+﻿using System.Globalization;
 
 namespace Ejemplo_Maui_Hibrida.Converters;
 

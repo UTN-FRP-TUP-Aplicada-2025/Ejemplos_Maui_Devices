@@ -1,5 +1,4 @@
 ﻿using Ejemplo_Maui_Hibrida.ViewModels;
-using Java.Net;
 
 namespace Ejemplo_Maui_Hibrida;
 
