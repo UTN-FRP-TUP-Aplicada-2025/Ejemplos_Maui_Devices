@@ -41,15 +41,16 @@ public partial class MainViewModel : ObservableObject
     }
         
     [RelayCommand]
-    private void Navigating(WebNavigatingEventArgs e)
+    private async Task Navigating(WebNavigatingEventArgs e)
     {
         Url = e.Url;
 
         if (Url.Contains("geo=1", StringComparison.OrdinalIgnoreCase))
         {
+            // Importante: setear Cancel = true antes del primer await,
+            // ya que el WebView vuelve del evento sincrónicamente.
             e.Cancel = true;
-            Task task = GoUrl();
-            task.GetAwaiter().GetResult();
+            await GoUrl();
             IsRefreshing = false;
         }
     }

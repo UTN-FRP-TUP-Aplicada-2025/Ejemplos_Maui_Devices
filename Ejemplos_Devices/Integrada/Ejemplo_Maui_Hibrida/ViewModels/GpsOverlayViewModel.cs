@@ -16,9 +16,11 @@ public partial class GpsOverlayViewModel : ObservableObject
     }
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsVisible))]
     private bool isBusy;
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsVisible))]
     private bool isDenied;
 
     [ObservableProperty]
@@ -28,6 +30,7 @@ public partial class GpsOverlayViewModel : ObservableObject
     private string message = "";
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(MustOpenSettings))]
     private bool canRetry;
 
     [ObservableProperty]
