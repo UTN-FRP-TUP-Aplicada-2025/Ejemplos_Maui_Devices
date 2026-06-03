@@ -15,11 +15,13 @@
 
     <Grid>
         <!-- Panel de espera animada -->
-        <VerticalStackLayout IsVisible="{Binding IsBusy}" HorizontalOptions="Center" VerticalOptions="Center" Spacing="10" Padding="30,24">
-            <Image Source="satelite.gif" HorizontalOptions="Center" Scale="0.5" IsAnimationPlaying="True"/>
-            <Label Text="Buscando posición GPS" FontSize="Title" HorizontalTextAlignment="Center"/>
-            <Label Text="Aguarde unos segundos, y será redirigido automáticamente" HorizontalTextAlignment="Center" FontSize="20" Margin="0,40,0,0"/>
-        </VerticalStackLayout>
+        <Grid IsVisible="{Binding IsBusy}" BackgroundColor="#CC000000" HorizontalOptions="Fill" VerticalOptions="Fill">
+            <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="10" Padding="30,24">
+                <Image Source="satelite.gif" HorizontalOptions="Center" Scale="0.5" IsAnimationPlaying="True"/>
+                <Label Text="Buscando posición GPS" FontSize="Title" TextColor="White" HorizontalTextAlignment="Center"/>
+                <Label Text="Aguarde unos segundos, y será redirigido automáticamente" TextColor="#CCCCCC" HorizontalTextAlignment="Center" FontSize="20" Margin="0,40,0,0"/>
+            </VerticalStackLayout>
+        </Grid>
 
         <!-- Overlay de permisos denegados / restringidos -->
         <Grid IsVisible="{Binding IsDenied}" BackgroundColor="#CC000000" HorizontalOptions="Fill" VerticalOptions="Fill">

@@ -1,4 +1,5 @@
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 
 using Ejemplo_Maui_Hibrida.Models;
 using Ejemplo_Maui_Hibrida.Services;
@@ -66,14 +67,25 @@ public partial class GpsOverlayViewModel : ObservableObject
         return new GpsResult.Failure("");
     }
 
+    [RelayCommand]
     public void AbrirAjustes()
     {
         _gpsService.OpenAppSettings();
     }
 
+    [RelayCommand]
     public void CerrarOverlay()
     {
         Hide();
+    }
+
+    /// <summary>
+    /// Reintenta solicitar el permiso/ubicación GPS al usuario.
+    /// </summary>
+    [RelayCommand]
+    public Task PedirPermiso()
+    {
+        return SolicitarGeolocalizacion();
     }
 
     public void ShowBusy()
