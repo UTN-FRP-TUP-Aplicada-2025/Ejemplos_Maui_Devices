@@ -24,10 +24,10 @@ public partial class MainPage : ContentPage
 
         mainViewModel.Url = "https://geolocate.somee.com";
 
-#if IOS
-if (OperatingSystem.IsIOSVersionAtLeast(16, 4))
-    webView.Inspectable = true;
-#endif
+//#if IOS
+//if (OperatingSystem.IsIOSVersionAtLeast(16, 4))
+//    webView.Inspectable = true;
+//#endif
 
     }
 
