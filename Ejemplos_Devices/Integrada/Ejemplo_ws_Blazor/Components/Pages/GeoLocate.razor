@@ -10,6 +10,7 @@
 
 
 <button @onclick="OnSolicitarCoordenadas" class="btn btn-primary">Solicitar Coordenadas</button>    
+<button @onclick="OnLLamar" class="btn btn-primary">LLamar</button>
 <button @onclick="OnTest" class="btn btn-primary">Prueba botón</button>
 
 <div>@contenido</div>
@@ -46,6 +47,11 @@
     public void OnSolicitarCoordenadas()
     {
         Navigation.NavigateTo("/geolocate?geo=1", forceLoad: true);
+    }
+
+    public void OnLLamar()
+    {
+        Navigation.NavigateTo("/geolocate?photo=2", forceLoad: true);
     }
 
     public void OnTest()

@@ -19,14 +19,26 @@ public partial class MainViewModel : ObservableObject
     [ObservableProperty]
     NetworkOverlayViewModel networkOverlayViewModel;
 
-    public MainViewModel(NetworkOverlayViewModel network, GpsOverlayViewModel gps)
+    [ObservableProperty]
+    CallOverlayViewModel callOverlayViewModel;
+
+    public MainViewModel(NetworkOverlayViewModel network, GpsOverlayViewModel gps, CallOverlayViewModel call)
     {
         gpsOverlayViewModel = gps;
         networkOverlayViewModel = network;
+        callOverlayViewModel = call;
     }
 
     [RelayCommand]
-    async private Task GoUrl()
+    private async Task TakePhone()
+    {
+        // Ejemplo: llamada directa (Android) o marcador del SO (iOS/MacCatalyst).
+        string telephone = "3434807427";
+        _ = await callOverlayViewModel.LlamarAsync(telephone, CallMode.Direct);
+    }
+
+    [RelayCommand]
+    async private Task TakeGPS()
     {
         //"https://geolocate.somee.com/geolocate?geo=1";
 
@@ -46,10 +58,14 @@ public partial class MainViewModel : ObservableObject
 
         if (Url.Contains("geo=1", StringComparison.OrdinalIgnoreCase))
         {
-            // Importante: setear Cancel = true antes del primer await,
-            // ya que el WebView vuelve del evento sincrónicamente.
             e.Cancel = true;
-            await GoUrl();
+            await TakeGPS();
+            IsRefreshing = false;
+        }
+        else if (Url.Contains("photo=2", StringComparison.OrdinalIgnoreCase))
+        {
+            e.Cancel = true;
+            await TakePhone();
             IsRefreshing = false;
         }
     }

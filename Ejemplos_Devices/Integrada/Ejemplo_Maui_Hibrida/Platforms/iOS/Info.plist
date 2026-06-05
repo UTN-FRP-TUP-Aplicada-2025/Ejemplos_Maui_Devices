@@ -65,6 +65,15 @@
 		<string>La app necesita tu ubicación para registrar la posición de las infracciones de tránsito.</string>
 		<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 		<string>La app necesita tu ubicación para registrar la posición de las infracciones de tránsito.</string>
+
+		<!--
+		Esquemas que la app puede consultar/abrir. "tel" habilita abrir el
+		marcador del SO (PhoneDialer / CallMode.Dialer), único modo en iOS.
+		-->
+		<key>LSApplicationQueriesSchemes</key>
+		<array>
+			<string>tel</string>
+		</array>
 		<!--
 		Solo necesario si pedís ubicación en SEGUNDO PLANO (Always).
 		-->

@@ -37,9 +37,11 @@ public static class MauiProgram
         builder.Services.AddSingleton<GpsService>();
         builder.Services.AddSingleton(Connectivity.Current);
         builder.Services.AddSingleton<NetworkService>();
+        builder.Services.AddSingleton<CallService>();
 
         builder.Services.AddSingleton<GpsOverlayViewModel>();
         builder.Services.AddSingleton<NetworkOverlayViewModel>();
+        builder.Services.AddSingleton<CallOverlayViewModel>();
         builder.Services.AddSingleton<MainViewModel>();
 
         builder.Services.AddSingleton<MainPage>();

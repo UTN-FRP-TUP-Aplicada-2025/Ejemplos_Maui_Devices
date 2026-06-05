@@ -35,13 +35,17 @@
             </WebView>
         </RefreshView>
 
-        <!-- GPS primero; Red después => queda arriba (máxima prioridad visual). -->
+        <!-- El orden = prioridad visual: el último declarado queda arriba.
+             GPS primero; Red después; Llamada al final (máxima prioridad). -->
         <controls:StatusOverlayView BindingContext="{Binding GpsOverlayViewModel}"/>
 
         <controls:StatusOverlayView BindingContext="{Binding NetworkOverlayViewModel}"/>
 
+        <controls:StatusOverlayView BindingContext="{Binding CallOverlayViewModel}"/>
+
         <HorizontalStackLayout Grid.Row="1">
-            <Button Text="Go URL" Command="{Binding GoUrlCommand}" Margin="10"/>
+            <Button Text="Geo Posicionar" Command="{Binding TakeGPSCommand}" Margin="10"/>
+            <Button Text="Llamar" Command="{Binding TakePhoneCommand}" Margin="10"/>
         </HorizontalStackLayout>
 
     </Grid>

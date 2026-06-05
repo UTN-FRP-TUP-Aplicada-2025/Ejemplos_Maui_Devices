@@ -37,6 +37,26 @@
     -->
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
+	<!--
+        CALL_PHONE: realizar llamadas DIRECTAS (Intent.ActionCall) sin pasar
+        por el marcador. Sólo necesario para CallMode.Direct; el modo Dialer
+        no lo requiere.
+    -->
+	<uses-permission android:name="android.permission.CALL_PHONE" />
+
+	<uses-permission android:name="android.permission.READ_PHONE_STATE" />
+	
+	<!--
+        Visibilidad de paquetes (Android 11+): declarar el intent del marcador
+        permite resolver/abrir el dialer del SO (PhoneDialer / CallMode.Dialer).
+    -->
+	<queries>
+		<intent>
+			<action android:name="android.intent.action.DIAL" />
+			<data android:scheme="tel" />
+		</intent>
+	</queries>
+
 	<uses-sdk android:minSdkVersion="25" android:targetSdkVersion="36" />
 
 </manifest>
