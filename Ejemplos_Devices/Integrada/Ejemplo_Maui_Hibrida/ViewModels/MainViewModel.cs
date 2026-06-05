@@ -17,11 +17,12 @@ public partial class MainViewModel : ObservableObject
     GpsOverlayViewModel gpsOverlayViewModel;
 
     [ObservableProperty]
-    private bool mostrarNavegador=true;
+    NetworkOverlayViewModel networkOverlayViewModel;
 
-    public MainViewModel(GpsOverlayViewModel gps)
+    public MainViewModel(NetworkOverlayViewModel network, GpsOverlayViewModel gps)
     {
         gpsOverlayViewModel = gps;
+        networkOverlayViewModel = network;
     }
 
     [RelayCommand]
@@ -29,15 +30,13 @@ public partial class MainViewModel : ObservableObject
     {
         //"https://geolocate.somee.com/geolocate?geo=1";
 
-        var result=await gpsOverlayViewModel.SolicitarGeolocalizacion();
+        var result = await GpsOverlayViewModel.SolicitarGeolocalizacion();
 
         if (result is GpsResult.Success s)
         {
-            //https://geolocate.somee.com/geolocate?Latitud=-37.062438416743746&Longitud=-61.93923378411248, 
+            //https://geolocate.somee.com/geolocate?Latitud=-37.062438416743746&Longitud=-61.93923378411248,
             Url = Url.Replace("geo=1", $"Latitud={s.Location.Latitude}&Longitud={s.Location.Longitude}&");
         }
-
-        MostrarNavegador = true;
     }
         
     [RelayCommand]
@@ -56,9 +55,13 @@ public partial class MainViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private void Navigated(WebNavigatedEventArgs e)
+    private async Task Navigated(WebNavigatedEventArgs e)
     {
         IsRefreshing = false;
-        // lógica post-navegación
+
+        if (e.Result == WebNavigationResult.Success)
+            NetworkOverlayViewModel.NotifyNavigationSucceeded(e.Url);
+        else
+            await NetworkOverlayViewModel.NotifyNavigationFailedAsync(e.Url, e.Result);
     }
 }

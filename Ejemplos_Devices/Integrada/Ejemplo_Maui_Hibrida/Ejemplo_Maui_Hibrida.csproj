@@ -88,7 +88,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="Controls\GpsStatusOverlayView.xaml">
+	  <Compile Update="Controls\StatusOverlayView.xaml.cs">
+	    <DependentUpon>StatusOverlayView.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Update="Controls\StatusOverlayView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

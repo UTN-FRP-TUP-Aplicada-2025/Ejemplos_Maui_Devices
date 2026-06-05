@@ -6,9 +6,12 @@ using Ejemplo_Maui_Hibrida.Services;
 
 namespace Ejemplo_Maui_Hibrida.ViewModels;
 
-public partial class GpsOverlayViewModel : ObservableObject
+public partial class GpsOverlayViewModel : StatusOverlayViewModel
 {
-    GpsService _gpsService = default;
+    private readonly GpsService _gpsService;
+
+    [ObservableProperty]
+    private string coordenadas = "";
 
     public GpsOverlayViewModel(GpsService gpsService)
     {
@@ -16,108 +19,59 @@ public partial class GpsOverlayViewModel : ObservableObject
         Hide();
     }
 
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(IsVisible))]
-    private bool isBusy;
-
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(IsVisible))]
-    private bool isDenied;
-
-    [ObservableProperty]
-    private string title = "";
-
-    [ObservableProperty]
-    private string message = "";
-
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(MustOpenSettings))]
-    private bool canRetry;
-
-    [ObservableProperty]
-    private string coordenadas = "";
-
-    public bool MustOpenSettings => !canRetry;
-
-    /// <summary>
-    /// Overlay visible si está esperando GPS o mostrando panel de permisos denegados.
-    /// </summary>
-    public bool IsVisible => isBusy || isDenied;
-
     async public Task<GpsResult> SolicitarGeolocalizacion()
     {
-        ShowBusy();
-        try
-        {
-            var result = await _gpsService.ObtenerUbicacionAsync();
+        ShowBusy("Buscando posición GPS",
+            "Aguarde unos segundos, y será redirigido automáticamente",
+            "satelite.gif");
 
-            if (result is GpsResult.Success)
-            {
-                Hide();
-                return result;
-            }
-            else
-            {
-                MostrarResultado(result);
-            }
-        }
-        finally
+        var result = await _gpsService.ObtenerUbicacionAsync();
+
+        if (result is GpsResult.Success)
         {
+            Hide();
+            return result;
         }
+
+        MostrarResultado(result);
         return new GpsResult.Failure("");
     }
 
     [RelayCommand]
-    public void AbrirAjustes()
-    {
-        _gpsService.OpenAppSettings();
-    }
+    public void AbrirAjustes() => _gpsService.OpenAppSettings();
 
     [RelayCommand]
-    public void CerrarOverlay()
-    {
-        Hide();
-    }
+    public void CerrarOverlay() => Hide();
 
     /// <summary>
     /// Reintenta solicitar el permiso/ubicación GPS al usuario.
     /// </summary>
     [RelayCommand]
-    public Task PedirPermiso()
-    {
-        return SolicitarGeolocalizacion();
-    }
+    public Task PedirPermiso() => SolicitarGeolocalizacion();
 
-    public void ShowBusy()
+    private void ShowPermissionDenied(bool canRetry)
     {
-        IsDenied = false;
-        IsBusy = true;
-    }
-
-    public void ShowPermissionDenied(bool canRetry)
-    {
-        Title = canRetry ? "Permiso de ubicación necesario" : "Acceso a la ubicación denegado";
-        Message = canRetry
+        var title = canRetry ? "Permiso de ubicación necesario" : "Acceso a la ubicación denegado";
+        var message = canRetry
             ? "Para obtener coordenadas GPS necesitamos acceso a la ubicación. Podés intentar conceder el permiso."
             : "Para obtener coordenadas GPS necesitamos acceso a la ubicación. Habilitalo desde los ajustes de la aplicación.";
-        CanRetry = canRetry;
-        IsBusy = false;
-        IsDenied = true;
+
+        // Android con posibilidad de reintento => "Pedir permiso".
+        // Android "no volver a preguntar" / iOS => "Abrir configuración".
+        var primary = canRetry
+            ? new OverlayAction("Pedir permiso", PedirPermisoCommand)
+            : new OverlayAction("Abrir configuración", AbrirAjustesCommand, OverlayActionStyle.Secondary);
+
+        ShowError("location_off", title, message,
+            primary,
+            new OverlayAction("Cerrar", CerrarOverlayCommand, OverlayActionStyle.Secondary));
     }
 
-    public void ShowRestricted()
+    private void ShowRestricted()
     {
-        Title = "Acceso restringido";
-        Message = "El acceso a la ubicación está restringido por una política del dispositivo. Consultá con el administrador.";
-        CanRetry = false;
-        IsBusy = false;
-        IsDenied = true;
-    }
-
-    public void Hide()
-    {
-        IsBusy = false;
-        IsDenied = false;
+        ShowError("location_off", "Acceso restringido",
+            "El acceso a la ubicación está restringido por una política del dispositivo. Consultá con el administrador.",
+            new OverlayAction("Cerrar", CerrarOverlayCommand, OverlayActionStyle.Secondary));
     }
 
     private void MostrarResultado(GpsResult result)

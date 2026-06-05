@@ -31,6 +31,12 @@
     -->
 	<uses-feature android:name="android.hardware.location.gps" android:required="false" />
 
+	<!--
+        ACCESS_NETWORK_STATE: consultar el estado de conectividad del SO
+        (IConnectivity / Connectivity.ConnectivityChanged).
+    -->
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
 	<uses-sdk android:minSdkVersion="25" android:targetSdkVersion="36" />
 
 </manifest>

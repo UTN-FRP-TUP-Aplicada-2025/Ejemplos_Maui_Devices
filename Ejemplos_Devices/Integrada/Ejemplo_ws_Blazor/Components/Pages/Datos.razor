@@ -1,0 +1,34 @@
+﻿@page "/datos"
+@page "/"
+
+@rendermode InteractiveServer
+@attribute [StreamRendering]
+
+@inject NavigationManager Navigation
+
+<PageTitle>Home</PageTitle>
+
+<div>
+    <InputText @bind-Value="nombre"></InputText>
+    <button @onclick="OnRegistrar" class="btn btn-primary">Solicitar Coordenadas</button>
+</div>
+
+<div>@contenido</div>
+
+
+@code {
+    string nombre = "";
+
+    string contenido { get; set; }
+
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+        return base.OnAfterRenderAsync(firstRender);
+    }
+
+    public void OnRegistrar()
+    {
+        contenido = nombre;
+    }
+
+}

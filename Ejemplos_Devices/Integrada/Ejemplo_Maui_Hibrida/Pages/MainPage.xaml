@@ -14,10 +14,14 @@
     <ContentPage.Resources>
         <conv:WebNavigatingEventArgsConverter x:Key="NavigatingConverter" />
         <conv:WebNavigatedEventArgsConverter  x:Key="NavigatedConverter" />
+        <toolkit:InvertedBoolConverter x:Key="InvertedBool" />
     </ContentPage.Resources>
 
     <Grid RowDefinitions="*, Auto">
-        <RefreshView  Grid.Row="0" IsRefreshing="{Binding IsRefreshing}" IsVisible="{Binding MostrarNavegador}">
+        <!-- El WebView se ve SOLO cuando el overlay de Red está oculto:
+             así nunca se muestra la página de error del navegador. -->
+        <RefreshView  Grid.Row="0" IsRefreshing="{Binding IsRefreshing}"
+                      IsVisible="{Binding NetworkOverlayViewModel.IsVisible, Converter={StaticResource InvertedBool}}">
             <WebView x:Name="webView" Source="{Binding Url}">
                 <WebView.Behaviors>
                     <toolkit:EventToCommandBehavior EventName="Navigating"
@@ -31,8 +35,10 @@
             </WebView>
         </RefreshView>
 
-        <controls:GpsStatusOverlayView BindingContext="{Binding GpsOverlayViewModel}"/>
+        <!-- GPS primero; Red después => queda arriba (máxima prioridad visual). -->
+        <controls:StatusOverlayView BindingContext="{Binding GpsOverlayViewModel}"/>
 
+        <controls:StatusOverlayView BindingContext="{Binding NetworkOverlayViewModel}"/>
 
         <HorizontalStackLayout Grid.Row="1">
             <Button Text="Go URL" Command="{Binding GoUrlCommand}" Margin="10"/>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Ejemplo_Maui_Hibrida.Controls.StatusOverlayView"
+             xmlns:vm="clr-namespace:Ejemplo_Maui_Hibrida.ViewModels"
+             x:DataType="vm:StatusOverlayViewModel"
+             IsVisible="{Binding IsVisible}"
+			 BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource OffBlack}}">
+
+    <!--
+        Vista genérica de overlay de estado. Sirve para cualquier
+        StatusOverlayViewModel (GPS, Red, etc.).
+          - Capa de espera (IsBusy): imagen animada + título + subtítulo.
+          - Capa de error (IsError): ícono + título + mensaje + botonera dinámica.
+        El fondo semitransparente deja ver el contenido cargado por detrás.
+    -->
+
+    <Grid>
+
+        <!-- Capa de espera animada -->
+        <Grid IsVisible="{Binding IsBusy}" BackgroundColor="#CC000000"
+              HorizontalOptions="Fill" VerticalOptions="Fill">
+            <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="10" Padding="30,24">
+                <Image Source="{Binding BusyImage}" HorizontalOptions="Center" Scale="0.5" IsAnimationPlaying="True"/>
+                <Label Text="{Binding BusyTitle}" FontSize="24" TextColor="White" HorizontalTextAlignment="Center"/>
+                <Label Text="{Binding BusySubtitle}" TextColor="#CCCCCC" HorizontalTextAlignment="Center" FontSize="20" Margin="0,40,0,0"/>
+            </VerticalStackLayout>
+        </Grid>
+
+        <!-- Capa de error -->
+        <Grid IsVisible="{Binding IsError}" BackgroundColor="#CC000000"
+              HorizontalOptions="Fill" VerticalOptions="Fill">
+            <VerticalStackLayout Spacing="20" HorizontalOptions="Center" VerticalOptions="Center" Padding="32">
+                <Label Text="{Binding IconGlyph}" FontFamily="MaterialIconsOutlined" FontSize="80" TextColor="#AAAAAA" HorizontalOptions="Center"/>
+                <Label Text="{Binding Title}" FontSize="20" FontAttributes="Bold" TextColor="White" HorizontalOptions="Center" HorizontalTextAlignment="Center"/>
+                <Label Text="{Binding Message}" FontSize="14" TextColor="#CCCCCC" HorizontalOptions="Center" HorizontalTextAlignment="Center"/>
+
+                <!-- Botonera generada dinámicamente desde Actions -->
+                <VerticalStackLayout BindableLayout.ItemsSource="{Binding Actions}" Spacing="12" HorizontalOptions="Center">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="vm:OverlayAction">
+                            <Button Text="{Binding Text}" Command="{Binding Command}"
+                                    BackgroundColor="#512BD4" TextColor="White" BorderWidth="0"
+                                    CornerRadius="8" Padding="20,12" HorizontalOptions="Center">
+                                <Button.Triggers>
+                                    <DataTrigger TargetType="Button" Binding="{Binding Style}" Value="Secondary">
+                                        <Setter Property="BackgroundColor" Value="Transparent"/>
+                                        <Setter Property="TextColor" Value="#AAAAAA"/>
+                                        <Setter Property="BorderColor" Value="#555555"/>
+                                        <Setter Property="BorderWidth" Value="1"/>
+                                    </DataTrigger>
+                                </Button.Triggers>
+                            </Button>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+        </Grid>
+
+    </Grid>
+
+</ContentView>

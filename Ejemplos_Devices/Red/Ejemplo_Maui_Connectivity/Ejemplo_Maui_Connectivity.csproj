@@ -11,7 +11,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 
-		<ApplicationTitle>Ejemplo_Maui_Conexion</ApplicationTitle>
+		<ApplicationTitle>Maui Conexion</ApplicationTitle>
 
 		<ApplicationId>com.ejemplos.red.connectivity</ApplicationId>
 

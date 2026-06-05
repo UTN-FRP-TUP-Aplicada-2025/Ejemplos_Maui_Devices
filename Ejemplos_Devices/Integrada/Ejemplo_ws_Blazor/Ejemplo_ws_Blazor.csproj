@@ -7,4 +7,10 @@
     <BlazorDisableThrowNavigationException>true</BlazorDisableThrowNavigationException>
   </PropertyGroup>
 
+	<!--
+	<PropertyGroup>
+		<CompressionEnabled>false</CompressionEnabled>
+	</PropertyGroup>
+	-->
+	
 </Project>

@@ -4,6 +4,7 @@ using Ejemplo_Maui_Hibrida.Services;
 using Ejemplo_Maui_Hibrida.ViewModels;
 
 using Microsoft.Extensions.Logging;
+using Microsoft.Maui.Networking;
 
 namespace Ejemplo_Maui_Hibrida;
 
@@ -34,8 +35,11 @@ public static class MauiProgram
     static MauiAppBuilder AddServices(this MauiAppBuilder builder)
     {
         builder.Services.AddSingleton<GpsService>();
+        builder.Services.AddSingleton(Connectivity.Current);
+        builder.Services.AddSingleton<NetworkService>();
 
         builder.Services.AddSingleton<GpsOverlayViewModel>();
+        builder.Services.AddSingleton<NetworkOverlayViewModel>();
         builder.Services.AddSingleton<MainViewModel>();
 
         builder.Services.AddSingleton<MainPage>();
