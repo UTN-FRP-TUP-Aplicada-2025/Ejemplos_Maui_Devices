@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
-using Ejemplo_Maui_Hibrida.Models;
+using Ejemplo_Maui_Hibrida.UrlCommands;
 
 namespace Ejemplo_Maui_Hibrida.ViewModels;
 
@@ -22,52 +22,50 @@ public partial class MainViewModel : ObservableObject
     [ObservableProperty]
     CallOverlayViewModel callOverlayViewModel;
 
-    public MainViewModel(NetworkOverlayViewModel network, GpsOverlayViewModel gps, CallOverlayViewModel call)
+    private readonly UrlCommandDispatcher _dispatcher;
+
+    public MainViewModel(NetworkOverlayViewModel network, GpsOverlayViewModel gps, CallOverlayViewModel call, UrlCommandDispatcher dispatcher)
     {
         gpsOverlayViewModel = gps;
         networkOverlayViewModel = network;
         callOverlayViewModel = call;
+        _dispatcher = dispatcher;
     }
 
+    // Botón manual: reusa el CallCommandHandler a través del dispatcher.
     [RelayCommand]
     private async Task TakePhone()
     {
-        // Ejemplo: llamada directa (Android) o marcador del SO (iOS/MacCatalyst).
-        string telephone = "3434807427";
-        _ = await callOverlayViewModel.LlamarAsync(telephone, CallMode.Direct);
+        await _dispatcher.DispatchAsync("photo=2");
     }
 
+    // Botón manual: reusa el GpsCommandHandler a través del dispatcher. Garantiza el
+    // marcador geo=1 sobre la URL actual y aplica la reescritura con coordenadas que
+    // hace el handler (sin duplicar esa lógica acá).
     [RelayCommand]
     async private Task TakeGPS()
     {
-        //"https://geolocate.somee.com/geolocate?geo=1";
+        var url = Url.Contains("geo=1", StringComparison.OrdinalIgnoreCase)
+            ? Url
+            : $"{Url}{(Url.Contains('?') ? "&" : "?")}geo=1";
 
-        var result = await GpsOverlayViewModel.SolicitarGeolocalizacion();
+        var outcome = await _dispatcher.DispatchAsync(url);
 
-        if (result is GpsResult.Success s)
-        {
-            //https://geolocate.somee.com/geolocate?Latitud=-37.062438416743746&Longitud=-61.93923378411248,
-            Url = Url.Replace("geo=1", $"Latitud={s.Location.Latitude}&Longitud={s.Location.Longitude}&");
-        }
+        if (outcome.NavigateTo is not null)
+            Url = outcome.NavigateTo;
     }
-        
+
     [RelayCommand]
     private async Task Navigating(WebNavigatingEventArgs e)
     {
-        Url = e.Url;
+        var outcome = await _dispatcher.DispatchAsync(e.Url);
 
-        if (Url.Contains("geo=1", StringComparison.OrdinalIgnoreCase))
-        {
-            e.Cancel = true;
-            await TakeGPS();
-            IsRefreshing = false;
-        }
-        else if (Url.Contains("photo=2", StringComparison.OrdinalIgnoreCase))
-        {
-            e.Cancel = true;
-            await TakePhone();
-            IsRefreshing = false;
-        }
+        e.Cancel = outcome.CancelNavigation;
+
+        if (outcome.NavigateTo is not null)
+            Url = outcome.NavigateTo;
+
+        IsRefreshing = false;
     }
 
     [RelayCommand]

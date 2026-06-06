@@ -1,6 +1,8 @@
 ﻿using CommunityToolkit.Maui;
 
 using Ejemplo_Maui_Hibrida.Services;
+using Ejemplo_Maui_Hibrida.UrlCommands;
+using Ejemplo_Maui_Hibrida.UrlCommands.Handlers;
 using Ejemplo_Maui_Hibrida.ViewModels;
 
 using Microsoft.Extensions.Logging;
@@ -42,6 +44,12 @@ public static class MauiProgram
         builder.Services.AddSingleton<GpsOverlayViewModel>();
         builder.Services.AddSingleton<NetworkOverlayViewModel>();
         builder.Services.AddSingleton<CallOverlayViewModel>();
+
+        // Comandos de URL: el orden de registro = orden de evaluación.
+        builder.Services.AddSingleton<IUrlCommandHandler, GpsCommandHandler>();
+        builder.Services.AddSingleton<IUrlCommandHandler, CallCommandHandler>();
+        builder.Services.AddSingleton<UrlCommandDispatcher>();
+
         builder.Services.AddSingleton<MainViewModel>();
 
         builder.Services.AddSingleton<MainPage>();
