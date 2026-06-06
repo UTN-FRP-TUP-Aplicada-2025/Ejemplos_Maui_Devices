@@ -12,7 +12,7 @@ namespace Ejemplo_Maui_Hibrida.ViewModels;
 /// sobre "cargó o no" es el <see cref="WebNavigationResult"/> del WebView;
 /// el evento de conectividad y la sonda son ayudas.
 /// </summary>
-public partial class NetworkOverlayViewModel : StatusOverlayViewModel
+public partial class NetworkOverlayViewModel : StatusOverlayViewModel, IReloadRequester
 {
     private readonly NetworkService _net;
 
@@ -20,8 +20,8 @@ public partial class NetworkOverlayViewModel : StatusOverlayViewModel
     // false => corte emergente con página ya cargada: sólo subir/bajar el overlay.
     private bool _needsReload;
 
-    /// <summary>La página lo setea para recargar el WebView.</summary>
-    public Func<Task>? ReloadRequested;
+    /// <summary>La behavior del WebView lo escucha para recargar el control.</summary>
+    public event EventHandler? ReloadRequested;
 
     public NetworkOverlayViewModel(NetworkService net)
     {
@@ -69,12 +69,11 @@ public partial class NetworkOverlayViewModel : StatusOverlayViewModel
     [RelayCommand]
     private Task Reintentar() => RecargarAsync();
 
-    private async Task RecargarAsync()
+    private Task RecargarAsync()
     {
         ShowBusy("Reconectando…", "Cargando el sitio…", "reconexion.gif");
-        if (ReloadRequested is not null)
-            await ReloadRequested.Invoke();
-        // El resultado real vuelve por NotifyNavigation*.
+        ReloadRequested?.Invoke(this, EventArgs.Empty);
+        return Task.CompletedTask; // El resultado real vuelve por NotifyNavigation*.
     }
 
     private void Procesar(NetworkResult result)

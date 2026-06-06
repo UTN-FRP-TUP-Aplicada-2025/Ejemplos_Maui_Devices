@@ -4,9 +4,12 @@ namespace Ejemplo_Photo_MiMediaPicker_Callback_Normalizacion.Pages;
 
 public partial class MainPage : ContentPage
 {
-    public MainPage()
+    private readonly IImageService _imageService;
+
+    public MainPage(IImageService imageService)
     {
         InitializeComponent();
+        _imageService=imageService;
     }
 
     async private void OnAbrirCamaraClicked(object? sender, EventArgs e)
@@ -22,12 +25,7 @@ public partial class MainPage : ContentPage
                 {
                     if (string.IsNullOrEmpty(path) || !File.Exists(path)) return;
 
-                    outPath = await new ImageDeviceAutoRotate()
-                    {
-                        MaxWidthHeight = 1000,
-                        CompressionQuality = 75,
-                        CustomPhotoSize = 50
-                    }.ProcesarPhotoAsync(path);
+                    outPath = await _imageService.ProcesarPhotoAsync(path);
 
                     byte[] bytes = File.ReadAllBytes(outPath ?? "");
 

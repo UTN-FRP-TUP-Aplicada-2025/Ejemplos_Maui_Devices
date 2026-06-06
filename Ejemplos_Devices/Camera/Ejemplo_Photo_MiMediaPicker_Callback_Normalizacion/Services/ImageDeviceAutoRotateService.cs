@@ -4,7 +4,7 @@ using SkiaSharp;
 
 namespace Ejemplo_Photo_MiMediaPicker_Callback_Normalizacion.Utilities;
 
-class ImageDeviceAutoRotate : IImageDevice
+class ImageDeviceAutoRotateService : IImageService
 {
     public int MaxWidthHeight { get; set; } = 1000;
     public int CompressionQuality { get; set; } = 75;

@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:controls="clr-namespace:Ejemplo_Maui_Hibrida.Controls"
+             xmlns:behaviors="clr-namespace:Ejemplo_Maui_Hibrida.Behaviors"
              xmlns:pageModels="clr-namespace:Ejemplo_Maui_Hibrida.ViewModels"
              xmlns:conv="clr-namespace:Ejemplo_Maui_Hibrida.Converters"
              x:Class="Ejemplo_Maui_Hibrida.MainPage"
@@ -24,6 +25,8 @@
                       IsVisible="{Binding NetworkOverlayViewModel.IsVisible, Converter={StaticResource InvertedBool}}">
             <WebView x:Name="webView" Source="{Binding Url}">
                 <WebView.Behaviors>
+                    <behaviors:WebViewReloadBehavior Requester="{Binding NetworkOverlayViewModel}" />
+
                     <toolkit:EventToCommandBehavior EventName="Navigating"
                                 EventArgsConverter="{StaticResource NavigatingConverter}"
                                 Command="{Binding BindingContext.NavigatingCommand, Source={x:Reference page}}" />

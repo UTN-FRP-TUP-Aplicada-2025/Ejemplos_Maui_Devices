@@ -1,6 +1,6 @@
 ﻿namespace Ejemplo_Photo_MiMediaPicker_Callback_Normalizacion.Utilities;
 
-public interface IImageDevice
+public interface IImageService
 {
     public int MaxWidthHeight { get; set; }
 

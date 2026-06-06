@@ -1,5 +1,5 @@
 ﻿using CommunityToolkit.Maui;
-
+using CommunityToolkit.Maui.Core;
 using Ejemplo_Maui_Hibrida.Services;
 using Ejemplo_Maui_Hibrida.UrlCommands;
 using Ejemplo_Maui_Hibrida.UrlCommands.Handlers;
@@ -19,6 +19,8 @@ public static class MauiProgram
             .UseMauiApp<App>()
             //
             .UseMauiCommunityToolkit()
+            .UseMauiCommunityToolkitCore()
+            .UseMauiCommunityToolkitCamera()
             //
             .AddServices()
             .ConfigureFonts(fonts =>

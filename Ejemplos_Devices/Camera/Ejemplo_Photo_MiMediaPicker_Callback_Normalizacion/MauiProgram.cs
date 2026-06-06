@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Maui;
 using CommunityToolkit.Maui.Core;
+using Ejemplo_Photo_MiMediaPicker_Callback_Normalizacion.Utilities;
 using Microsoft.Extensions.Logging;
 
 namespace Ejemplo_Photo_MiMediaPicker_Callback_Normalizacion;
@@ -34,6 +35,8 @@ public static class MauiProgram
     public static MauiAppBuilder AddServices(this MauiAppBuilder builder)
     {
         //add services
+        builder.Services.AddSingleton<IImageService, ImageDeviceAutoRotateService>();
+
         return builder;
     }
 }
