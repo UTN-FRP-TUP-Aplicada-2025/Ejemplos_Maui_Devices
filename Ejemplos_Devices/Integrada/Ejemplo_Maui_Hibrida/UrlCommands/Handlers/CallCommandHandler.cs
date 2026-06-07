@@ -3,7 +3,7 @@ using Ejemplo_Maui_Hibrida.ViewModels;
 
 namespace Ejemplo_Maui_Hibrida.UrlCommands.Handlers;
 
-// Interpreta "photo=2": dispara una llamada directa al número configurado.
+// Interpreta "phone=phone": dispara una llamada directa al número configurado.
 public sealed class CallCommandHandler : IUrlCommandHandler
 {
     private const string NumeroPorDefecto = "3434807427";
@@ -15,7 +15,7 @@ public sealed class CallCommandHandler : IUrlCommandHandler
         _call = call;
     }
 
-    public bool CanHandle(string url) =>  url.Contains("photo=2", StringComparison.OrdinalIgnoreCase);
+    public bool CanHandle(string url) =>  url.Contains("phone=phone", StringComparison.OrdinalIgnoreCase);
 
     public async Task<BridgeOutcome> HandleAsync(string url)
     {

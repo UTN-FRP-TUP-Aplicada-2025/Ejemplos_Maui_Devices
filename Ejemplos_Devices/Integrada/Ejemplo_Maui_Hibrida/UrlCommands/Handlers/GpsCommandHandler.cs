@@ -3,7 +3,7 @@ using Ejemplo_Maui_Hibrida.ViewModels;
 
 namespace Ejemplo_Maui_Hibrida.UrlCommands.Handlers;
 
-// Interpreta "geo=1": pide geolocalización y reescribe la URL con las coordenadas.
+// Interpreta "coordenadas=coordenadas": pide geolocalización y reescribe la URL con las coordenadas.
 public sealed class GpsCommandHandler : IUrlCommandHandler
 {
     private readonly GpsOverlayViewModel _gps;
@@ -14,7 +14,7 @@ public sealed class GpsCommandHandler : IUrlCommandHandler
     }
 
     public bool CanHandle(string url) =>
-        url.Contains("geo=1", StringComparison.OrdinalIgnoreCase);
+        url.Contains("coordenadas=coordenadas", StringComparison.OrdinalIgnoreCase);
 
     public async Task<BridgeOutcome> HandleAsync(string url)
     {
@@ -22,7 +22,7 @@ public sealed class GpsCommandHandler : IUrlCommandHandler
 
         if (result is GpsResult.Success s)
         {
-            var next = url.Replace("geo=1",
+            var next = url.Replace("coordenadas=coordenadas",
                 $"Latitud={s.Location.Latitude}&Longitud={s.Location.Longitude}&",
                 StringComparison.OrdinalIgnoreCase);
 

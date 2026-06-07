@@ -25,7 +25,7 @@
                       IsVisible="{Binding NetworkOverlayViewModel.IsVisible, Converter={StaticResource InvertedBool}}">
             <WebView x:Name="webView" Source="{Binding Url}">
                 <WebView.Behaviors>
-                    <behaviors:WebViewReloadBehavior Requester="{Binding NetworkOverlayViewModel}" />
+                    <behaviors:WebViewBridgeBehavior Bridge="{Binding WebBridge}" />
 
                     <toolkit:EventToCommandBehavior EventName="Navigating"
                                 EventArgsConverter="{StaticResource NavigatingConverter}"

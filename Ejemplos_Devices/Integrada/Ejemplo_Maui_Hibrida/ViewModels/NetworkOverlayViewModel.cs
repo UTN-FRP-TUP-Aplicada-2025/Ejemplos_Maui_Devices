@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.Input;
 
+using Ejemplo_Maui_Hibrida.Behaviors;
 using Ejemplo_Maui_Hibrida.Models;
 using Ejemplo_Maui_Hibrida.Services;
 
@@ -12,20 +13,19 @@ namespace Ejemplo_Maui_Hibrida.ViewModels;
 /// sobre "cargó o no" es el <see cref="WebNavigationResult"/> del WebView;
 /// el evento de conectividad y la sonda son ayudas.
 /// </summary>
-public partial class NetworkOverlayViewModel : StatusOverlayViewModel, IReloadRequester
+public partial class NetworkOverlayViewModel : StatusOverlayViewModel
 {
     private readonly NetworkService _net;
+    private readonly IWebViewBridge _bridge;
 
     // true  => al recuperar la conexión hay que REFRESCAR el WebView (fallo de navegación).
     // false => corte emergente con página ya cargada: sólo subir/bajar el overlay.
     private bool _needsReload;
 
-    /// <summary>La behavior del WebView lo escucha para recargar el control.</summary>
-    public event EventHandler? ReloadRequested;
-
-    public NetworkOverlayViewModel(NetworkService net)
+    public NetworkOverlayViewModel(NetworkService net, IWebViewBridge bridge)
     {
         _net = net;
+        _bridge = bridge;
         _net.ConnectivityChanged += online =>
             MainThread.BeginInvokeOnMainThread(() => OnConnectivity(online));
         Hide();
@@ -72,7 +72,7 @@ public partial class NetworkOverlayViewModel : StatusOverlayViewModel, IReloadRe
     private Task RecargarAsync()
     {
         ShowBusy("Reconectando…", "Cargando el sitio…", "reconexion.gif");
-        ReloadRequested?.Invoke(this, EventArgs.Empty);
+        _bridge.Reload();
         return Task.CompletedTask; // El resultado real vuelve por NotifyNavigation*.
     }
 

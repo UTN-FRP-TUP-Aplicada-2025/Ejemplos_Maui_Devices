@@ -78,5 +78,13 @@
 		Solo necesario si pedís ubicación en SEGUNDO PLANO (Always).
 		-->
 		<!-- <key>NSLocationAlwaysAndWhenInUseUsageDescription</key> <string>La app necesita acceso permanente a tu ubicación para tracking en segundo plano.</string> -->
+
+		<!-- Permisos necesarios para la captura de medios -->
+		<key>NSCameraUsageDescription</key>
+		<string>Require to use camera</string>
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>This app needs access to photos.</string>
+		<key>NSPhotoLibraryAddUsageDescription</key>
+		<string>This app needs access to the photo gallery.</string>
 	</dict>
 </plist>

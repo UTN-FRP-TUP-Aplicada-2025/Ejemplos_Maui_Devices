@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
+using Ejemplo_Maui_Hibrida.Behaviors;
 using Ejemplo_Maui_Hibrida.UrlCommands;
 
 namespace Ejemplo_Maui_Hibrida.ViewModels;
@@ -24,30 +25,33 @@ public partial class MainViewModel : ObservableObject
 
     private readonly UrlCommandDispatcher _dispatcher;
 
-    public MainViewModel(NetworkOverlayViewModel network, GpsOverlayViewModel gps, CallOverlayViewModel call, UrlCommandDispatcher dispatcher)
+    public IWebViewBridge WebBridge { get; }
+
+    public MainViewModel(NetworkOverlayViewModel network, GpsOverlayViewModel gps, CallOverlayViewModel call, UrlCommandDispatcher dispatcher, IWebViewBridge webBridge)
     {
         gpsOverlayViewModel = gps;
         networkOverlayViewModel = network;
         callOverlayViewModel = call;
         _dispatcher = dispatcher;
+        WebBridge = webBridge;
     }
 
-    // Botón manual: reusa el CallCommandHandler a través del dispatcher.
+    // Botón manual: dispara una llamada usando el protocolo real de la web.
     [RelayCommand]
     private async Task TakePhone()
     {
-        await _dispatcher.DispatchAsync("photo=2");
+        await _dispatcher.DispatchAsync("phone=phone");
     }
 
-    // Botón manual: reusa el GpsCommandHandler a través del dispatcher. Garantiza el
-    // marcador geo=1 sobre la URL actual y aplica la reescritura con coordenadas que
-    // hace el handler (sin duplicar esa lógica acá).
+    // Botón manual: fuerza el marcador coordenadas=coordenadas sobre la URL actual y
+    // delega en el dispatcher, que aplica la reescritura con coordenadas (sin duplicar
+    // esa lógica acá).
     [RelayCommand]
     async private Task TakeGPS()
     {
-        var url = Url.Contains("geo=1", StringComparison.OrdinalIgnoreCase)
+        var url = Url.Contains("coordenadas=coordenadas", StringComparison.OrdinalIgnoreCase)
             ? Url
-            : $"{Url}{(Url.Contains('?') ? "&" : "?")}geo=1";
+            : $"{Url}{(Url.Contains('?') ? "&" : "?")}coordenadas=coordenadas";
 
         var outcome = await _dispatcher.DispatchAsync(url);
 
@@ -58,9 +62,10 @@ public partial class MainViewModel : ObservableObject
     [RelayCommand]
     private async Task Navigating(WebNavigatingEventArgs e)
     {
-        var outcome = await _dispatcher.DispatchAsync(e.Url);
+        if (_dispatcher.IsCommand(e.Url))
+            e.Cancel = true;   // sincrónico: cancelar ANTES de cualquier await
 
-        e.Cancel = outcome.CancelNavigation;
+        var outcome = await _dispatcher.DispatchAsync(e.Url);
 
         if (outcome.NavigateTo is not null)
             Url = outcome.NavigateTo;

@@ -11,6 +11,9 @@ public sealed class UrlCommandDispatcher
         _handlers = handlers;
     }
 
+    // Permite cancelar la navegación de forma sincrónica, antes de cualquier await.
+    public bool IsCommand(string url) => _handlers.Any(h => h.CanHandle(url));
+
     public async Task<BridgeOutcome> DispatchAsync(string url)
     {
         foreach (var handler in _handlers)
