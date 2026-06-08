@@ -51,7 +51,12 @@ public sealed class CameraCommandHandler : IUrlCommandHandler
         var dataUri = $"data:image/jpeg;base64,{Convert.ToBase64String(bytes)}";
 
         // Inyectar vía el bridge: la página resuelve el DOM (img/input).
-        _bridge.RunScript($"window.recibirFoto('{targetId}', '{dataUri}');");
+        //_bridge.RunScript($"window.recibirFoto('{targetId}', '{dataUri}');");
+                
+        string scriptjs=$@"document.getElementById('{targetId}').src = '{dataUri}';
+        document.getElementById('{targetId}').value = '{dataUri}';";
+
+        _bridge.RunScript(scriptjs);
 
         return new BridgeOutcome(true, null);     // se queda en la página
     }
