@@ -40,7 +40,7 @@ public partial class MainViewModel : ObservableObject
     [RelayCommand]
     private async Task TakePhone()
     {
-        await _dispatcher.DispatchAsync("phone=phone");
+        _ = await _dispatcher.DispatchAsync("phone=phone");
     }
 
     // Botón manual: fuerza el marcador coordenadas=coordenadas sobre la URL actual y

@@ -69,6 +69,7 @@ public static class MauiProgram
         builder.Services.AddSingleton(Connectivity.Current);
         builder.Services.AddSingleton<NetworkService>();
         builder.Services.AddSingleton<CallService>();
+        builder.Services.AddSingleton<ApiRelayService>();
         #endregion
 
         #region pages
@@ -90,6 +91,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<IUrlCommandHandler, CallCommandHandler>();
         builder.Services.AddSingleton<IUrlCommandHandler, CameraCommandHandler>();
         builder.Services.AddSingleton<IUrlCommandHandler, SelfieCommandHandler>();
+        builder.Services.AddSingleton<IUrlCommandHandler, SendApiCommandHandler>();
         builder.Services.AddSingleton<UrlCommandDispatcher>();
         #endregion
 

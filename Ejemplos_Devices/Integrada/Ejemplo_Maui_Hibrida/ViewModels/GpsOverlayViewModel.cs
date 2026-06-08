@@ -79,7 +79,7 @@ public partial class GpsOverlayViewModel : StatusOverlayViewModel
         switch (result)
         {
             case GpsResult.Success s:
-                Coordenadas = $"Lat: {s.Location.Latitude:F6}, Lng: {s.Location.Longitude:F6}";
+                Coordenadas = $"Lat: {s.Location.Latitude}, Lng: {s.Location.Longitude}";
                 Hide();
                 break;
 

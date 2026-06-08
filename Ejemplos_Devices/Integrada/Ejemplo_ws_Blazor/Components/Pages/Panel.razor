@@ -72,7 +72,7 @@
     </div>
     <div class="card-body">
         <button @onclick="OnTest" class="btn btn-primary">Probar respuesta</button><br />
-        <div>@contenidoPrueba</div>
+        <div>@ContenidoTest</div>
     </div>
 </div>
 
@@ -82,6 +82,7 @@
     </div>
     <div class="card-body">
         <button @onclick="OnSendAPI" class="btn btn-primary">Enviar Post API</button><br/>
+        <div id="contenidoSendAPI">@ContenidoSendAPI</div>
     </div>
 </div>
 
@@ -98,13 +99,24 @@
 
 @code {
 
-    protected override Task OnAfterRenderAsync(bool firstRender)
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
             MostrarCoordeandas();
+
+            // Hook que la app (MAUI) invoca con el resultado del relay REST (sendAPI).
+            // Se registra por eval sobre el DOM vivo (no <script> estático: Blazor no
+            // ejecuta scripts renderizados dinámicamente) para que la función exista
+            // en el mismo window donde la app inyecta su JS de respuesta.
+            await JSRuntime.InvokeVoidAsync("eval", @"
+                window.recibirRespuestaApi = function (callId, res) {
+                    var el = document.getElementById('apiOut');
+                    if (el) el.innerText = 'callId=' + callId + ' -> ' + JSON.stringify(res);
+                    console.log('recibirRespuestaApi', callId, res);
+                };");
         }
-        return base.OnAfterRenderAsync(firstRender);
+        await base.OnAfterRenderAsync(firstRender);
     }
 
     #region coordenadas
@@ -139,8 +151,11 @@
     }
     public void OnLLamarYSendAPI()
     {
+        // Nota: el dispatcher de la app es first-match-wins y evalúa `phone` antes
+        // que `sendAPI`, así que en este combo sólo dispara la llamada. El relay REST
+        // (sendAPI) queda fuera de alcance acá; se ejercita por separado en OnSendAPI.
         string parametrosLLamar = "phone=phone";
-        string parametrosSendAPI = $"sendAPI=sendAPI&tipoResquest=Post&url={HttpUtility.UrlEncode("https://geolocate.somee.com/api/GeoReporter/track")}";
+        string parametrosSendAPI = $"sendAPI=sendAPI&httpMethod=Post&url={HttpUtility.UrlEncode("https://geolocate.somee.com/api/GeoReporter/track")}";
 
         Navigation.NavigateTo($"/panel?{parametrosLLamar}&{parametrosSendAPI}", forceLoad: true);
     }
@@ -195,9 +210,14 @@
     #endregion
 
     #region enviar a api
+    string ContenidoSendAPI { get; set; } = "";
     public void OnSendAPI()
     {
-        string parametrosSendAPI = $"sendAPI=sendAPI&tipoResquest=Post&url={HttpUtility.UrlEncode("https://geolocate.somee.com/api/GeoReporter/track")}";
+        // body de demo: el endpoint /track espera un LocationDto { Latitude, Longitude }.
+        string body = "{\"Latitude\":-31.7496689,\"Longitude\":-60.5213019}";
+        string parametrosSendAPI =
+            $"sendAPI=sendAPI&httpMethod=Post&url={HttpUtility.UrlEncode("https://geolocate.somee.com/api/GeoReporter/track")}" +
+            $"&param=contenidoSendAPI&body={HttpUtility.UrlEncode(body)}";
         Navigation.NavigateTo($"/panel?{parametrosSendAPI}", forceLoad: true);
     }
     #endregion
@@ -213,11 +233,11 @@
     #endregion
 
     #region test button
-    string contenidoPrueba { get; set; } = "";
+    string ContenidoTest { get; set; } = "";
 
     async public Task OnTest()
     {
-        contenidoPrueba = $"{DateTime.Now}";        
+        ContenidoTest = $"{DateTime.Now}";        
     }
     #endregion
 }
