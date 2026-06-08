@@ -1,0 +1,223 @@
+﻿
+@page "/panel"
+@using System.Web
+
+@inject IJSRuntime JSRuntime
+
+@rendermode InteractiveServer
+@attribute [StreamRendering]
+
+@inject NavigationManager Navigation
+
+<PageTitle>Home</PageTitle>
+
+
+<div class="card">
+    <div class="card-head">
+        <h4>Solicitar de posición</h4>
+    </div>
+    <div class="card-body">
+        <button @onclick="OnSolicitarCoordenadas" class="btn btn-primary">Tomar Coordenadas</button><br />
+        <div>@ContenidoCoordenada</div>        
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-head">
+        <h4>LLamar y reporte de posición</h4>
+    </div>
+    <div class="card-body">
+        <button @onclick="OnLLamar" class="btn btn-primary">LLamar</button><br/>
+        <button @onclick="OnLLamarYSendAPI" class="btn btn-primary">LLamar y reportar</button><br/>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-head">
+        <h4>Tomar foto</h4>
+    </div>
+    <div class="card-body">
+
+        <button @onclick="OnTomarFoto" class="btn btn-primary">Tomar Foto</button><br />
+        <img id="imgFoto1" src="assets/images/no_foto.png" style="width: 150px; height: 150px; object-fit: cover; border-radius: 8px;" />
+        <input id="inputFoto1" type="hidden" name="inputFoto1" />
+        <div>@inputFoto1</div>
+        <br/>
+
+        <button @onclick="OnMostrarContenidoFoto" class="btn btn-primary">Mostrar contenido</button><br />
+        
+        <div>@OutPutFotoBase64</div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-head">
+        <h4>Tomar selfie</h4>
+    </div>
+    <div class="card-body">
+        <button @onclick="OnTomarSelfie" class="btn btn-primary">Tomar Selfie</button><br />
+        <img id="imgSelfie1" src="assets/images/no_foto.png" style="width: 150px; height: 150px; object-fit: cover; border-radius: 8px;" />
+        <input id="inputSelfie1" type="hidden" name="inputSelfie1" />
+        <div>@inputSelfie1</div>
+        <br/>
+        
+        <button @onclick="OnMostrarContenidoSelfie" class="btn btn-primary">Mostrar contenido</button><br />
+        <div>@OutPutSelfieBase64</div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-head">
+        <h4>Prueba de interacción de página</h4>
+    </div>
+    <div class="card-body">
+        <button @onclick="OnTest" class="btn btn-primary">Probar respuesta</button><br />
+        <div>@contenidoPrueba</div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-head">
+        <h4>Post API</h4>
+    </div>
+    <div class="card-body">
+        <button @onclick="OnSendAPI" class="btn btn-primary">Enviar Post API</button><br/>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-head">
+        <h4>Lectura QR</h4>
+    </div>
+    <div class="card-body">
+        <button @onclick="OnQR" class="btn btn-primary">Leer QR</button><br/>
+        <div>@QRContenido</div>
+    </div>
+</div>
+
+
+@code {
+
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            MostrarCoordeandas();
+        }
+        return base.OnAfterRenderAsync(firstRender);
+    }
+
+    #region coordenadas
+    string ContenidoCoordenada { get; set; } = "";
+    public void OnSolicitarCoordenadas()
+    {
+        Navigation.NavigateTo("/panel?coordenadas=coordenadas", forceLoad: true);
+    }
+
+    //la app interviene  la url y redirecciona con:
+    //".../geolocate?Latitud=-31.7496689&Longitud=-60.5213019&"
+    [SupplyParameterFromQuery]
+    public double Latitud { get; set; }
+
+    [SupplyParameterFromQuery]
+    public double Longitud { get; set; }
+
+    public void MostrarCoordeandas()
+    {
+        if (Latitud != 0 && Longitud != 0)
+        {
+            ContenidoCoordenada = $"Latitud: {Latitud}, Longitud: {Longitud}";
+            StateHasChanged();
+        }
+    }
+    #endregion
+
+    #region llamada
+    public void OnLLamar()
+    {
+        Navigation.NavigateTo("/panel?phone=phone", forceLoad: true);
+    }
+    public void OnLLamarYSendAPI()
+    {
+        string parametrosLLamar = "phone=phone";
+        string parametrosSendAPI = $"sendAPI=sendAPI&tipoResquest=Post&url={HttpUtility.UrlEncode("https://geolocate.somee.com/api/GeoReporter/track")}";
+
+        Navigation.NavigateTo($"/panel?{parametrosLLamar}&{parametrosSendAPI}", forceLoad: true);
+    }
+    #endregion
+
+    #region foto
+
+    string OutPutFotoBase64 { get; set; } = "";
+
+    public string? inputFoto1 { get; set; } = "";
+
+    //1- desde la pagina se redirecciona con esta url
+    public void OnTomarFoto()
+    {
+        Navigation.NavigateTo("/panel?photo=photo&param=imgFoto1", forceLoad: true);
+    }
+    async public Task OnMostrarContenidoFoto()
+    {
+        inputFoto1 = await JSRuntime.InvokeAsync<string>("eval", "document.getElementById('inputFoto1')?.value ?? ''");
+    }
+
+    //2- desde la app antes interviene el request,y con photo=photo dispara la camara
+    //3- desde la app inyecta el base64 en el input oculto y en la imagen, con el mismo valor para mostrar la foto tomada
+    // Test para probar desde devtools
+    // allow pasting
+    // document.getElementById('imgFoto1').src='data:image/png;base64,Qk1KAQAAAAAAAIoAAAB8AAAACAAAAAgAAAABABgAAAAAAMAAAAAjLgAAIy4AAAAAAAAAAAAAAAD/AAD/AAD/AAAAAAAAAEJHUnMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAA////////iCtp18/T0cnOhyxr/////////////////QAB+W5u+Gpq/QEB////////////wMDT90dH7kdH7kdH90dHwMDT////////iYngrkfOp0e8pke5rkfOiYng////////////farkV3afVnWef6rk////////////v8zhmLLabpPCao29mLHav8zh////////iYngAgPsAgPtAwPtAgPsiYng////////6en4AAD+AAD+AAD+AAD+6en4////';
+    // document.getElementById('inputFoto1').value='data:image/png;base64,Qk1KAQAAAAAAAIoAAAB8AAAACAAAAAgAAAABABgAAAAAAMAAAAAjLgAAIy4AAAAAAAAAAAAAAAD/AAD/AAD/AAAAAAAAAEJHUnMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAA////////iCtp18/T0cnOhyxr/////////////////QAB+W5u+Gpq/QEB////////////wMDT90dH7kdH7kdH90dHwMDT////////iYngrkfOp0e8pke5rkfOiYng////////////farkV3afVnWef6rk////////////v8zhmLLabpPCao29mLHav8zh////////iYngAgPsAgPtAwPtAgPsiYng////////6en4AAD+AAD+AAD+AAD+6en4////';
+    #endregion
+
+    #region selfie
+
+    string OutPutSelfieBase64 { get; set; } = "";
+
+    public string? inputSelfie1 { get; set; } = "";
+
+    //1- desde la pagina se redirecciona con esta url
+    public void OnTomarSelfie()
+    {
+        Navigation.NavigateTo("/panel?selfie=selfie&param=Selfie1", forceLoad: true);
+    }
+    async public Task OnMostrarContenidoSelfie()
+    {
+        inputSelfie1 = await JSRuntime.InvokeAsync<string>("eval", "document.getElementById('inputSelfie1')?.value ?? ''");
+    }
+
+    //2- desde la app antes interviene el request,y con selfie=selife dispara la camara
+    //3- desde la app inyecta el base64 en el input oculto y en la imagen, con el mismo valor para mostrar la foto tomada
+    // Test para probar desde devtools
+    // allow pasting
+    // document.getElementById('imgSelfie1').src='data:image/png;base64,Qk1KAQAAAAAAAIoAAAB8AAAACAAAAAgAAAABABgAAAAAAMAAAAAjLgAAIy4AAAAAAAAAAAAAAAD/AAD/AAD/AAAAAAAAAEJHUnMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAA////////iCtp18/T0cnOhyxr/////////////////QAB+W5u+Gpq/QEB////////////wMDT90dH7kdH7kdH90dHwMDT////////iYngrkfOp0e8pke5rkfOiYng////////////farkV3afVnWef6rk////////////v8zhmLLabpPCao29mLHav8zh////////iYngAgPsAgPtAwPtAgPsiYng////////6en4AAD+AAD+AAD+AAD+6en4////';
+    // document.getElementById('inputSelfie1').value='data:image/png;base64,Qk1KAQAAAAAAAIoAAAB8AAAACAAAAAgAAAABABgAAAAAAMAAAAAjLgAAIy4AAAAAAAAAAAAAAAD/AAD/AAD/AAAAAAAAAEJHUnMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAA////////iCtp18/T0cnOhyxr/////////////////QAB+W5u+Gpq/QEB////////////wMDT90dH7kdH7kdH90dHwMDT////////iYngrkfOp0e8pke5rkfOiYng////////////farkV3afVnWef6rk////////////v8zhmLLabpPCao29mLHav8zh////////iYngAgPsAgPtAwPtAgPsiYng////////6en4AAD+AAD+AAD+AAD+6en4////';
+    #endregion
+
+    #region enviar a api
+    public void OnSendAPI()
+    {
+        string parametrosSendAPI = $"sendAPI=sendAPI&tipoResquest=Post&url={HttpUtility.UrlEncode("https://geolocate.somee.com/api/GeoReporter/track")}";
+        Navigation.NavigateTo($"/panel?{parametrosSendAPI}", forceLoad: true);
+    }
+    #endregion
+
+    #region leer qr
+    string QRContenido { get; set; } = "";
+    //la app interviene la url disparando el lector de qr y mostrando el valor de qr
+    public void OnQR()
+    {
+        string parametrosQR = $"QR=QR";
+        Navigation.NavigateTo($"/panel?{parametrosQR}", forceLoad: true);
+    }
+    #endregion
+
+    #region test button
+    string contenidoPrueba { get; set; } = "";
+
+    async public Task OnTest()
+    {
+        contenidoPrueba = $"{DateTime.Now}";        
+    }
+    #endregion
+}

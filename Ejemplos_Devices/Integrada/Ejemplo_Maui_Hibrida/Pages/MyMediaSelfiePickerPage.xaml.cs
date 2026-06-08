@@ -6,7 +6,7 @@ using System.Diagnostics;
 namespace Ejemplo_Maui_Hibrida.Pages;
 
 [QueryProperty(nameof(OnPhotoCallback), "OnPhotoCallback")]
-public partial class MyMediaPickerPage : ContentPage
+public partial class MyMediaSelfiePickerPage : ContentPage
 {
     private bool _isCapturingImage = false;
     private CancellationTokenSource? _captureCancellationTokenSource;
@@ -28,7 +28,7 @@ public partial class MyMediaPickerPage : ContentPage
         }
     }
 
-    public MyMediaPickerPage()
+    public MyMediaSelfiePickerPage()
     {
         InitializeComponent();
         BindingContext = this;
@@ -41,7 +41,15 @@ public partial class MyMediaPickerPage : ContentPage
         DeviceDisplay.MainDisplayInfoChanged += OnMainDisplayInfoChanged;
         UpdateLayoutOrientation(DeviceDisplay.MainDisplayInfo.Orientation);
 
+        if (Application.Current != null)
+            Application.Current.RequestedThemeChanged += OnRequestedThemeChanged;
+
         await EvaluarYMostrarEstadoPermisoAsync();
+    }
+
+    private void OnRequestedThemeChanged(object? sender, AppThemeChangedEventArgs e)
+    {
+        MaskOverlay?.Invalidate();
     }
 
     protected override void OnDisappearing()
@@ -51,13 +59,21 @@ public partial class MyMediaPickerPage : ContentPage
         try
         {
             DeviceDisplay.MainDisplayInfoChanged -= OnMainDisplayInfoChanged;
+
+            if (Application.Current != null)
+                Application.Current.RequestedThemeChanged -= OnRequestedThemeChanged;
+
             _captureCancellationTokenSource?.Cancel();
 
             if (_cameraView != null)
             {
                 _cameraView.MediaCaptured -= OnMediaCaptured;
                 _cameraView.MediaCaptureFailed -= OnMediaCaptureFailed;
+                _cameraView.Loaded -= OnCameraViewLoaded;
+
+                _cameraView.Handler?.DisconnectHandler();
                 CameraContainer.Content = null;
+
                 _cameraView = null;
             }
         }
@@ -77,9 +93,9 @@ public partial class MyMediaPickerPage : ContentPage
     {
         base.OnNavigatedTo(args);
 
-        var status = await Permissions.CheckStatusAsync<Permissions.Camera>();
-        if (status == PermissionStatus.Granted && _cameraView != null)
-            await SeleccionarCamaraAsync();
+        //var status = await Permissions.CheckStatusAsync<Permissions.Camera>();
+        //if (status == PermissionStatus.Granted && _cameraView != null)
+        //    await SeleccionarCamaraAsync();
     }
 
     // PERMISOS
@@ -90,10 +106,7 @@ public partial class MyMediaPickerPage : ContentPage
 #if IOS
         if (DeviceInfo.Current.DeviceType == DeviceType.Virtual)
         {
-            MostrarOverlayPermiso(
-                "Cámara no disponible",
-                "La cámara no está disponible en el simulador de iOS. Probá en un dispositivo físico.",
-                puedeReintentar: false);
+            MostrarOverlayPermiso("Cámara no disponible", "La cámara no está disponible en el simulador de iOS. Prueba en un dispositivo físico.", puedeReintentar: false);
             return;
         }
 #endif
@@ -103,9 +116,9 @@ public partial class MyMediaPickerPage : ContentPage
         if (status == PermissionStatus.Granted)
         {
             if (MediaPicker.Default.IsCaptureSupported)
-                MostrarVisorCamara();
+                await MostrarVisorCamara();
             else
-                MostrarOverlayPermiso("Cámara no disponible", "Este dispositivo no tiene cámara disponible.", puedeReintentar: false);
+                MostrarOverlayPermiso("Cámara no disponible", "Este dispositivo no tiene c�mara disponible.", puedeReintentar: false);
             return;
         }
 
@@ -114,7 +127,7 @@ public partial class MyMediaPickerPage : ContentPage
         if (status == PermissionStatus.Granted)
         {
             if (MediaPicker.Default.IsCaptureSupported)
-                MostrarVisorCamara();
+                await MostrarVisorCamara();
             else
                 MostrarOverlayPermiso("Cámara no disponible", "Este dispositivo no tiene cámara disponible.", puedeReintentar: false);
             return;
@@ -122,7 +135,7 @@ public partial class MyMediaPickerPage : ContentPage
 
         if (status == PermissionStatus.Restricted)
         {
-            MostrarOverlayPermiso("Acceso restringido", "El acceso a la cámara está restringido por una política del dispositivo. Consultá con el administrador.", puedeReintentar: false);
+            MostrarOverlayPermiso("Acceso restringido", "El acceso a la cámara está restringido por una política del dispositivo. Consulte con el administrador.", puedeReintentar: false);
             return;
         }
 
@@ -137,11 +150,11 @@ public partial class MyMediaPickerPage : ContentPage
             puedeReintentar: puedeReintentar);
     }
 
-    // OVERLAY � mostrar / ocultar
+    // OVERLAY - mostrar / ocultar
 
-    private void MostrarVisorCamara()
+    async private Task MostrarVisorCamara()
     {
-        MainThread.BeginInvokeOnMainThread(() =>
+        MainThread.BeginInvokeOnMainThread(async () =>
         {
             PermissionDeniedOverlay.IsVisible = false;
 
@@ -153,16 +166,75 @@ public partial class MyMediaPickerPage : ContentPage
                     VerticalOptions = LayoutOptions.Fill,
                     Margin = new Thickness(0)
                 };
+
                 _cameraView.MediaCaptured += OnMediaCaptured;
                 _cameraView.MediaCaptureFailed += OnMediaCaptureFailed;
+
+                // ⚠️ Importante: NO asignar al CameraContainer todavía.
+                // Pre-cargar la cámara seleccionada ANTES de que el handler nativo arranque.
+                try
+                {
+                    var cameras = await _cameraView.GetAvailableCameras(CancellationToken.None);
+                    var front = cameras.FirstOrDefault(c => c.Position == CameraPosition.Front)
+                             ?? cameras.FirstOrDefault();
+
+                    if (front != null)
+                        _cameraView.SelectedCamera = front;   // 👈 ANTES de attach al árbol visual
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine($"Pre-select camera error: {ex.Message}");
+                }
+
+                // Recién ahora lo agregamos al árbol → se crea el handler con SelectedCamera ya seteado
                 CameraContainer.Content = _cameraView;
             }
 
             CameraContainer.IsVisible = true;
             BtnTomarFoto.IsVisible = true;
-            BtnFlashButton.IsVisible = true;
+            BtnFlashButton.IsVisible = false;
             StatusFlashToIcons();
         });
+
+        //MainThread.BeginInvokeOnMainThread(() =>
+        //{
+        //    PermissionDeniedOverlay.IsVisible = false;
+
+        //    if (_cameraView == null)
+        //    {
+        //        _cameraView = new CameraView
+        //        {
+        //            HorizontalOptions = LayoutOptions.Fill,
+        //            VerticalOptions = LayoutOptions.Fill,
+        //            Margin = new Thickness(0)
+        //        };
+        //        _cameraView.MediaCaptured += OnMediaCaptured;
+        //        _cameraView.MediaCaptureFailed += OnMediaCaptureFailed;
+
+        //        //_cameraView.Loaded += OnCameraViewLoaded;
+
+        //        try
+        //        {
+        //            var cameras = await _cameraView.GetAvailableCameras(CancellationToken.None);
+        //            var front = cameras.FirstOrDefault(c => c.Position == CameraPosition.Front)
+        //                     ?? cameras.FirstOrDefault();
+
+        //            if (front != null)
+        //                _cameraView.SelectedCamera = front;   // 👈 ANTES de attach al árbol visual
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            Debug.WriteLine($"Pre-select camera error: {ex.Message}");
+        //        }
+
+        //        CameraContainer.Content = _cameraView;
+        //    }
+
+        //    CameraContainer.IsVisible = true;
+        //    BtnTomarFoto.IsVisible = true;
+        //    BtnFlashButton.IsVisible = false;
+        //    StatusFlashToIcons();
+        //});
     }
 
     private void MostrarOverlayPermiso(string titulo, string mensaje, bool puedeReintentar)
@@ -201,7 +273,12 @@ public partial class MyMediaPickerPage : ContentPage
         await Shell.Current.GoToAsync("..");
     }
 
-    // C�MARA
+    // CÁMARA
+
+    private async void OnCameraViewLoaded(object? sender, EventArgs e)
+    {
+        await SeleccionarCamaraAsync();
+    }
 
     private async Task SeleccionarCamaraAsync()
     {
@@ -210,12 +287,16 @@ public partial class MyMediaPickerPage : ContentPage
         try
         {
             var cameras = await _cameraView.GetAvailableCameras(CancellationToken.None);
-            var rear = cameras.FirstOrDefault(c => c.Position == CameraPosition.Rear) ?? cameras.FirstOrDefault();
+            var cameraPosition = cameras.FirstOrDefault(c => c.Position == CameraPosition.Front) ?? cameras.FirstOrDefault();
 
-            if (rear != null)
-                MainThread.BeginInvokeOnMainThread(() => _cameraView.SelectedCamera = rear);
-            else
+            if (cameraPosition == null)
                 MostrarOverlayPermiso("Cámara no disponible", "Este dispositivo no tiene cámara disponible.", puedeReintentar: false);
+
+            await MainThread.InvokeOnMainThreadAsync(async () =>
+            {
+                _cameraView.SelectedCamera = cameraPosition;
+                await Task.Delay(300);
+            });
         }
         catch (Exception ex)
         {
@@ -244,7 +325,7 @@ public partial class MyMediaPickerPage : ContentPage
         catch (InvalidCastException)
         {
             // CameraView no disponible en este dispositivo/simulador
-            MostrarOverlayPermiso("Cámara no disponible", "Este dispositivo no soporta la c�mara integrada.", puedeReintentar: false);
+            MostrarOverlayPermiso("Cámara no disponible", "Este dispositivo no soporta la cámara integrada.", puedeReintentar: false);
         }
         catch (Exception ex)
         {
@@ -266,9 +347,7 @@ public partial class MyMediaPickerPage : ContentPage
 
         if (e.Media != null)
         {
-            tempPath = Path.Combine(
-                FileSystem.CacheDirectory,
-                $"photo_{Guid.NewGuid():N}.jpg");
+            tempPath = Path.Combine(FileSystem.CacheDirectory, $"photo_{Guid.NewGuid():N}.jpg");
 
             try
             {
@@ -292,16 +371,15 @@ public partial class MyMediaPickerPage : ContentPage
         //    archivo cuando lo termine de usar.
         await MainThread.InvokeOnMainThreadAsync(async () =>
         {
-            if (_cameraView?.IsAvailable != true)
+            if (_cameraView?.IsAvailable == true)
             {
-                await DisplayAlertAsync("Error del dispositivo", "El dispositivo no está activo", "OK");
-                return;
+                OnPhotoCallback?.Invoke(tempPath);
+                await Shell.Current.GoToAsync("..");
             }
-
-            var callback = OnPhotoCallback;
-            OnPhotoCallback = null;          // evita doble invocación si la página se reusa
-            await Shell.Current.GoToAsync("..");
-            callback?.Invoke(tempPath);
+            else
+            {
+                await DisplayAlertAsync("Error del dispositivo", "El dispositivo no est� activo", "OK");
+            }
         });
     }
 

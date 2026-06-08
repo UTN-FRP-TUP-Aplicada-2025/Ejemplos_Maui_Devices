@@ -3,51 +3,44 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Ejemplo_Maui_Hibrida.Pages.MyMediaPickerPage"
              Title="Camera Page"
-             BackgroundColor="#000000">
+             BackgroundColor="{AppThemeBinding Light=White, Dark=Black}">
 
-    <Grid x:Name="DynamicLayout" RowDefinitions="Auto,*,Auto" ColumnDefinitions="*"
-          HorizontalOptions="Fill" VerticalOptions="Fill">
+	<Grid x:Name="DynamicLayout" RowDefinitions="Auto,*,Auto" ColumnDefinitions="*" HorizontalOptions="Fill" VerticalOptions="Fill">
 
-        <!-- barra de botones -->
-        <Button x:Name="BtnFlashButton" Grid.Row="0" Grid.Column="0" Clicked="OnActiveFlashClicked" IsVisible="False"
-                HorizontalOptions="Center" VerticalOptions="Center" Background="#aa000000" CornerRadius="8">
-            <Button.ImageSource>
-                <FontImageSource Glyph="{Binding FlashIcon}" FontFamily="MaterialIconsOutlined" />
-            </Button.ImageSource>
-        </Button>
+		<!-- barra de botones -->
+		<Button x:Name="BtnFlashButton" Grid.Row="0" Grid.Column="0" Clicked="OnActiveFlashClicked" IsVisible="False" HorizontalOptions="Center" VerticalOptions="Center" Background="#aa000000" CornerRadius="8">
+			<Button.ImageSource>
+				<FontImageSource Glyph="{Binding FlashIcon}" FontFamily="MaterialIconsOutlined" />
+			</Button.ImageSource>
+		</Button>
 
-        <!-- Contenedor para CameraView (se crea desde código) -->
-        <ContentView x:Name="CameraContainer" Grid.Row="1" Grid.Column="0"
-                     IsVisible="False"
-                     HorizontalOptions="Fill" VerticalOptions="Fill" />
+		<!-- Contenedor para CameraView (se crea desde código) -->
+		<ContentView x:Name="CameraContainer" Grid.Row="1" Grid.Column="0" IsVisible="False" HorizontalOptions="Fill" VerticalOptions="Fill" />
 
-        <!-- Overlay de permiso denegado -->
-        <Grid x:Name="PermissionDeniedOverlay" Grid.Row="1" Grid.Column="0" IsVisible="False" BackgroundColor="#CC000000"
-              HorizontalOptions="Fill" VerticalOptions="Fill" Opacity="1">
+		<!-- Overlay de permiso denegado -->
+		<Grid x:Name="PermissionDeniedOverlay" Grid.Row="1" Grid.Column="0" IsVisible="False" BackgroundColor="#CC000000" HorizontalOptions="Fill" VerticalOptions="Fill">
 
-            <VerticalStackLayout Spacing="20" HorizontalOptions="Center" VerticalOptions="Center" Padding="32">
+			<VerticalStackLayout Spacing="20" HorizontalOptions="Center" VerticalOptions="Center" Padding="32">
+				<Label Text="no_photography" FontFamily="MaterialIconsOutlined" FontSize="80" TextColor="#AAAAAA" HorizontalOptions="Center"/>
 
-                <Label Text="no_photography" FontFamily="MaterialIconsOutlined" FontSize="80" TextColor="#AAAAAA" HorizontalOptions="Center"/>
+				<Label x:Name="LblPermissionTitle" Text="Sin acceso a la cámara" FontSize="20" FontAttributes="Bold" TextColor="White" HorizontalOptions="Center" HorizontalTextAlignment="Center"/>
 
-                <Label x:Name="LblPermissionTitle" Text="Sin acceso a la cámara" FontSize="20" FontAttributes="Bold" TextColor="White" HorizontalOptions="Center" HorizontalTextAlignment="Center"/>
+				<Label x:Name="LblPermissionMessage" Text="Para tomar fotos necesitamos acceso a la cámara." FontSize="14" TextColor="#CCCCCC" HorizontalOptions="Center" HorizontalTextAlignment="Center"/>
 
-                <Label x:Name="LblPermissionMessage" Text="Para tomar fotos necesitamos acceso a la cámara." FontSize="14" TextColor="#CCCCCC" HorizontalOptions="Center" HorizontalTextAlignment="Center"/>
+				<Button x:Name="BtnPedirPermiso" Text="Pedir permiso" Clicked="OnPedirPermisoClicked" BackgroundColor="#512BD4" TextColor="White" CornerRadius="8" Padding="20,12" HorizontalOptions="Center" IsVisible="False"/>
 
-                <Button x:Name="BtnPedirPermiso" Text="Pedir permiso" Clicked="OnPedirPermisoClicked" BackgroundColor="#512BD4" TextColor="White" CornerRadius="8" Padding="20,12" HorizontalOptions="Center" IsVisible="False"/>
+				<Button x:Name="BtnGoToSettings" Text="Abrir configuración" Clicked="OnGoToSettingsClicked" BackgroundColor="#512BD4" TextColor="White" CornerRadius="8" Padding="20,12" HorizontalOptions="Center"/>
 
-                <Button x:Name="BtnGoToSettings" Text="Abrir configuración" Clicked="OnGoToSettingsClicked" BackgroundColor="#512BD4" TextColor="White" CornerRadius="8" Padding="20,12" HorizontalOptions="Center"/>
+				<Button Text="Volver" Clicked="OnVolverClicked" BackgroundColor="Transparent" TextColor="#AAAAAA" BorderColor="#555555" BorderWidth="1" CornerRadius="8" Padding="20,12" HorizontalOptions="Center"/>
+			</VerticalStackLayout>
+		</Grid>
 
-                <Button Text="Volver" Clicked="OnVolverClicked" BackgroundColor="Transparent" TextColor="#AAAAAA" BorderColor="#555555" BorderWidth="1" CornerRadius="8" Padding="20,12" HorizontalOptions="Center"/>
+		<!-- barra de botones -->
+		<Button x:Name="BtnTomarFoto" Grid.Row="2" Grid.Column="0" Clicked="OnTomarFotoClicked" IsVisible="False" HorizontalOptions="Center" VerticalOptions="Center" Background="#aa000000" CornerRadius="8">
+			<Button.ImageSource>
+				<FontImageSource Glyph="photo_camera" Size="50" FontFamily="MaterialIconsOutlined"/>
+			</Button.ImageSource>
+		</Button>
 
-            </VerticalStackLayout>
-        </Grid>
-
-        <!-- barra de botones -->
-        <Button x:Name="BtnTomarFoto" Grid.Row="2" Grid.Column="0" Clicked="OnTomarFotoClicked" IsVisible="False" HorizontalOptions="Center" VerticalOptions="Center" Background="#aa000000" CornerRadius="8">
-            <Button.ImageSource>
-                <FontImageSource Glyph="photo_camera" Size="50" FontFamily="MaterialIconsOutlined"/>
-            </Button.ImageSource>
-        </Button>
-
-    </Grid>
+	</Grid>
 </ContentPage>

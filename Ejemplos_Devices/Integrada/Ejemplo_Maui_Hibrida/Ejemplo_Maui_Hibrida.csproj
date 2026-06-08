@@ -80,17 +80,34 @@
 		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
 	</ItemGroup>
 
+	<!-- Soporte qr -->
+	<ItemGroup>
+		<PackageReference Include="BarcodeScanner.Mobile.Maui" Version="9.0.1" />
+	</ItemGroup>
+	
 	<ItemGroup>
 		<PackageReference Include="MetadataExtractor" Version="2.9.0" />
-		<PackageReference Include="SkiaSharp" Version="3.119.1" />
+		<PackageReference Include="SkiaSharp" Version="3.119.2" />
 
 		<PackageReference Include="CommunityToolkit.Maui.Camera" Version="6.1.0" />
 		<PackageReference Include="CommunityToolkit.Maui.Core" Version="14.2.0" />
 		<PackageReference Include="CommunityToolkit.Maui" Version="14.2.0" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
-		
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="Microsoft.Maui.Controls" Version="10.0.60" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.8" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="MotorDsl.Core" Version="1.0.10" />
+		<PackageReference Include="MotorDsl.Parser" Version="1.0.10" />
+		<PackageReference Include="MotorDsl.Rendering" Version="1.0.10" />
+		<PackageReference Include="MotorDsl.Extensions" Version="1.0.10" />
+		<PackageReference Include="MotorDsl.Printing.Abstractions" Version="1.0.10" />
+		<PackageReference Include="MotorDsl.Bluetooth" Version="1.0.10" />
+		<PackageReference Include="MotorDsl.Maui" Version="1.0.10" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -104,6 +121,12 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\MyMediaPickerPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\MyMediaSelfiePickerPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\QRLectorPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>
