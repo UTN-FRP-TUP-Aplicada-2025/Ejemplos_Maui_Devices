@@ -1,4 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
+using MotorDsl.Bluetooth;
+using MotorDsl.Core.Models;
+using MotorDsl.Extensions;
+using MotorDsl.Maui;
 
 namespace Ejemplo_MotorDSL_Dialog
 {
@@ -15,8 +19,20 @@ namespace Ejemplo_MotorDSL_Dialog
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
+            // Motor DSL: core pipeline + templates + profiles + renderers MAUI (PDF, ESC/POS bitmap, SkiaSharp).
+            // El template registrado es un JSON integrado: ya tiene todos los valores resueltos.
+            builder.Services.AddMotorDslEngine()
+                .AddProfiles(p =>
+                {
+                    p.Add(new DeviceProfile("thermal_58mm", 32, "escpos-bitmap"));
+                })
+                .AddMotorDslMaui();
+
+            // Transport Bluetooth (Android Classic SPP)
+            builder.Services.AddBluetoothPrinterTransport();
+
 #if DEBUG
-    		builder.Logging.AddDebug();
+            builder.Logging.AddDebug();
 #endif
 
             return builder.Build();

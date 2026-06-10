@@ -2,7 +2,7 @@
 using MotorDsl.Core.Contracts;
 using MotorDsl.Core.Models;
 using MotorDsl.Printing;
-using Ejemplo_MotorDSL.Templates;
+using Ejemplo_MotorDSL.Samples;
 
 
 #if ANDROID
