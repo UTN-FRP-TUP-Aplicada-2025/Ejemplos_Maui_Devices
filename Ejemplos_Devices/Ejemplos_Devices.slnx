@@ -63,7 +63,7 @@
     </Project>
   </Folder>
   <Folder Name="/Ejemplos/Printer/">
-    <Project Path="Ejemplo_MotorDSL_Dialog/Ejemplo_MotorDSL_Dialog.csproj" Id="26d49615-52fb-4214-aafc-a18f81862b32">
+    <Project Path="Printer/Ejemplo_MotorDSL_Dialog/Ejemplo_MotorDSL_Dialog.csproj" Id="26d49615-52fb-4214-aafc-a18f81862b32">
       <Deploy Solution="Debug|*" />
     </Project>
     <Project Path="Printer/Ejemplo_MotorDSL/Ejemplo_MotorDSL.csproj" Id="016990c8-ce16-4347-a0cf-77ae09b4603d">
