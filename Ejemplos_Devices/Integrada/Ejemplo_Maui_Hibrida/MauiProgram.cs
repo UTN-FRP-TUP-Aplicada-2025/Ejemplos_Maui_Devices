@@ -91,6 +91,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<IUrlCommandHandler, CallCommandHandler>();
         builder.Services.AddSingleton<IUrlCommandHandler, CameraCommandHandler>();
         builder.Services.AddSingleton<IUrlCommandHandler, SelfieCommandHandler>();
+        builder.Services.AddSingleton<IUrlCommandHandler, QrCommandHandler>();
         builder.Services.AddSingleton<IUrlCommandHandler, SendApiCommandHandler>();
         builder.Services.AddSingleton<UrlCommandDispatcher>();
         #endregion

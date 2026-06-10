@@ -6,10 +6,14 @@ using System.Diagnostics;
 
 namespace Ejemplo_Maui_Hibrida.Pages;
 
+[QueryProperty(nameof(OnQrCallback), "OnQrCallback")]
 public partial class QRLectorPage : ContentPage
 {
     private int _completed = 0;
     public TaskCompletionSource<List<QRContent>> ResultadoTask { get; set; } = new();
+
+    // null/lista vacía = canceló (igual que el callback de la cámara).
+    public Action<List<QRContent>?>? OnQrCallback { get; set; }
 
     string flashIcon = "";
     public string FlashIcon 
@@ -137,6 +141,7 @@ public partial class QRLectorPage : ContentPage
         if (Interlocked.Exchange(ref _completed, 1) == 0)
         {
             ResultadoTask.TrySetResult(result);
+            OnQrCallback?.Invoke(result);
         }
     }
 

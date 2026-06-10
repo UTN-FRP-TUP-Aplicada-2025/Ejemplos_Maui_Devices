@@ -43,6 +43,9 @@
     </Project>
     <Project Path="Integrada/Ejemplo_ws_Blazor/Ejemplo_ws_Blazor.csproj" Id="69b60a89-13a5-4f77-81ca-26725f0758da" />
   </Folder>
+  <Folder Name="/Ejemplos/Integrada/Docs/">
+    <File Path="Integrada/Ejemplo_Docs_Integrada/Readme.md" />
+  </Folder>
   <Folder Name="/Ejemplos/Maps/">
     <Project Path="Maps/Ejemplo_Maui_Mapas/Ejemplo_Maui_Mapas.csproj" Id="d2accbd4-c163-4f24-b1e1-f7eb49a6582d">
       <Deploy />
@@ -52,7 +55,7 @@
     <File Path="Maps/Ejemplo_Docs_Maps/Readme.md" />
   </Folder>
   <Folder Name="/Ejemplos/Phone/">
-    <Project Path="Phone/Ejemplo_Maui_Dialer/Ejemplo_Maui_Dialer.csproj" Id="872b4a88-1620-4090-ae51-3d24083e9e7a">
+    <Project Path="Phone/Ejemplo_Maui_Dialer/Ejemplo_Maui_Dialer.csproj" Id="872b4a88-1620-4090-ae51-3d24083e9e7b">
       <Deploy />
     </Project>
     <Project Path="Phone/Ejemplo_Maui_DirectCall/Ejemplo_Maui_DirectCall.csproj" Id="016990c8-ce16-4347-a0cf-77ae09b4603c">
@@ -60,28 +63,36 @@
     </Project>
   </Folder>
   <Folder Name="/Ejemplos/Printer/">
+    <Project Path="Printer/Ejemplo_MotorDSL/Ejemplo_MotorDSL.csproj" Id="016990c8-ce16-4347-a0cf-77ae09b4603d">
+      <Deploy Solution="Debug|*" />
+    </Project>
     <Project Path="Printer/Ejemplo_ThermalPrinter/Ejemplo_ThermalPrinter.csproj" Id="28245c93-21a9-4b06-8622-0baf1b16cdba">
       <Deploy />
     </Project>
   </Folder>
-  <Folder Name="/Ejemplos/Printer/Docs/">
+  <Folder Name="/Ejemplos/Printer/Docs/" />
+  <Folder Name="/Ejemplos/Printer/Docs/Ejemplo_MotorDSL/">
+    <File Path="Printer/Ejemplo_Docs_Printer/Ejemplo_MotorDSL/flowchat.bmp" />
+    <File Path="Printer/Ejemplo_Docs_Printer/Ejemplo_MotorDSL/flowchat.png" />
+  </Folder>
+  <Folder Name="/Ejemplos/Printer/Docs/Ejemplo_ThermalPrinter/">
     <File Path="Printer/Ejemplo_Docs_Printer/Readme.md" />
   </Folder>
-  <Folder Name="/Ejemplos/Printer/Docs/Borradores/">
+  <Folder Name="/Ejemplos/Printer/Docs/Ejemplo_ThermalPrinter/Borradores/">
     <File Path="Printer/Ejemplo_Docs_Maps/Borradores/Readme.md" />
   </Folder>
-  <Folder Name="/Ejemplos/Printer/Docs/Manuales/">
+  <Folder Name="/Ejemplos/Printer/Docs/Ejemplo_ThermalPrinter/Manuales/">
     <File Path="Printer/Ejemplo_Docs_Printer/Manuales/01_MANUAL_USUARIO.md" />
     <File Path="Printer/Ejemplo_Docs_Printer/Manuales/02_MANUAL_TECNICO_ESC_POS.md" />
     <File Path="Printer/Ejemplo_Docs_Printer/Manuales/03_GUIA_INTEGRACION_ESCPOS_NET.md" />
     <File Path="Printer/Ejemplo_Docs_Printer/Manuales/04_Borrador_Manual.md" />
     <File Path="Printer/Ejemplo_Docs_Printer/Manuales/Readme.md" />
   </Folder>
-  <Folder Name="/Ejemplos/Printer/Docs/Prompts_Generacion_Apk_ejemplo/">
+  <Folder Name="/Ejemplos/Printer/Docs/Ejemplo_ThermalPrinter/Prompts_Generacion_Apk_ejemplo/">
     <File Path="Printer/Ejemplo_Docs_Printer/Prompts_Generacion_Apk_ejemplo/Imagen_dispositivo_mercadolibre.jpg" />
     <File Path="Printer/Ejemplo_Docs_Printer/Prompts_Generacion_Apk_ejemplo/Readme.md" />
   </Folder>
-  <Folder Name="/Ejemplos/Printer/Docs/Prompts_Generacion_Apk_ejemplo/ficheros_claude.ia/">
+  <Folder Name="/Ejemplos/Printer/Docs/Ejemplo_ThermalPrinter/Prompts_Generacion_Apk_ejemplo/ficheros_claude.ia/">
     <File Path="Printer/Ejemplo_Docs_Printer/Prompts_Generacion_Apk_ejemplo/ficheros_claude.ia/Advancedprintingexamples.cs" />
     <File Path="Printer/Ejemplo_Docs_Printer/Prompts_Generacion_Apk_ejemplo/ficheros_claude.ia/Androidmanifest.XML" />
     <File Path="Printer/Ejemplo_Docs_Printer/Prompts_Generacion_Apk_ejemplo/ficheros_claude.ia/Instalacion.md" />
@@ -93,14 +104,14 @@
     <File Path="Printer/Ejemplo_Docs_Printer/Prompts_Generacion_Apk_ejemplo/ficheros_claude.ia/Thermalprintermaui_readme.md" />
     <File Path="Printer/Ejemplo_Docs_Printer/Prompts_Generacion_Apk_ejemplo/ficheros_claude.ia/Thermalprinterservice.cs" />
   </Folder>
-  <Folder Name="/Ejemplos/Printer/Docs/Prompts_Generacion_Documentacion/">
+  <Folder Name="/Ejemplos/Printer/Docs/Ejemplo_ThermalPrinter/Prompts_Generacion_Documentacion/">
     <File Path="Printer/Ejemplo_Docs_Printer/Prompts_generacion_documentacion/01_Prompt_chatgpt.md" />
     <File Path="Printer/Ejemplo_Docs_Printer/Prompts_generacion_documentacion/02_Prompt_copilot.md" />
     <File Path="Printer/Ejemplo_Docs_Printer/Prompts_generacion_documentacion/03_Prompt_copilot_manual_borrador.md" />
     <File Path="Printer/Ejemplo_Docs_Printer/Prompts_generacion_documentacion/Imagen_dispositivo_mercadolibre.jpg" />
     <File Path="Printer/Ejemplo_Docs_Printer/Prompts_generacion_documentacion/Readme.md" />
   </Folder>
-  <Folder Name="/Ejemplos/Printer/Docs/Pruebas_realizadas/">
+  <Folder Name="/Ejemplos/Printer/Docs/Ejemplo_ThermalPrinter/Pruebas_realizadas/">
     <File Path="Printer/Ejemplo_Docs_Printer/Pruebas_realizadas/ejemplo_impresion.jpg" />
     <File Path="Printer/Ejemplo_Docs_Printer/Pruebas_realizadas/ejemplo_print_thermal.gif" />
     <File Path="Printer/Ejemplo_Docs_Printer/Pruebas_realizadas/Readme.md" />
@@ -136,8 +147,7 @@
   <Folder Name="/Ejemplos/Utils/Utilities/">
     <File Path="../Utilities/simular.sh" />
   </Folder>
-  <Folder Name="/github.workflow/" />
-  <Folder Name="/github.workflow/workflows/">
+  <Folder Name="/github.workflow/">
     <File Path="../.github/workflows/cd-ios-camera.Ejemplo_Photo_MiMediaPicker_Callback.yml" />
     <File Path="../.github/workflows/cd-ios-camera.Ejemplo_Photo_MiMediaPicker_Callback_Normalizacion.yml" />
     <File Path="../.github/workflows/cd-ios-camera.Ejemplo_Photo_MiMediaPicker_Task.yml" />

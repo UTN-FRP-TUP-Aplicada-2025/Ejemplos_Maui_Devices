@@ -92,7 +92,7 @@
     </div>
     <div class="card-body">
         <button @onclick="OnQR" class="btn btn-primary">Leer QR</button><br/>
-        <div>@QRContenido</div>
+        <div id="contenidoQR">@QRContenido</div>
     </div>
 </div>
 
@@ -227,7 +227,7 @@
     //la app interviene la url disparando el lector de qr y mostrando el valor de qr
     public void OnQR()
     {
-        string parametrosQR = $"QR=QR";
+        string parametrosQR = $"qr=qr&param=contenidoQR";
         Navigation.NavigateTo($"/panel?{parametrosQR}", forceLoad: true);
     }
     #endregion

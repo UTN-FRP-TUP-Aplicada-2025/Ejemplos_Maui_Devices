@@ -49,6 +49,7 @@
         <HorizontalStackLayout Grid.Row="1">
             <Button Text="Geo Posicionar" Command="{Binding TakeGPSCommand}" Margin="10"/>
             <Button Text="Llamar" Command="{Binding TakePhoneCommand}" Margin="10"/>
+            <Button Text="Leer QR" Command="{Binding TakeQRCommand}" Margin="10"/>
         </HorizontalStackLayout>
 
     </Grid>

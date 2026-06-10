@@ -60,9 +60,7 @@ public class WebViewBridgeBehavior : Behavior<WebView>
     }
 
     // SIEMPRE en UI thread, fire-and-forget.
-    private void OnReloadRequested(object? sender, EventArgs e)
-        => MainThread.BeginInvokeOnMainThread(() => _webView?.Reload());
+    private void OnReloadRequested(object? sender, EventArgs e)  => MainThread.BeginInvokeOnMainThread(() => _webView?.Reload());
 
-    private void OnScriptRequested(object? sender, string js)
-        => MainThread.BeginInvokeOnMainThread(() => _ = _webView?.EvaluateJavaScriptAsync(js));
+    private void OnScriptRequested(object? sender, string js) => MainThread.BeginInvokeOnMainThread(() => _ = _webView?.EvaluateJavaScriptAsync(js));
 }

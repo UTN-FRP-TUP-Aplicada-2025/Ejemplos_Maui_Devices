@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+			 xmlns:muic="clr-namespace:MotorDsl.Maui.Controls;assembly=MotorDsl.Maui"
+             x:Class="Ejemplo_MotorDSL.Pages.MainPage">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="30,0" Spacing="25">
+			
+			<!-- Estado / picker Bluetooth (solo Android) -->
+			<muic:PrinterStatusBadge x:Name="StatusBadge" Margin="0,0,0,8" IsVisible="{OnPlatform Android=True, iOS=False}" />
+			
+			<muic:PrinterPickerView x:Name="DevicePicker" FilterKind="bluetooth" Margin="0,0,0,12" IsVisible="{OnPlatform Android=True, iOS=False}" />
+
+			<!-- Botones de accion -->
+			<Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+				<Label x:Name="MessageLabel" Text="" FontSize="12" TextColor="Gray" HorizontalTextAlignment="Center" />
+				<Button x:Name="BtnImprimir" Text="Imprimir" Grid.Column="1" Clicked="OnImprimirClicked" BackgroundColor="#2196F3" TextColor="White" CornerRadius="8" HeightRequest="44" FontSize="13" IsVisible="{OnPlatform Android=True, iOS=False}" />
+			</Grid>
+
+		</VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

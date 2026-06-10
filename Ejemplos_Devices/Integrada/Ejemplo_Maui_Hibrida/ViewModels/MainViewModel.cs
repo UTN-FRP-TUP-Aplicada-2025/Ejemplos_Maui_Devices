@@ -43,6 +43,13 @@ public partial class MainViewModel : ObservableObject
         _ = await _dispatcher.DispatchAsync("phone=phone");
     }
 
+    // Botón manual: abre el lector de QR usando el protocolo real de la web.
+    [RelayCommand]
+    private async Task TakeQR()
+    {
+        _ = await _dispatcher.DispatchAsync("qr=qr&param=contenidoQR");
+    }
+
     // Botón manual: fuerza el marcador coordenadas=coordenadas sobre la URL actual y
     // delega en el dispatcher, que aplica la reescritura con coordenadas (sin duplicar
     // esa lógica acá).
