@@ -67,16 +67,14 @@ public partial class MainPage : ContentPage
                     Manifest.Permission.BluetoothConnect
                 };
 
-                bool allGranted = btPermissions.All(p =>
-                    ContextCompat.CheckSelfPermission(activity, p) == (int)Android.Content.PM.Permission.Granted);
+                bool allGranted = btPermissions.All(p => ContextCompat.CheckSelfPermission(activity, p) == (int)Android.Content.PM.Permission.Granted);
 
                 if (!allGranted)
                 {
                     ActivityCompat.RequestPermissions(activity, btPermissions, 1);
                     await Task.Delay(3000);
 
-                    allGranted = btPermissions.All(p =>
-                        ContextCompat.CheckSelfPermission(activity, p) == (int)Android.Content.PM.Permission.Granted);
+                    allGranted = btPermissions.All(p => ContextCompat.CheckSelfPermission(activity, p) == (int)Android.Content.PM.Permission.Granted);
                 }
 
                 if (!allGranted)

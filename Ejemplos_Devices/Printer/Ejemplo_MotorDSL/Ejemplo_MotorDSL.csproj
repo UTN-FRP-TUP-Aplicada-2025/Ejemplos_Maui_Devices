@@ -90,8 +90,6 @@
 		<PackageReference Include="MotorDsl.Bluetooth" Version="1.0.12" />
 		<PackageReference Include="MotorDsl.Maui" Version="1.0.12" />
 	</ItemGroup>
-	<ItemGroup>
-	  <ProjectReference Include="..\Ejemplo_ThermalPrinter\Ejemplo_ThermalPrinter.csproj" />
-	</ItemGroup>
+
 
 </Project>
