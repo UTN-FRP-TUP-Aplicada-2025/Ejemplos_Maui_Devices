@@ -156,6 +156,7 @@
     <File Path="../.github/workflows/cd-ios-gps.Ejemplo_Maui_Hibrida.yml" />
     <File Path="../.github/workflows/cd-ios-phone.Ejemplo_Dialer.yml" />
     <File Path="../.github/workflows/cd-ios-phone.Ejemplo_DirectCall.yml" />
+    <File Path="../.github/workflows/cd-ios-printer.Ejemplo_MotorDSL.yml" />
     <File Path="../.github/workflows/cd-ios-qr.Ejemplo_LectorQR_Dialog.yml" />
     <File Path="../.github/workflows/Readme.md" />
   </Folder>
