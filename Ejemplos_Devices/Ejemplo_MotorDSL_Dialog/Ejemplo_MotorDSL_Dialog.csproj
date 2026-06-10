@@ -76,10 +76,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
+		<PackageReference Include="Microsoft.Maui.Controls" Version="10.0.60" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.3" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<PackageReference Include="CommunityToolkit.Maui.Core" Version="14.2.0" />
+		<PackageReference Include="CommunityToolkit.Maui" Version="14.2.0" />
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+	</ItemGroup>
 	<!-- NuGet packages (instead of ProjectReference) — validates published packages -->
 	<ItemGroup>
 		<PackageReference Include="MotorDsl.Core" Version="1.0.12" />

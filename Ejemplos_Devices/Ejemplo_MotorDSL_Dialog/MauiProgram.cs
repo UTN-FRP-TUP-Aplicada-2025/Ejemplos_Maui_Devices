@@ -1,4 +1,10 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Android.Net;
+using Android.Telecom;
+using CommunityToolkit.Maui;
+using CommunityToolkit.Maui.Core;
+using Ejemplo_MotorDSL_Dialog.Pages;
+using Ejemplo_MotorDSL_Dialog.ViewModels;
+using Microsoft.Extensions.Logging;
 using MotorDsl.Bluetooth;
 using MotorDsl.Core.Models;
 using MotorDsl.Extensions;
@@ -13,10 +19,16 @@ namespace Ejemplo_MotorDSL_Dialog
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
+                //
+                .UseMauiCommunityToolkit()
+                .UseMauiCommunityToolkitCore()
+                //
+                .AddServices()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+                    fonts.AddFont("MaterialIconsOutlined-Regular.otf", "MaterialIconsOutlined");
                 });
 
             // Motor DSL: core pipeline + templates + profiles + renderers MAUI (PDF, ESC/POS bitmap, SkiaSharp).
@@ -36,6 +48,17 @@ namespace Ejemplo_MotorDSL_Dialog
 #endif
 
             return builder.Build();
+        }
+
+        static MauiAppBuilder AddServices(this MauiAppBuilder builder)
+        {
+            
+            #region main
+            builder.Services.AddSingleton<MainViewModel>();
+            builder.Services.AddSingleton<MainPage>();
+            #endregion
+
+            return builder;
         }
     }
 }

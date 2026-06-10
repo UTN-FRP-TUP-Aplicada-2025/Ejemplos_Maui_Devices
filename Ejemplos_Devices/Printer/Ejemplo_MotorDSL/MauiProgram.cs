@@ -1,5 +1,5 @@
 ﻿using Ejemplo_MotorDSL.Pages;
-using Ejemplo_MotorDSL.Templates;
+using Ejemplo_MotorDSL.Samples;
 using Microsoft.Extensions.Logging;
 
 using MotorDsl.Bluetooth;
@@ -27,6 +27,10 @@ public static class MauiProgram
         // Motor DSL: core pipeline + templates + profiles + renderers MAUI (PDF, ESC/POS bitmap, SkiaSharp).
         // El template registrado es un JSON integrado: ya tiene todos los valores resueltos.
         builder.Services.AddMotorDslEngine()
+            //.AddTemplates(t =>
+            //{
+            //    t.Add("acta-infraccion-integrada", MultaIntegratedDsl.Document);
+            //})
             .AddProfiles(p =>
             {
                 p.Add(new DeviceProfile("thermal_58mm", 32, "escpos-bitmap"));

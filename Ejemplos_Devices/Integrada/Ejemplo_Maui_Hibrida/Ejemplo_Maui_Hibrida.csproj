@@ -88,7 +88,9 @@
 	<ItemGroup>
 		<PackageReference Include="MetadataExtractor" Version="2.9.0" />
 		<PackageReference Include="SkiaSharp" Version="3.119.2" />
+	</ItemGroup>
 
+	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Maui.Camera" Version="6.1.0" />
 		<PackageReference Include="CommunityToolkit.Maui.Core" Version="14.2.0" />
 		<PackageReference Include="CommunityToolkit.Maui" Version="14.2.0" />
@@ -101,13 +103,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="MotorDsl.Core" Version="1.0.10" />
-		<PackageReference Include="MotorDsl.Parser" Version="1.0.10" />
-		<PackageReference Include="MotorDsl.Rendering" Version="1.0.10" />
-		<PackageReference Include="MotorDsl.Extensions" Version="1.0.10" />
-		<PackageReference Include="MotorDsl.Printing.Abstractions" Version="1.0.10" />
-		<PackageReference Include="MotorDsl.Bluetooth" Version="1.0.10" />
-		<PackageReference Include="MotorDsl.Maui" Version="1.0.10" />
+		<PackageReference Include="MotorDsl.Core" Version="1.0.12" />
+		<PackageReference Include="MotorDsl.Parser" Version="1.0.12" />
+		<PackageReference Include="MotorDsl.Rendering" Version="1.0.12" />
+		<PackageReference Include="MotorDsl.Extensions" Version="1.0.12" />
+		<PackageReference Include="MotorDsl.Printing.Abstractions" Version="1.0.12" />
+		<PackageReference Include="MotorDsl.Bluetooth" Version="1.0.12" />
+		<PackageReference Include="MotorDsl.Maui" Version="1.0.12" />
 	</ItemGroup>
 
 	<ItemGroup>
