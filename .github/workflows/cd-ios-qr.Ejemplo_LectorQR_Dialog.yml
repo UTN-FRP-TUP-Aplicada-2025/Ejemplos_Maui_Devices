@@ -7,7 +7,7 @@ on:
       - main
 
     paths:
-      - 'APPGDA/**'
+      - 'Ejemplos_Devices/QR/Ejemplo_LectorQR_Dialog/**'
       - '!**.md'
       - '!**/*.gitignore'
       - '!**/*.gitattributes'

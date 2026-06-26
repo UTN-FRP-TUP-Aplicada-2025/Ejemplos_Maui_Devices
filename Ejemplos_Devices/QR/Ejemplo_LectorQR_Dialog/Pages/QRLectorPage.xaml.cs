@@ -32,6 +32,7 @@ public partial class QRLectorPage : ContentPage
 	{
 		InitializeComponent();
 
+        //
         BarcodeScanner.Mobile.Methods.SetSupportBarcodeFormat(BarcodeScanner.Mobile.BarcodeFormats.QRCode | BarcodeScanner.Mobile.BarcodeFormats.Code39);
 
         BindingContext = this;
