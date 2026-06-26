@@ -42,7 +42,7 @@ env:
   # ─────────────────────────────────────────────────────────────────────────────
   
   #RUNTIME_IDENTIFIER_SIMULATOR: 'iossimulator-arm64' 
-  RUNTIME_IDENTIFIER_SIMULATOR: 'iossimulator-x64'
+  RUNTIME_IDENTIFIER_SIMULATOR: iossimulator-x64
   BUILD_CONFIG_SIMULATOR: 'Release'
   DEVICE_SIMULATOR: 'iPhone 17 Pro Max'
 
@@ -421,7 +421,7 @@ jobs:
     # Instalar Rosetta 2
     # habilita la ejecución (simctl launch) del binario x86_64 en el simulador.
     - name: ROSETTA. Instalar traductor x86_64 -> arm64
-      if: env.RUNTIME_IDENTIFIER_SIMULATOR == "iossimulator-x64"
+      if: env.RUNTIME_IDENTIFIER_SIMULATOR == 'iossimulator-x64'
       run: |
         softwareupdate --install-rosetta --agree-to-license
 
