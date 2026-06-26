@@ -12,3 +12,10 @@
 
 <img src="Pruebas_realizadas/ejemplo_print_thermal.gif" width="200">
 
+
+
+Referencias
+https://www.youtube.com/watch?v=vIbEMj7XLS8
+
+https://www.youtube.com/watch?v=sySMEOI1brs&t=441s
+

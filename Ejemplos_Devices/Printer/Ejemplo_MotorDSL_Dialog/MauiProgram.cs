@@ -3,6 +3,7 @@ using Android.Telecom;
 using CommunityToolkit.Maui;
 using CommunityToolkit.Maui.Core;
 using Ejemplo_MotorDSL_Dialog.Pages;
+using Ejemplo_MotorDSL_Dialog.Services;
 using Ejemplo_MotorDSL_Dialog.ViewModels;
 using Microsoft.Extensions.Logging;
 using MotorDsl.Bluetooth;
@@ -53,6 +54,11 @@ namespace Ejemplo_MotorDSL_Dialog
         static MauiAppBuilder AddServices(this MauiAppBuilder builder)
         {
             
+            #region printer overlay
+            builder.Services.AddSingleton<PrinterService>();
+            builder.Services.AddSingleton<PrinterOverlayViewModel>();
+            #endregion
+
             #region main
             builder.Services.AddSingleton<MainViewModel>();
             builder.Services.AddSingleton<MainPage>();

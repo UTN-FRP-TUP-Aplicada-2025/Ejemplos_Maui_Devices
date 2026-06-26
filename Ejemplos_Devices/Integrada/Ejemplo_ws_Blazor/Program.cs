@@ -1,4 +1,5 @@
 using Ejemplo_ws_Blazor.Components;
+using Microsoft.AspNetCore.Components.Server;
 using Scalar.AspNetCore;
 
 namespace Ejemplo_ws_Blazor;
@@ -9,8 +10,7 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        builder.Services.AddRazorComponents()
-            .AddInteractiveServerComponents();
+        builder.Services.AddRazorComponents().AddInteractiveServerComponents(o => o.DetailedErrors = true);
 
         // 1. Controllers
         builder.Services.AddControllers();
@@ -43,6 +43,7 @@ public class Program
 
         // Mapeo de los controllers de API
         app.MapControllers();
+
 
         app.Run();
     }
