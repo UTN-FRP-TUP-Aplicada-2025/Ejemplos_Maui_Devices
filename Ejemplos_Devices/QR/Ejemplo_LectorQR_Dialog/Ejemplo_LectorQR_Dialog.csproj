@@ -75,8 +75,15 @@
 	  <None Remove="Platforms\Android\Resources\values\styles.xml" />
 	</ItemGroup>
 
+	<ItemGroup Condition="$(TargetFramework.Contains('-ios'))">
+		<PackageReference Include="AdamE.Google.iOS.GoogleUtilities" Version="8.1.0.3" />		
+	</ItemGroup>
+
 	<ItemGroup>
 		<PackageReference Include="BarcodeScanner.Mobile.Maui" Version="9.0.1" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.2" />
 	</ItemGroup>

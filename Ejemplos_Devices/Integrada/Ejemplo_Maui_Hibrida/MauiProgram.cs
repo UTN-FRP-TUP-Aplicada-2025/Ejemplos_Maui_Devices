@@ -33,16 +33,21 @@ public static class MauiProgram
             .UseMauiCommunityToolkitCamera()
             //
             .AddServices()
+            //
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 fonts.AddFont("MaterialIconsOutlined-Regular.otf", "MaterialIconsOutlined");
             })
+
+        #region barcode scanner
             .ConfigureMauiHandlers(handlers =>
             {
                 handlers.AddBarcodeScannerHandler();
             })
+        #endregion
+
         #region printer
             .Services.AddMotorDslEngine()
             .AddProfiles(p =>
@@ -52,9 +57,9 @@ public static class MauiProgram
                 p.Add(new DeviceProfile("pdf", 48, "pdf"));
             })
             .AddMotorDslMaui()
-            // Transport Bluetooth (Android Classic SPP)
+            // Transport Bluetooth (Android Classic SPP) 
             .Services.AddBluetoothPrinterTransport();
-        #endregion
+#endregion
 
 #if DEBUG
 		builder.Logging.AddDebug();
