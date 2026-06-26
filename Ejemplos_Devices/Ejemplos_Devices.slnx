@@ -7,6 +7,7 @@
     <File Path="Docs/AsyncRelayCommandOptions.md" />
     <File Path="Docs/Eventos.md" />
     <File Path="Docs/GetEnviromentVersion.md" />
+    <File Path="Docs/propuesta-rosetta.md" />
   </Folder>
   <Folder Name="/Ejemplos/" />
   <Folder Name="/Ejemplos/Camera/">
@@ -162,6 +163,7 @@
     <File Path="../.github/workflows/cd-ios-phone.Ejemplo_Dialer.yml" />
     <File Path="../.github/workflows/cd-ios-phone.Ejemplo_DirectCall.yml" />
     <File Path="../.github/workflows/cd-ios-printer.Ejemplo_MotorDSL.yml" />
+    <File Path="../.github/workflows/cd-ios-qr.Ejemplo_LectorQR_Dialog.rosseta.yml" />
     <File Path="../.github/workflows/cd-ios-qr.Ejemplo_LectorQR_Dialog.yml" />
     <File Path="../.github/workflows/Pipelinea-Version.md" />
     <File Path="../.github/workflows/Readme.md" />
