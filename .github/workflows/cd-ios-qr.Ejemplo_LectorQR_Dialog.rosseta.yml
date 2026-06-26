@@ -147,7 +147,7 @@ jobs:
       run: |
         if [ "${{ env.RUNTIME_IDENTIFIER_SIMULATOR }}" == "iossimulator-x64" ]; then
           echo "Descargando runtime para simulador arm64"          
-          sudo xcodebuild -downloadPlatform iOS -architectureVariant universal  
+          sudo xcodebuild -downloadPlatform iOS -architectureVariant universal || true
         else
           sudo xcodebuild -downloadPlatform iOSSimulator
         fi
