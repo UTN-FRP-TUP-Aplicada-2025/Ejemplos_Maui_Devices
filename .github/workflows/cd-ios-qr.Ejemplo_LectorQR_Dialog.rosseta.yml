@@ -115,12 +115,15 @@ jobs:
       run: |
         set -euxo pipefail
         XCODE_PATH="/Applications/Xcode_${{ env.XCODE_VERSION }}.app"
+        
         echo "Applictions inicial: $(ls -lsh /Applications/)"
         sudo rm -rf /Applications/Xcode*.app
         sudo mv Xcode.app $XCODE_PATH
         sudo ln -s $XCODE_PATH /Applications/Xcode.app
+        
         echo "Seleccionado Xcode"
         sudo xcode-select --switch $XCODE_PATH
+
         echo "Aceptación de licencia - instala y configura componentes adicionales"
         sudo xcodebuild -runFirstLaunch
         sudo xcodebuild -license accept
@@ -142,7 +145,7 @@ jobs:
 
     - name: XCODE. descarga el simulador requerido
       run: |
-        if RUNTIME_IDENTIFIER_SIMULATOR == "iossimulator-arm64"; then
+        if ["${{ env.RUNTIME_IDENTIFIER_SIMULATOR }}" == "iossimulator-arm64"]; then
           echo "Descargando runtime para simulador arm64"
           sudo xcodebuild -downloadPlatform iOSSimulator
         else
@@ -160,6 +163,7 @@ jobs:
         echo "Buscando actool: $(xcrun -sdk iphonesimulator -find actool)"        
         echo "Test para ${{ env.DEVICE_SIMULATOR }}: "
         xcrun simctl boot "${{ env.DEVICE_SIMULATOR }}"
+
         echo "carpeta que luego el sdk en el build busca el actool "
         ls /Applications/Xcode_${{ env.XCODE_VERSION_SHORT }}.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/
 
@@ -419,6 +423,7 @@ jobs:
     # Instalar Rosetta 2
     # habilita la ejecución (simctl launch) del binario x86_64 en el simulador.
     - name: ROSETTA. Instalar traductor x86_64 -> arm64
+      if: env.RUNTIME_IDENTIFIER_SIMULATOR == "iossimulator-arm64"
       run: |
         softwareupdate --install-rosetta --agree-to-license
 
