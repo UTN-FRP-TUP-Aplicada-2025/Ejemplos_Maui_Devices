@@ -46,7 +46,7 @@ public partial class QRLectorPage : ContentPage
 
     async private void OnCameraViewOnDetecte(object sender, BarcodeScanner.Mobile.OnDetectedEventArg e)
     {
-        //if (await RequestCameraPermission())
+        //if (await RequestCameraPermission()) 
         //{
         List<BarcodeResult> obj = e.BarcodeResults;
 

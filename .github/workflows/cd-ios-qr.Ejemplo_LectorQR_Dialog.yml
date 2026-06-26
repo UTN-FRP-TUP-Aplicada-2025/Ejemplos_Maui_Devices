@@ -242,19 +242,19 @@ jobs:
 
         echo "Recursive path: $(ls -lshR $SOLUTION_PATH)"
 
-    # CPY. COPIANDO RECURSOS A LA APLICACION
+    # # CPY. COPIANDO RECURSOS A LA APLICACION
 
-    - name: CPY. Ejecuta el script para copiar los recursos
-      run: |
-        cd ${{ github.workspace }}
-        echo "Directorio de trabajo (workspace): $(pwd)"
-        # /Users/runner/work/GDA.APP/GDA.APP
-        echo "Ficheros: $(ls -l)"
-        # /Users/runner/work/GDA.APP/GDA.APP
+    # - name: CPY. Ejecuta el script para copiar los recursos
+    #   run: |
+    #     cd ${{ github.workspace }}
+    #     echo "Directorio de trabajo (workspace): $(pwd)"
+    #     # /Users/runner/work/GDA.APP/GDA.APP
+    #     echo "Ficheros: $(ls -l)"
+    #     # /Users/runner/work/GDA.APP/GDA.APP
 
-        ls ./Recursos
-        chmod +x ./Utils/copiarRecursos.sh
-        bash ./Utils/copiarRecursos.sh
+    #     ls ./Recursos
+    #     chmod +x ./Utils/copiarRecursos.sh
+    #     bash ./Utils/copiarRecursos.sh
 
     # VERSIONADO BUNDLE
 
