@@ -145,14 +145,12 @@ jobs:
 
     - name: XCODE. descarga el simulador requerido
       run: |
-        if ["${{ env.RUNTIME_IDENTIFIER_SIMULATOR }}" == "iossimulator-arm64"]; then
-          echo "Descargando runtime para simulador arm64"
-          sudo xcodebuild -downloadPlatform iOSSimulator
+        if [ "${{ env.RUNTIME_IDENTIFIER_SIMULATOR }}" == "iossimulator-x64" ]; then
+          echo "Descargando runtime para simulador arm64"          
+          sudo xcodebuild -downloadPlatform iOS -architectureVariant universal  
         else
-          echo "Descargando runtime para simulador x64"
           sudo xcodebuild -downloadPlatform iOSSimulator
         fi
-        sudo xcodebuild -downloadPlatform iOS
         echo "Espacio actual: $(df -Th )"
         
     - name: XCODE. Verificando simulador instalado
@@ -423,7 +421,7 @@ jobs:
     # Instalar Rosetta 2
     # habilita la ejecución (simctl launch) del binario x86_64 en el simulador.
     - name: ROSETTA. Instalar traductor x86_64 -> arm64
-      if: env.RUNTIME_IDENTIFIER_SIMULATOR == "iossimulator-arm64"
+      if: env.RUNTIME_IDENTIFIER_SIMULATOR == "iossimulator-x64"
       run: |
         softwareupdate --install-rosetta --agree-to-license
 
