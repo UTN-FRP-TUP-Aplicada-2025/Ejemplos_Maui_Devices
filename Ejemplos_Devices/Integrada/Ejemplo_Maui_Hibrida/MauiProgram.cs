@@ -11,7 +11,6 @@ using Ejemplo_Maui_Hibrida.UrlCommands.Handlers;
 using Ejemplo_Maui_Hibrida.ViewModels;
 
 using Microsoft.Extensions.Logging;
-using Microsoft.Maui.Networking;
 
 using MotorDsl.Bluetooth;
 using MotorDsl.Core.Models;

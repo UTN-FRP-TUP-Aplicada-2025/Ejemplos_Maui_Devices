@@ -1,5 +1,4 @@
 ﻿name: CD iOS - Integrada - Ejemplo_Maui_Hibrida
-
 on:
   
   push:
@@ -15,9 +14,11 @@ on:
   workflow_call:
 
 env:
-  #XCODE_VERSION: '26.3' 
+  PIPELINE_VERSION: '202606262101_ejemplos'
+
+  #XCODE_VERSION: '26.3'  
   #XCODE_VERSION_SHORT: '26.3'
-  #XCODE_FILE_INSTALLER: 'Xcode_26.3_Universal.xip'
+  #XCODE_FILE_INSTALLER: 'Xcode_26_Universal.xip'
   #XCODE_GOOGLE_FILE_INSTALLER_ID: '1bOvw-C1WBBoTR1mlg1o5t8ZYdjvB95gB'
   
   XCODE_VERSION: '26.0' 
@@ -30,7 +31,7 @@ env:
   DOTNET_TARGET_VERSION: 'net10.0'
   DOTNET_VERSION_WORKLOAD: '10.0.100'
 
-  # ─── Datos específicos del proyecto GPS ────────────────────────────────────── 
+  # ─── Datos específicos del proyecto ───────────────────────────────────────── 
   PACKAGE_NAME: 'com.ejemplos.devices.integrada.hibrida'
   SOLUTION_FOLDER: 'Ejemplos_Devices'
   PROJECTS_ROOT: 'Integrada' 
@@ -39,9 +40,11 @@ env:
   PROJECT_FILE: 'Ejemplo_Maui_Hibrida.csproj'
   # ─────────────────────────────────────────────────────────────────────────────
   
-  RUNTIME_IDENTIFIER_SIMULATOR: 'iossimulator-arm64' 
+  #RUNTIME_IDENTIFIER_SIMULATOR: 'iossimulator-arm64' 
+  RUNTIME_IDENTIFIER_SIMULATOR: iossimulator-x64
   BUILD_CONFIG_SIMULATOR: 'Release'
   DEVICE_SIMULATOR: 'iPhone 17 Pro Max'
+  SCRIPT_SIMULATOR: './Utilities/simular.sh'
 
   DOTNET_WORKLOAD_INSTALL_ADDITIONAL_ARGS: --ios-simulator-runtime=26.0
   MD_APPLE_SDK_ROOT: /Applications/Xcode_26.0.app
@@ -49,7 +52,7 @@ env:
 jobs:
   publish-ios:
     runs-on: macos-15
-    name: iOS Publish - Integrada - Ejemplo_Maui_Hibrida
+    name: iOS Publish - Integrada - Ejemplo_Maui_Hibrida - Rosseta
 
     steps:
     - name: Verificar arquitectura del runner (la mv) 
@@ -58,6 +61,8 @@ jobs:
         echo "CPU: $(sysctl -n machdep.cpu.brand_string)"
         echo "Model hardware: $(sysctl -n hw.model)"
         echo "Cores numbers: $(sysctl -n hw.ncpu)"
+
+    # Clone repository
 
     - name: Checkout the code
       uses: actions/checkout@v4
@@ -78,6 +83,7 @@ jobs:
         # /Users/runner/work/Ejemplos_Maui_Devices/Ejemplos_Maui_Devices/Ejemplos_Devices/QR/Ejemplo_LectorQR_Dialog:
         #  Ejemplo_LectorQR_Dialog.csproj
         #  ...
+
 
     # XCODE
 
@@ -109,12 +115,15 @@ jobs:
       run: |
         set -euxo pipefail
         XCODE_PATH="/Applications/Xcode_${{ env.XCODE_VERSION }}.app"
+        
         echo "Applictions inicial: $(ls -lsh /Applications/)"
         sudo rm -rf /Applications/Xcode*.app
         sudo mv Xcode.app $XCODE_PATH
         sudo ln -s $XCODE_PATH /Applications/Xcode.app
+        
         echo "Seleccionado Xcode"
         sudo xcode-select --switch $XCODE_PATH
+
         echo "Aceptación de licencia - instala y configura componentes adicionales"
         sudo xcodebuild -runFirstLaunch
         sudo xcodebuild -license accept
@@ -136,7 +145,12 @@ jobs:
 
     - name: XCODE. descarga el simulador requerido
       run: |
-        sudo xcodebuild -downloadPlatform iOS
+        if [ "${{ env.RUNTIME_IDENTIFIER_SIMULATOR }}" == "iossimulator-x64" ]; then
+          echo "Descargando runtime para simulador arm64"          
+          sudo xcodebuild -downloadPlatform iOS -architectureVariant universal || true
+        else
+          sudo xcodebuild -downloadPlatform iOSSimulator
+        fi
         echo "Espacio actual: $(df -Th )"
         
     - name: XCODE. Verificando simulador instalado
@@ -147,6 +161,7 @@ jobs:
         echo "Buscando actool: $(xcrun -sdk iphonesimulator -find actool)"        
         echo "Test para ${{ env.DEVICE_SIMULATOR }}: "
         xcrun simctl boot "${{ env.DEVICE_SIMULATOR }}"
+
         echo "carpeta que luego el sdk en el build busca el actool "
         ls /Applications/Xcode_${{ env.XCODE_VERSION_SHORT }}.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/
 
@@ -230,12 +245,26 @@ jobs:
 
         PLIST_PATH=$SOLUTION_PATH/${{ env.PROJECTS_ROOT }}/${{ env.PROJECT_NAME}}/Platforms/iOS/Info.plist
         PLIST_PATH=$(realpath "$PLIST_PATH")
-        
+                
         echo "PROJECT_PATH=$PROJECT_PATH" >> $GITHUB_ENV
         echo "SOLUTION_PATH=$SOLUTION_PATH" >> $GITHUB_ENV
         echo "PLIST_PATH=$PLIST_PATH" >> $GITHUB_ENV
 
         echo "Recursive path: $(ls -lshR $SOLUTION_PATH)"
+
+    # # CPY. COPIANDO RECURSOS A LA APLICACION
+
+    # - name: CPY. Ejecuta el script para copiar los recursos
+    #   run: |
+    #     cd ${{ github.workspace }}
+    #     echo "Directorio de trabajo (workspace): $(pwd)"
+    #     # /Users/runner/work/GDA.APP/GDA.APP
+    #     echo "Ficheros: $(ls -l)"
+    #     # /Users/runner/work/GDA.APP/GDA.APP
+
+    #     ls ./Recursos
+    #     chmod +x ./Utils/copiarRecursos.sh
+    #     bash ./Utils/copiarRecursos.sh
 
     # VERSIONADO BUNDLE
 
@@ -263,7 +292,7 @@ jobs:
     - name: MANIFEST. Validar manifests iOS
       run: |
         echo "Validando plists"
-        plutil -lint "${{ env.PROJECT_PATH }}/Platforms/iOS/Info.plist" || { echo "ERROR: Info.plist inválido"; exit 1; }      
+        plutil -lint "${{ env.PLIST_PATH }}" || { echo "ERROR: Info.plist inválido"; exit 1; }      
         echo "Todos los plists válidos"
        
     # BUILD SIMULADOR
@@ -275,14 +304,6 @@ jobs:
         #dotnet clean "${{ env.PROJECT_FOLDER }}/${{ env.PROJECT_FILE }}" -f ${{ env.DOTNET_TARGET_VERSION }}-ios
         dotnet clean "${{ env.PROJECTS_ROOT }}/${{ env.PROJECT_NAME}}/${{ env.PROJECT_FILE }}" -f ${{ env.DOTNET_TARGET_VERSION }}-ios
         # dotnet clean Ejemplo_LectorQR_Dialog.csproj -f net10.0-ios
-
-    - name: PRE-BUILD. Generar ApiKeys.cs desde secreto
-      run: |
-        APIKEYS_PATH=${{ env.PROJECT_PATH }}/Services/ApiKeys.cs
-        cat "$APIKEYS_PATH.template" \
-          | sed 's/REEMPLAZAR_CON_TU_API_KEY/${{ secrets.GOOGLE_MAPS_API_KEY }}/' \
-          > "$APIKEYS_PATH"
-        echo "ApiKeys.cs generado en: $APIKEYS_PATH"
 
     - name: BUILD SIMULADOR. Restaurar dependencias
       run: |
@@ -317,12 +338,10 @@ jobs:
             -v normal
 
         echo "Imprime la carpeta bin recursiva:"
-        #ls -Rl "${{ env.PROJECT_FOLDER }}/bin/"
         ls -Rl "${{ env.PROJECTS_ROOT }}/${{ env.PROJECT_NAME }}/bin/"
-        
-        
+                
         BASE_PATH=${{ env.PROJECT_PATH }}/bin/${{ env.BUILD_CONFIG_SIMULATOR }}/${{ env.DOTNET_TARGET_VERSION }}-ios/${{ env.RUNTIME_IDENTIFIER_SIMULATOR }}
-        #APP_PATH=${BASE_PATH}/${{ env.PROJECT_FOLDER }}.app
+        BASE_PATH=$(realpath "$BASE_PATH") 
         APP_PATH=${BASE_PATH}/${{ env.PROJECT_NAME }}.app
         APP_PATH=$(realpath "$APP_PATH")
 
@@ -352,14 +371,12 @@ jobs:
         echo "Limpiando firmas previas y atributos corruptos..."
         xattr -cr "${{ env.APP_PATH }}"
         rm -rf "${{ env.APP_PATH }}/_CodeSignature"
-        #chmod +x "${{ env.APP_PATH }}/${{ env.PROJECT_FOLDER }}"
         chmod +x "${{ env.APP_PATH }}/${{ env.PROJECT_NAME }}"
 
         echo "Firmando contenido interno (DLLs y AOT) uno por uno..."
         find "${{ env.APP_PATH }}" -name "*.dll" -or -name "*.dylib" -or -name "*.aotdata*" | xargs codesign --force --sign "-" --timestamp=none
         
         echo "Firmando el binario principal con los Entitlements..."
-        #codesign --force --sign "-" --timestamp=none --entitlements "$ENTITLEMENTS_PATH" "${{ env.APP_PATH }}/${{ env.PROJECT_FOLDER }}"
         codesign --force --sign "-" --timestamp=none --entitlements "$ENTITLEMENTS_PATH" "${{ env.APP_PATH }}/${{ env.PROJECT_NAME }}"
         
         echo "Sellado final del paquete (Bundle)..."
@@ -372,11 +389,8 @@ jobs:
 
     - name: BUILD SIMULADOR. Test entitlements
       run: |  
-        #file "${{ env.APP_PATH }}/${{ env.PROJECT_FOLDER }}"
         file "${{ env.APP_PATH }}/${{ env.PROJECT_NAME }}"
-
         /usr/libexec/PlistBuddy -c "Print CFBundleIdentifier" "${{ env.APP_PATH }}/Info.plist"
-        #codesign -d --entitlements :- "${{ env.APP_PATH }}/${{ env.PROJECT_FOLDER }}"
         codesign -d --entitlements :- "${{ env.APP_PATH }}/${{ env.PROJECT_NAME }}"
         
     # PUBLISH SIMULADOR
@@ -402,6 +416,15 @@ jobs:
           ${{ env.ZIP_PATH}}
         retention-days: 1
 
+    # ROSSETA SIMULATOR
+
+    # Instalar Rosetta 2
+    # habilita la ejecución (simctl launch) del binario x86_64 en el simulador.
+    - name: ROSETTA. Instalar traductor x86_64 -> arm64
+      if: env.RUNTIME_IDENTIFIER_SIMULATOR == 'iossimulator-x64'
+      run: |
+        softwareupdate --install-rosetta --agree-to-license
+
      # RUN SIMULADOR
 
     - name: Install ffmpeg
@@ -415,8 +438,8 @@ jobs:
         echo "Esperando algo como (Signature=adhoc): "
         codesign -vvv --display "${APP_PATH}"
         cd "${{ github.workspace }}"
-        chmod ugo+rwx ./Utilities/simular.sh
-        ./Utilities/simular.sh
+        chmod ugo+rwx ${{ env.SCRIPT_SIMULATOR }}
+        ${{ env.SCRIPT_SIMULATOR }}
 
     - name: RELEASE SIMULADOR. Subir GIF de evidencia  
       uses: actions/upload-artifact@v4
@@ -431,8 +454,11 @@ jobs:
           /tmp/app_stderr.txt
         if-no-files-found: warn
         retention-days: 1
-
+            
     - name: Clean up keychain and provisioning profile
       if: ${{ always() }}
       run: |
-        echo "Limpieza de keychain y perfiles de aprovisionamiento"
+        if test -f "$RUNNER_TEMP/app-signing.keychain-db"; then
+          security delete-keychain $RUNNER_TEMP/app-signing.keychain-db
+        fi
+        rm -f ~/Library/MobileDevice/Provisioning\ Profiles/${{ env.PROJECT_NAME }}.mobileprovision
