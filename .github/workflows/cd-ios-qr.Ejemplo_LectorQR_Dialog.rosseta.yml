@@ -15,7 +15,7 @@ on:
   workflow_call:
 
 env:
-  PIPELINE_VERSION: '202606261239_ejemplos'
+  PIPELINE_VERSION: '202606262101_ejemplos'
 
   #XCODE_VERSION: '26.3'  
   #XCODE_VERSION_SHORT: '26.3'
@@ -45,6 +45,7 @@ env:
   RUNTIME_IDENTIFIER_SIMULATOR: iossimulator-x64
   BUILD_CONFIG_SIMULATOR: 'Release'
   DEVICE_SIMULATOR: 'iPhone 17 Pro Max'
+  SCRIPT_SIMULATOR: './Utils/simular.sh'
 
   DOTNET_WORKLOAD_INSTALL_ADDITIONAL_ARGS: --ios-simulator-runtime=26.0
   MD_APPLE_SDK_ROOT: /Applications/Xcode_26.0.app
@@ -438,8 +439,8 @@ jobs:
         echo "Esperando algo como (Signature=adhoc): "
         codesign -vvv --display "${APP_PATH}"
         cd "${{ github.workspace }}"
-        chmod ugo+rwx ./Utils/simular.sh
-        ./Utils/simular.sh
+        chmod ugo+rwx ${{ env.SCRIPT_SIMULATOR }}
+        ${{ env.SCRIPT_SIMULATOR }}
 
     - name: RELEASE SIMULADOR. Subir GIF de evidencia  
       uses: actions/upload-artifact@v4
