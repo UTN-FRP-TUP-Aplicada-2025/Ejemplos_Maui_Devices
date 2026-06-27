@@ -97,6 +97,18 @@
 </div>
 
 
+
+<div class="card">
+    <div class="card-head">
+        <h4>Redirigir a una pagina externa</h4>
+    </div>
+    <div class="card-body">
+        <button @onclick="OnRedirect" class="btn btn-primary">Redirigir</button><br />
+        <div id="contenidoRedirigir">@RedirigirContenido</div>
+    </div>
+</div>
+
+
 @code {
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -231,6 +243,18 @@
         Navigation.NavigateTo($"/panel?{parametrosQR}", forceLoad: true);
     }
     #endregion
+
+    #region redirigir
+    string RedirigirContenido { get; set; } = "";
+    //la app interviene la url disparando el lector de qr y mostrando el valor de qr
+    public void OnRedirect()
+    {
+        string url = $"https://www.google.com";
+        Navigation.NavigateTo(url, forceLoad: true);
+    }
+    #endregion
+    
+
 
     #region test button
     string ContenidoTest { get; set; } = "";

@@ -4,6 +4,7 @@ namespace Ejemplo_LectorQR_Dialog;
  
 public partial class AppShell : Shell
 {
+
     public AppShell()
     {
         InitializeComponent();

@@ -84,6 +84,10 @@
 	<ItemGroup>
 		<PackageReference Include="BarcodeScanner.Mobile.Maui" Version="9.0.1" />
 	</ItemGroup>
+
+	<ItemGroup Condition="'$(RuntimeIdentifier)' == 'iossimulator-x64'">
+		<PackageReference Include="AdamE.Google.iOS.GoogleUtilities" Version="8.1.0.3" />
+	</ItemGroup>
 	
 	<ItemGroup>
 		<PackageReference Include="MetadataExtractor" Version="2.9.0" />
