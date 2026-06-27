@@ -10,16 +10,19 @@ public static class MauiProgram
         var builder = MauiApp.CreateBuilder();
         builder
             .UseMauiApp<App>()
+            //
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 fonts.AddFont("MaterialIconsOutlined-Regular.otf", "MaterialIconsOutlined");
             })
+        #region barcode scanner
             .ConfigureMauiHandlers(handlers =>
             {
                 handlers.AddBarcodeScannerHandler();
             });
+        #endregion
 
 #if DEBUG
         builder.Logging.AddDebug();

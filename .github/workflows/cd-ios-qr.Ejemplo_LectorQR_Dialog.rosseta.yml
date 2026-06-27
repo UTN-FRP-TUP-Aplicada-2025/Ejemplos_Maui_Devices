@@ -45,7 +45,7 @@ env:
   RUNTIME_IDENTIFIER_SIMULATOR: iossimulator-x64
   BUILD_CONFIG_SIMULATOR: 'Release'
   DEVICE_SIMULATOR: 'iPhone 17 Pro Max'
-  SCRIPT_SIMULATOR: './Utils/simular.sh'
+  SCRIPT_SIMULATOR: './Utilities/simular.sh'
 
   DOTNET_WORKLOAD_INSTALL_ADDITIONAL_ARGS: --ios-simulator-runtime=26.0
   MD_APPLE_SDK_ROOT: /Applications/Xcode_26.0.app
