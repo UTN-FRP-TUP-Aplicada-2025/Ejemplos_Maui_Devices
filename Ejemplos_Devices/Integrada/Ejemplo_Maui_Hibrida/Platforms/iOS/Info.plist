@@ -2,25 +2,24 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 	<dict>
-	
 		<key>UIDeviceFamily</key>
 		<array>
 			<integer>1</integer>
 			<integer>2</integer>
 		</array>
-	
+
 		<key>UIRequiredDeviceCapabilities</key>
 		<array>
 			<string>arm64</string>
 		</array>
-	
+
 		<key>UISupportedInterfaceOrientations</key>
 		<array>
 			<string>UIInterfaceOrientationPortrait</string>
 			<string>UIInterfaceOrientationLandscapeLeft</string>
 			<string>UIInterfaceOrientationLandscapeRight</string>
 		</array>
-	
+
 		<key>UISupportedInterfaceOrientations~ipad</key>
 		<array>
 			<string>UIInterfaceOrientationPortrait</string>
@@ -28,18 +27,21 @@
 			<string>UIInterfaceOrientationLandscapeLeft</string>
 			<string>UIInterfaceOrientationLandscapeRight</string>
 		</array>
-	
+
 		<key>XSAppIconAssets</key>
 		<string>Assets.xcassets/appicon.appiconset</string>
 
 		<key>MinimumOSVersion</key>
 		<string>15.0</string>
 
+		<key>LSRequiresIPhoneOS</key>
+		<true/>
+
 		<key>CFBundleName</key>
-		<string>Ejemplo_Maui_GPS</string>
+		<string>Ejemplo_Maui_Hibrida</string>
 
 		<key>CFBundleDisplayName</key>
-		<string>GPS</string>
+		<string>Web Hibrida</string>
 
 		<key>CFBundleIdentifier</key>
 		<string>com.ejemplos.devices.integrada.hibrida</string>
@@ -53,38 +55,18 @@
 		<key>UILaunchStoryboardName</key>
 		<string>LaunchScreen</string>
 
-		<!-- Permisos necesarios para la captura de medios -->
-		<key>LSRequiresIPhoneOS</key>
-		<true/>
+		<!-- Cámara: escáner QR (BarcodeScanner) + captura de foto/selfie (CommunityToolkit.Maui.Camera) -->
+		<key>NSCameraUsageDescription</key>
+		<string>La app necesita la cámara para escanear códigos QR y tomar fotos.</string>
 
-		<!--
-		OBLIGATORIO para ubicación en primer plano.
-		Sin esta clave la app crashea al pedir ubicación.
-		-->
+		<!-- Ubicación en primer plano: GpsService usa Permissions.LocationWhenInUse -->
 		<key>NSLocationWhenInUseUsageDescription</key>
 		<string>La app necesita tu ubicación para registrar la posición de las infracciones de tránsito.</string>
-		<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-		<string>La app necesita tu ubicación para registrar la posición de las infracciones de tránsito.</string>
 
-		<!--
-		Esquemas que la app puede consultar/abrir. "tel" habilita abrir el
-		marcador del SO (PhoneDialer / CallMode.Dialer), único modo en iOS.
-		-->
+		<!-- Esquemas que la app consulta/abre: "tel" habilita PhoneDialer (marcador del SO) -->
 		<key>LSApplicationQueriesSchemes</key>
 		<array>
 			<string>tel</string>
 		</array>
-		<!--
-		Solo necesario si pedís ubicación en SEGUNDO PLANO (Always).
-		-->
-		<!-- <key>NSLocationAlwaysAndWhenInUseUsageDescription</key> <string>La app necesita acceso permanente a tu ubicación para tracking en segundo plano.</string> -->
-
-		<!-- Permisos necesarios para la captura de medios -->
-		<key>NSCameraUsageDescription</key>
-		<string>Require to use camera</string>
-		<key>NSPhotoLibraryUsageDescription</key>
-		<string>This app needs access to photos.</string>
-		<key>NSPhotoLibraryAddUsageDescription</key>
-		<string>This app needs access to the photo gallery.</string>
 	</dict>
 </plist>

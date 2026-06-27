@@ -35,7 +35,7 @@
 		<string>15.0</string>
 
 		<key>CFBundleName</key>
-		<string>>Ejemplo_LectorQR_Dialog</string>
+		<string>Ejemplo_LectorQR_Dialog</string>
 
 		<key>CFBundleDisplayName</key>
 		<string>QR Lector</string>
@@ -49,22 +49,14 @@
 		<key>CFBundleShortVersionString</key>
 		<string>1.0</string>
 
-		<key>UILaunchStoryboardName</key>
-		<string>LaunchScreen</string>
-
-		<key>NSCameraUsageDescription</key>
-		<string>La app necesita acceso a la cámara para tomar fotos.</string>
-
-		<!-- Solo necesario si usás CanOpenAsync con apps de terceros -->
 		<key>LSRequiresIPhoneOS</key>
 		<true/>
 
+		<key>UILaunchStoryboardName</key>
+		<string>LaunchScreen</string>
+
+		<!-- Permiso REQUERIDO: la app usa la cámara en vivo (CameraView) para escanear QR/códigos -->
 		<key>NSCameraUsageDescription</key>
-		<string>Require to use camera</string>
-		<key>NSPhotoLibraryUsageDescription</key>
-		<string>This app needs access to photos.</string>
-		<key>NSPhotoLibraryAddUsageDescription</key>
-		<string>This app needs access to the photo gallery.</string>
-	
+		<string>Esta app necesita acceso a la cámara para escanear códigos QR.</string>
 	</dict>
 </plist>
