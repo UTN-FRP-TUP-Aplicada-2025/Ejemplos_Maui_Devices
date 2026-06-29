@@ -17,7 +17,7 @@ public static class MauiProgram
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 fonts.AddFont("MaterialIconsOutlined-Regular.otf", "MaterialIconsOutlined");
             })
-        #region barcode scanner
+        #region QR
             .UseCameraScanner();
         #endregion
 
