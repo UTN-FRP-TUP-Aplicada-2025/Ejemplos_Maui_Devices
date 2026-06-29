@@ -9,6 +9,14 @@
     <File Path="Docs/GetEnviromentVersion.md" />
     <File Path="Docs/propuesta-rosetta.md" />
   </Folder>
+  <Folder Name="/Docs/QR/">
+    <File Path="Docs/QR_Nuget/01-analisis-uso-actual.md" />
+    <File Path="Docs/QR_Nuget/02-alternativas-nuget.md" />
+    <File Path="Docs/QR_Nuget/03-matriz-rid.md" />
+    <File Path="Docs/QR_Nuget/04-recomendacion.md" />
+    <File Path="Docs/QR_Nuget/05-plan-migracion.md" />
+    <File Path="Docs/QR_Nuget/README.md" />
+  </Folder>
   <Folder Name="/Ejemplos/" />
   <Folder Name="/Ejemplos/Camera/">
     <Project Path="Camera/Ejemplo_Photo_MediaPicker/Ejemplo_Photo_MediaPicker.csproj" Id="b9e9559a-bfbf-45e1-be27-127f510308b2">
@@ -122,11 +130,28 @@
     <File Path="Printer/Ejemplo_Docs_Printer/Pruebas_realizadas/ejemplo_print_thermal.gif" />
     <File Path="Printer/Ejemplo_Docs_Printer/Pruebas_realizadas/Readme.md" />
   </Folder>
-  <Folder Name="/Ejemplos/QR/">
-    <Project Path="QR/Ejemplo_LectorQR/Ejemplo_LectorQR.csproj" Id="42e80caf-5f94-42b4-be26-a16c162d64ab">
+  <Folder Name="/Ejemplos/QR/" />
+  <Folder Name="/Ejemplos/QR/BarcodeScanner.Mobile.Maui/">
+    <Project Path="QR/BSM.LectorQR/BSM.LectorQR.csproj" Id="42e80caf-5f94-42b4-be26-a16c162d64ab">
       <Deploy />
     </Project>
-    <Project Path="QR/Ejemplo_LectorQR_Dialog/Ejemplo_LectorQR_Dialog.csproj" Id="6f651d01-372e-45a6-808d-5ff5854a6075">
+    <Project Path="QR/BSM.LectorQR_Dialog/BSM.LectorQR_Dialog.csproj" Id="6f651d01-372e-45a6-808d-5ff5854a6075">
+      <Deploy />
+    </Project>
+  </Folder>
+  <Folder Name="/Ejemplos/QR/BarcodeScanning.Native.Maui/">
+    <Project Path="QR/BSN.LectorQR/BSN.LectorQR.csproj" Id="7c3e9a10-4b21-4d8e-9f60-1a2b3c4d5e6f">
+      <Deploy />
+    </Project>
+    <Project Path="QR/BSN.LectorQR_Dialog/BSN.LectorQR_Dialog.csproj" Id="8d4fab21-5c32-4e9f-a071-2b3c4d5e6f70">
+      <Deploy />
+    </Project>
+  </Folder>
+  <Folder Name="/Ejemplos/QR/CameraScanner.Maui/">
+    <Project Path="QR/CS.LectorQR/CS.LectorQR.csproj" Id="9e5f0c32-6d43-4f10-b182-3c4d5e6f7081">
+      <Deploy />
+    </Project>
+    <Project Path="QR/CS.LectorQR_Dialog/CS.LectorQR_Dialog.csproj" Id="af601d43-7e54-4021-9293-4d5e6f708192">
       <Deploy />
     </Project>
   </Folder>
@@ -135,6 +160,14 @@
     <File Path="QR/Ejemplo_Docs_QR/QR_frase.png" />
     <File Path="QR/Ejemplo_Docs_QR/QR_pirincho.png" />
     <File Path="QR/Ejemplo_Docs_QR/Readme.md" />
+  </Folder>
+  <Folder Name="/Ejemplos/QR/ZXing.Net.Maui/">
+    <Project Path="QR/ZN.LectorQR/ZN.LectorQR.csproj" Id="b0712e54-8f65-4132-a3a4-5e6f70819203">
+      <Deploy />
+    </Project>
+    <Project Path="QR/ZN.LectorQR_Dialog/ZN.LectorQR_Dialog.csproj" Id="c1823f65-9076-4243-b4b5-6f7081920314">
+      <Deploy />
+    </Project>
   </Folder>
   <Folder Name="/Ejemplos/Red/">
     <Project Path="Red/Ejemplo_Maui_Connectivity/Ejemplo_Maui_Connectivity.csproj" Id="48f94d6b-5fca-47d6-8b02-bea1a35ba5f2">
