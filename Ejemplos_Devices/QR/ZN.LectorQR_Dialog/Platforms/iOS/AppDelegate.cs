@@ -1,6 +1,6 @@
 ﻿using Foundation;
 
-namespace Ejemplo_LectorQR_Dialog;
+namespace ZN.LectorQR_Dialog;
 
 [Register("AppDelegate")]
 public class AppDelegate : MauiUIApplicationDelegate

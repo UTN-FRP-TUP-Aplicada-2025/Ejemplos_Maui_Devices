@@ -2,7 +2,6 @@ using BarcodeScanning;
 
 using BSN.LectorQR_Dialog.Models;
 using System.Diagnostics;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace BSN.LectorQR_Dialog.Pages;
 

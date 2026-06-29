@@ -2,7 +2,7 @@
 using Android.Content.PM;
 using Android.OS;
 
-namespace Ejemplo_LectorQR_Dialog;
+namespace ZN.LectorQR_Dialog;
 
 [Activity(Theme = "@style/Maui.SplashTheme",
             MainLauncher = true,

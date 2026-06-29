@@ -1,4 +1,4 @@
-﻿name: CD iOS - QR - CS.LectorQR_Dialog
+﻿name: CD iOS - QR - ZN.LectorQR
 
 on:
   
@@ -7,7 +7,7 @@ on:
   #     - main
 
   #   paths:
-  #     - 'Ejemplos_Devices/QR/CS.LectorQR_Dialog/**'
+  #     - 'Ejemplos_Devices/QR/ZN.LectorQR/**'
   #     - '!**.md'
   #     - '!**/*.gitignore'
   #     - '!**/*.gitattributes'
@@ -33,12 +33,12 @@ env:
   DOTNET_VERSION_WORKLOAD: '10.0.100'
 
   # ─── Datos específicos del proyecto ───────────────────────────────────────── 
-  PACKAGE_NAME: 'com.ejemplos.devices.qr.camerascanner_maui.dialog'
+  PACKAGE_NAME: 'com.ejemplos.devices.qr.zxing_net_maui.simple'
   SOLUTION_FOLDER: 'Ejemplos_Devices'
   PROJECTS_ROOT: 'QR' 
   # PROJECT_FOLDER=${{ env.PROJECTS_ROOT }}/${{ env.PROJECT_NAME }}
-  PROJECT_NAME: 'CS.LectorQR_Dialog'
-  PROJECT_FILE: 'CS.LectorQR_Dialog.csproj'
+  PROJECT_NAME: 'ZN.LectorQR'
+  PROJECT_FILE: 'ZN.LectorQR.csproj'
   # ─────────────────────────────────────────────────────────────────────────────
   
   RUNTIME_IDENTIFIER_SIMULATOR: 'iossimulator-arm64' 
@@ -53,7 +53,7 @@ env:
 jobs:
   publish-ios:
     runs-on: macos-15
-    name: iOS Publish - QR - CS.LectorQR_Dialog
+    name: iOS Publish - QR - ZN.LectorQR
 
     steps:
     - name: Verificar arquitectura del runner (la mv) 

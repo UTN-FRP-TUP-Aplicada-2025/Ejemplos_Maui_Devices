@@ -1,64 +1,80 @@
-﻿namespace LectorQR.Pages;
+using Camera.MAUI;
+using Camera.MAUI.ZXingHelper;
+using ZXing;
 
-using BarcodeScanner.Mobile;
-using System.Threading.Tasks;
+namespace ZN.LectorQR.Pages;
 
 public partial class MainPage : ContentPage
 {
-
     public MainPage()
     {
         InitializeComponent();
 
-        BarcodeScanner.Mobile.Methods.SetSupportBarcodeFormat(BarcodeScanner.Mobile.BarcodeFormats.QRCode);
+        // Formatos a detectar (ZXing). El control detecta cuando BarCodeDetectionEnabled = true.
+        Camera.BarCodeOptions = new BarcodeDecodeOptions
+        {
+            PossibleFormats = new List<BarcodeFormat> { BarcodeFormat.QR_CODE, BarcodeFormat.CODE_39 },
+            TryHarder = true
+        };
+        Camera.BarCodeDetectionEnabled = true;
     }
 
-    async public Task<bool> RequestCameraPermission()
+    private async void OnCamerasLoaded(object sender, EventArgs e)
     {
-        bool allowed = await BarcodeScanner.Mobile.Methods.AskForRequiredPermission();
-        return allowed;
+        if (await Permissions.RequestAsync<Permissions.Camera>() != PermissionStatus.Granted)
+        {
+            await DisplayAlertAsync("Alert", "Dale permiso si queres QR!", "OK");
+            return;
+        }
+
+        if (Camera.NumCamerasDetected > 0)
+        {
+            // Cámara trasera por defecto.
+            Camera.Camera = Camera.Cameras.FirstOrDefault(c => c.Position == CameraPosition.Back)
+                            ?? Camera.Cameras.First();
+            await Camera.StartCameraAsync();
+        }
+    }
+
+    private void OnCameraViewOnDetected(object sender, BarcodeEventArgs e)
+    {
+        var textos = e.Result
+            .Select(r => $"{r.BarcodeFormat}: {r.Text}")
+            .ToList();
+
+        if (textos.Count == 0)
+            return;
+
+        this.Dispatcher.Dispatch(async () =>
+        {
+            Camera.BarCodeDetectionEnabled = false;   // pausa la detección mientras se muestra el resultado
+            await DisplayAlertAsync("QR detectado", string.Join("\n", textos), "OK");
+            Camera.BarCodeDetectionEnabled = true;    // reanuda
+        });
     }
 
     private async void OnFlashLightButtonClicked(object sender, EventArgs e)
     {
-        if (await RequestCameraPermission())
+        try
         {
-            Camera.TorchOn = !Camera.TorchOn;
+            Camera.TorchEnabled = !Camera.TorchEnabled;
         }
-        else
+        catch
         {
-            await DisplayAlertAsync("Alert", "Dale permiso si queres QR!", "OK");
+            await DisplayAlertAsync("Alert", "No se pudo cambiar la linterna", "OK");
         }
     }
 
     private async void OnSwitchCameraButtonClicked(object sender, EventArgs e)
     {
-        if (await RequestCameraPermission())
+        if (Camera.NumCamerasDetected > 1 && Camera.Camera != null)
         {
-            Camera.CameraFacing = Camera.CameraFacing == BarcodeScanner.Mobile.CameraFacing.Back
-              ? BarcodeScanner.Mobile.CameraFacing.Front
-              : BarcodeScanner.Mobile.CameraFacing.Back;
-        }
-    }
-
-    private async void OnCameraViewOnDetected(object sender, OnDetectedEventArg e)
-    {
-        if (await RequestCameraPermission())
-        {
-            List<BarcodeResult> obj = e.BarcodeResults;
-
-            string result = string.Empty;
-            for (int i = 0; i < obj.Count; i++)
+            var nueva = Camera.Cameras.FirstOrDefault(c => c.Position != Camera.Camera.Position);
+            if (nueva != null)
             {
-                result += $"Type: {obj[i].BarcodeType}, Value: {obj[i].DisplayValue}{Environment.NewLine}";
+                Camera.Camera = nueva;
+                await Camera.StartCameraAsync();
             }
-
-            this.Dispatcher.Dispatch(async () =>
-            {
-                Camera.IsScanning = false;
-                await DisplayAlertAsync("QR Detected", result, "OK");
-                Camera.IsScanning = true;
-            });
         }
     }
 }

@@ -202,6 +202,8 @@
     <File Path="../.github/workflows/cd-ios-qr.BSN.LectorQR_Dialog.yml" />
     <File Path="../.github/workflows/cd-ios-qr.CS.LectorQR.yml" />
     <File Path="../.github/workflows/cd-ios-qr.CS.LectorQR_Dialog.yml" />
+    <File Path="../.github/workflows/cd-ios-qr.ZN.LectorQR.yml" />
+    <File Path="../.github/workflows/cd-ios-qr.ZN.LectorQR_Dialog.yml" />
     <File Path="../.github/workflows/Pipelinea-Version.md" />
     <File Path="../.github/workflows/Readme.md" />
   </Folder>

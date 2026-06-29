@@ -1,7 +1,7 @@
 ﻿using Android.App;
 using Android.Runtime;
 
-namespace Ejemplo_LectorQR_Dialog;
+namespace ZN.LectorQR_Dialog;
 
 [Application]
 public class MainApplication : MauiApplication

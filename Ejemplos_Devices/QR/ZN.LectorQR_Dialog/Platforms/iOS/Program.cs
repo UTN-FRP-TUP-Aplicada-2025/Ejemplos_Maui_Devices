@@ -1,7 +1,7 @@
 ﻿using ObjCRuntime;
 using UIKit;
 
-namespace Ejemplo_LectorQR_Dialog;
+namespace ZN.LectorQR_Dialog;
 
 public class Program
 {

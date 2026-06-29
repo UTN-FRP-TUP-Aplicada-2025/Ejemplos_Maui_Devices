@@ -1,10 +1,12 @@
-using BarcodeScanner.Mobile;
+using Camera.MAUI;
+using Camera.MAUI.ZXingHelper;
+using ZXing;
 
-using Ejemplo_LectorQR_Dialog.Models;
+using ZN.LectorQR_Dialog.Models;
 
 using System.Diagnostics;
 
-namespace Ejemplo_LectorQR_Dialog.Pages;
+namespace ZN.LectorQR_Dialog.Pages;
 
 public partial class QRLectorPage : ContentPage
 {
@@ -12,13 +14,13 @@ public partial class QRLectorPage : ContentPage
     public TaskCompletionSource<List<QRContent>> ResultadoTask { get; set; } = new();
 
     string flashIcon = "";
-    public string FlashIcon 
+    public string FlashIcon
     {
-        get 
+        get
         {
             return flashIcon;
         }
-        set 
+        set
         {
             if (value != null)
             {
@@ -32,57 +34,70 @@ public partial class QRLectorPage : ContentPage
 	{
 		InitializeComponent();
 
-        //
-        BarcodeScanner.Mobile.Methods.SetSupportBarcodeFormat(BarcodeScanner.Mobile.BarcodeFormats.QRCode | BarcodeScanner.Mobile.BarcodeFormats.Code39);
+        // Formatos a detectar (ZXing). El control detecta cuando BarCodeDetectionEnabled = true.
+        Camera.BarCodeOptions = new BarcodeDecodeOptions
+        {
+            PossibleFormats = new List<BarcodeFormat> { BarcodeFormat.QR_CODE, BarcodeFormat.CODE_39 },
+            TryHarder = true
+        };
+        Camera.BarCodeDetectionEnabled = true;
 
         BindingContext = this;
     }
-       
+
     async public Task<bool> RequestCameraPermission()
     {
-        bool allowed = await BarcodeScanner.Mobile.Methods.AskForRequiredPermission();
-        return allowed;
+        var status = await Permissions.RequestAsync<Permissions.Camera>();
+        return status == PermissionStatus.Granted;
     }
 
-    async private void OnCameraViewOnDetecte(object sender, BarcodeScanner.Mobile.OnDetectedEventArg e)
+    private async void OnCamerasLoaded(object sender, EventArgs e)
     {
-        //if (await RequestCameraPermission()) 
-        //{
-        List<BarcodeResult> obj = e.BarcodeResults;
-
-        List<QRContent> QRs = new List<QRContent>();
-        for (int i = 0; i < obj.Count; i++)
+        if (!await RequestCameraPermission())
         {
-            string type = obj[i].BarcodeType == BarcodeTypes.Unknown ? "Text" : obj[i].BarcodeType.ToString();
+            await DisplayAlertAsync("Alert", "Dale permiso si queres QR!", "OK");
+            return;
+        }
 
-            var qr = new QRContent { Type = type, Value = obj[i].DisplayValue };
-            QRs.Add(qr);
+        if (Camera.NumCamerasDetected > 0)
+        {
+            // Cámara trasera por defecto.
+            Camera.Camera = Camera.Cameras.FirstOrDefault(c => c.Position == CameraPosition.Back)
+                            ?? Camera.Cameras.First();
+            await Camera.StartCameraAsync();
+        }
+    }
+
+    private void OnCameraViewOnDetecte(object sender, BarcodeEventArgs e)
+    {
+        List<QRContent> QRs = new List<QRContent>();
+        foreach (var r in e.Result)
+        {
+            QRs.Add(new QRContent { Type = r.BarcodeFormat.ToString(), Value = r.Text });
         }
 
         this.Dispatcher.Dispatch(async () =>
             {
-                Camera.IsScanning = false;
-                
+                Camera.BarCodeDetectionEnabled = false;   // detener detección (antes: IsScanning = false)
+
                 //ResultadoTask.SetResult(result);
                 CompletarResultado(QRs);
 
                 await Navigation.PopAsync();
             });
-       // }        
     }
 
     private async void OnActiveFlashClicked(object sender, EventArgs e)
     {
-        if (await RequestCameraPermission())
+        try
         {
-            Camera.TorchOn = !Camera.TorchOn;
+            Camera.TorchEnabled = !Camera.TorchEnabled;
             PaintFlashStatus();
         }
-        else
+        catch
         {
-            await DisplayAlertAsync("Alert", "Dale permiso si queres QR!", "OK");
+            await DisplayAlertAsync("Alert", "No se pudo cambiar la linterna", "OK");
         }
-       
     }
 
     private async void OnVolverClicked(object sender, EventArgs e)
@@ -143,7 +158,7 @@ public partial class QRLectorPage : ContentPage
 
     protected void PaintFlashStatus()
     {
-        if (Camera.TorchOn) FlashIcon = "flash_on";
+        if (Camera.TorchEnabled) FlashIcon = "flash_on";
         else FlashIcon = "flash_off";
     }
 

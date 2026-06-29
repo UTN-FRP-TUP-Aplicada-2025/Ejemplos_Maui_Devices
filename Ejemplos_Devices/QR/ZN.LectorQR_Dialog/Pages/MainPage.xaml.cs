@@ -1,4 +1,4 @@
-﻿using EZN.LectorQR_Dialog.Models;
+﻿using ZN.LectorQR_Dialog.Models;
 
 namespace ZN.LectorQR_Dialog.Pages;
 

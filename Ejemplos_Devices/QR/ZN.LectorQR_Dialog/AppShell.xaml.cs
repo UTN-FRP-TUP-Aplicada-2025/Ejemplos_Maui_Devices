@@ -1,5 +1,7 @@
-﻿namespace ZN.LectorQR_Dialog;
- 
+﻿using ZN.LectorQR_Dialog.Pages;
+
+namespace ZN.LectorQR_Dialog;
+
 public partial class AppShell : Shell
 {
 
