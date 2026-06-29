@@ -27,7 +27,7 @@
                     HorizontalOptions="Fill" VerticalOptions="Fill"
                     CameraEnabled="True"
                     TorchOn="False" VibrationOnDetected="False"
-                    Symbologies="QrCode,Code39" />
+                    BarcodeSymbologies="QRCode,Code39" />
 
         <Label Text="Scan QRCode" FontSize="Medium"
                HorizontalTextAlignment="Center" Grid.Row="2" TextColor="Red" />

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-		  package="com.ejemplos.devices.qr.barcodescanner.native.maui.dialog"
+		  package="com.ejemplos.devices.qr.barcodescanner_native_maui.dialog"
 		  android:versionCode="1" android:versionName="1.0">
 	
 	<application android:allowBackup="true" 
@@ -14,7 +14,6 @@
 	<uses-permission android:name="android.permission.CAMERA" />
 	<uses-permission android:name="android.permission.VIBRATE" />
 	<uses-permission android:name="android.permission.FLASHLIGHT" />
-	<uses-permission android:name="android.permission.CAMERA" />
 	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 	<queries>

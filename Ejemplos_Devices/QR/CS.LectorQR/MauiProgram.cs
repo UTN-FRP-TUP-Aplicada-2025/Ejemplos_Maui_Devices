@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
-using BarcodeScanner.Mobile;
 
-namespace LectorQR;
+
+namespace CS.LectorQR;
 
 public static class MauiProgram
 {
@@ -15,11 +15,10 @@ public static class MauiProgram
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
             })
-            .ConfigureMauiHandlers(handlers =>
-            {
-                handlers.AddBarcodeScannerHandler();
-            });
-
+        #region barcode scanner
+            .UseCameraScanner();
+        #endregion
+        
 #if DEBUG
         builder.Logging.AddDebug();
 #endif

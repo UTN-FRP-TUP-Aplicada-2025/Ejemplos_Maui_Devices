@@ -15,11 +15,13 @@
 - **Superficie afectada:** `*.csproj`, `MauiProgram.cs`, `Pages/QRLectorPage.xaml`, `Pages/QRLectorPage.xaml.cs` (×2 proyectos).
 - **Sin cambios:** `MainPage`, `QrCommandHandler`, modelo `QRContent`, el patrón `TaskCompletionSource` y (en Híbrida) `OnQrCallback`/`QueryProperty`.
 
-> ⚠️ **Verificar nombres de API.** Los identificadores de la nueva librería (`Symbologies`,
-> `BarcodeResults`, `BarcodeFormats.QrCode`, `OnDetectionFinishedEventArg`) están tomados del README
-> de la 3.x. Antes de compilar, confírmalos contra el README de la versión instalada o haciendo un
-> **volcado de API offline** del `BarcodeScanning.Native.Maui.dll` (misma técnica documentada para
-> los DLL de MotorDsl en `E:\.nuget\packages`). Ver [5.8](#58-notas-y-riesgos).
+> ✅ **Nombres de API verificados** contra un **volcado offline** del `BarcodeScanning.Native.Maui.dll`
+> **3.0.4** (misma técnica documentada para los DLL de MotorDsl en `E:\.nuget\packages`). Correcciones
+> respecto de borradores previos de este plan, ya aplicadas más abajo:
+> - La propiedad XAML del control es **`BarcodeSymbologies`** (NO `Symbologies`).
+> - El valor del enum es **`BarcodeFormats.QRCode`** (NO `QrCode`).
+> - La extensión del builder es **`UseBarcodeScanning()`** (NO `UseCameraScanner()`, que pertenece a *CameraScanner.Maui*).
+> - **NO** importar `using Xamarin.Google.MLKit.Vision.BarCode;` (rompe la compilación — ver [5.8](#58-notas-y-riesgos)).
 
 ---
 
@@ -104,13 +106,13 @@ Aplicar en **ambos** `.csproj` (`Ejemplo_LectorQR_Dialog.csproj` y `Ejemplo_Maui
 +                    HorizontalOptions="Fill" VerticalOptions="Fill"
 +                    CameraEnabled="True"
 +                    TorchOn="False" VibrationOnDetected="False"
-+                    Symbologies="QrCode,Code39" />
++                    BarcodeSymbologies="QRCode,Code39" />
 ```
 
 Cambios clave:
 - `OnDetected` → **`OnDetectionFinished`** (mismo handler `OnCameraViewOnDetecte`).
 - **`CameraEnabled="True"`**: la nueva cámara **no arranca sola**; hay que habilitarla (la vieja la iniciaba el handler).
-- **`Symbologies="QrCode,Code39"`** reemplaza a `Methods.SetSupportBarcodeFormat(...)` (ahora declarativo en el control).
+- **`BarcodeSymbologies="QRCode,Code39"`** reemplaza a `Methods.SetSupportBarcodeFormat(...)` (ahora declarativo en el control). ⚠️ La propiedad es `BarcodeSymbologies` (no `Symbologies`) y el valor del enum es `QRCode` (no `QrCode`).
 - `ScanInterval="50"` **no tiene equivalente directo**; se elimina. Si se quiere agrupar detecciones por intervalo, usar `PoolingInterval` (ms) — opcional.
 - `TorchOn` y `VibrationOnDetected` se conservan (mismos nombres).
 
@@ -122,15 +124,15 @@ Cambios clave:
 
 ```diff
 - using BarcodeScanner.Mobile;
-+ using BarcodeScanning;
++ using BarcodeScanning;   // ⚠️ NO agregar `using Xamarin.Google.MLKit.Vision.BarCode;` (ver 5.8)
   ...
   public QRLectorPage()
   {
       InitializeComponent();
 -     BarcodeScanner.Mobile.Methods.SetSupportBarcodeFormat(
 -         BarcodeScanner.Mobile.BarcodeFormats.QRCode | BarcodeScanner.Mobile.BarcodeFormats.Code39);
-+     // Formatos ahora se declaran en XAML (Symbologies="QrCode,Code39").
-+     // Alternativa por código: Camera.Symbologies = BarcodeFormats.QrCode | BarcodeFormats.Code39;
++     // Formatos ahora se declaran en XAML (BarcodeSymbologies="QRCode,Code39").
++     // Alternativa por código: Camera.BarcodeSymbologies = BarcodeFormats.QRCode | BarcodeFormats.Code39;
       BindingContext = this;
   }
 ```
@@ -205,11 +207,12 @@ Cambios clave:
 | `handlers.AddBarcodeScannerHandler()` | `.UseBarcodeScanning()` (en el builder) |
 | xmlns `BarcodeScanner.Mobile;assembly=BarcodeScanner.Mobile.Maui` | xmlns `BarcodeScanning;assembly=BarcodeScanning.Native.Maui` |
 | `<CameraView OnDetected="...">` | `<CameraView OnDetectionFinished="...">` |
-| `Methods.SetSupportBarcodeFormat(BarcodeFormats.QRCode\|Code39)` | `Symbologies="QrCode,Code39"` (XAML) o `Camera.Symbologies = BarcodeFormats.QrCode \| BarcodeFormats.Code39` |
+| `Methods.SetSupportBarcodeFormat(BarcodeFormats.QRCode\|Code39)` | `BarcodeSymbologies="QRCode,Code39"` (XAML) o `Camera.BarcodeSymbologies = BarcodeFormats.QRCode \| BarcodeFormats.Code39` |
 | `Methods.AskForRequiredPermission()` | `Methods.AskForRequiredPermissionAsync()` |
 | `OnDetectedEventArg` | `OnDetectionFinishedEventArg` |
 | `e.BarcodeResults` → `List<BarcodeResult>` | `e.BarcodeResults` → `IReadOnlySet<BarcodeResult>` (usar `foreach`) |
-| `BarcodeResult.BarcodeType` / `BarcodeTypes` | igual |
+| `BarcodeResult.BarcodeType` / `BarcodeTypes` | igual — `BarcodeTypes` lo provee la **propia** librería (`BarcodeScanning.BarcodeTypes`); **no** importar el de ML Kit |
+| `CameraFacing` (si se usa) | `BarcodeScanning.CameraFacing` (`Back`/`Front`) — **no** existe `FromArrayMobile.CameraFacing` |
 | `BarcodeResult.DisplayValue` | igual |
 | `Camera.IsScanning = false` | `Camera.CameraEnabled = false` (o `PauseScanning = true`) |
 | `Camera.TorchOn` | igual |
@@ -221,7 +224,8 @@ Cambios clave:
 
 ## 5.8 Notas y riesgos
 
-- ⚠️ **Casing/nombres exactos:** confirmar `BarcodeFormats.QrCode` (no `QRCode`), la propiedad `Symbologies` y el tipo de `e.BarcodeResults` contra el README de la 3.0.4 o un volcado de API offline del DLL en `E:\.nuget\packages\barcodescanning.native.maui\3.0.4\lib\...`.
+- ✅ **Casing/nombres exactos (verificados en el DLL 3.0.4):** el valor del enum es **`BarcodeFormats.QRCode`** (NO `QrCode`); la propiedad del control es **`BarcodeSymbologies`** (NO `Symbologies`); la extensión del builder es **`UseBarcodeScanning()`** (NO `UseCameraScanner()`, que es de *CameraScanner.Maui*); el enum de cámara es **`BarcodeScanning.CameraFacing`** (`Back`/`Front`). `e.BarcodeResults` es `IReadOnlySet<BarcodeResult>` (iterar con `foreach`). Volcado offline del DLL en `E:\.nuget\packages\barcodescanning.native.maui\3.0.4\lib\net10.0-android36.0\`.
+- ⚠️ **Colisión de namespace con ML Kit (Android):** **NO** agregar `using Xamarin.Google.MLKit.Vision.BarCode;`. Ese namespace define un **tipo** llamado `BarcodeScanning` que **eclipsa al namespace** `BarcodeScanning` de la librería; entonces `BarcodeScanning.OnDetectionFinishedEventArg` deja de resolverse y la compilación falla con `CS0426: El nombre de tipo 'OnDetectionFinishedEventArg' no existe en el tipo 'BarcodeScanning'`. Con `using BarcodeScanning;` ya tenés `BarcodeTypes`, `BarcodeResult`, `OnDetectionFinishedEventArg`, etc.
 - **Simulador iOS:** tras migrar, compila/corre en **simulador arm64 (Apple Silicon)** sin Rosetta; pero el simulador **no tiene cámara real**, así que el escaneo en vivo se valida igualmente en **iPhone físico**.
 - **Android x86:** ML Kit no da x86 (igual que el paquete actual): el escaneo no corre en emuladores x86/x86_64. Probar en **Moto g42 físico (arm64)**.
 - **Permiso no bloqueante:** el código actual ignora el `bool` de permiso en `OnAppearing`. Buen momento para, si se deniega, no habilitar `CameraEnabled` y mostrar aviso (mejora opcional).
@@ -240,7 +244,7 @@ Cambios clave:
 
 - [ ] `.csproj`: quitado `BarcodeScanner.Mobile.Maui` + `AdamE.Google.iOS.GoogleUtilities`; añadido `BarcodeScanning.Native.Maui` 3.0.4 (×2)
 - [ ] `MauiProgram.cs`: `using` + `.UseBarcodeScanning()` (×2)
-- [ ] `QRLectorPage.xaml`: xmlns + `OnDetectionFinished` + `CameraEnabled` + `Symbologies` (×2)
+- [ ] `QRLectorPage.xaml`: xmlns + `OnDetectionFinished` + `CameraEnabled` + `BarcodeSymbologies="QRCode,..."` (×2)
 - [ ] `QRLectorPage.xaml.cs`: `using`, formatos, `AskForRequiredPermissionAsync`, handler `foreach`, `CameraEnabled=false` (×2)
 - [ ] Permisos revisados (VIBRATE en Híbrida solo si aplica)
 - [ ] Probado: Moto g42 (Android) + simulador iOS arm64 + iPhone físico

@@ -1,4 +1,4 @@
-﻿namespace LectorQR;
+﻿namespace BSN.LectorQR;
 
 public partial class App : Application
 {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace LectorQR;
+namespace CS.LectorQR;
 
 public partial class App : Application
 {

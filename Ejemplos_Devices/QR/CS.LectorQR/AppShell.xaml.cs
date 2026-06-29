@@ -1,4 +1,4 @@
-﻿namespace LectorQR;
+﻿namespace CS.LectorQR;
 
 public partial class AppShell : Shell
 {

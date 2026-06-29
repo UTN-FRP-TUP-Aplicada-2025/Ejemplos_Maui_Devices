@@ -41,7 +41,7 @@
 		<string>Lector QR</string>
 
 		<key>CFBundleIdentifier</key>
-		<string>com.ejemplos.devices.qr.barcodescanner.native.maui.simple</string>
+		<string>com.ejemplos.devices.qr.barcodescanner_native_maui.simplee</string>
 
 		<key>CFBundleVersion</key>
 		<string>1.0</string>

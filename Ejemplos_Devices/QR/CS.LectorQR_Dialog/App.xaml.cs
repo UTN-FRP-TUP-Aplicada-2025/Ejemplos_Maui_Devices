@@ -1,5 +1,5 @@
 ﻿
-namespace LectorQR_Dialog;
+namespace CS.LectorQR_Dialog;
 
 public partial class App : Application
 {

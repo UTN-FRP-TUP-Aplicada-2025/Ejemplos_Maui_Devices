@@ -1,8 +1,7 @@
-﻿namespace Ejemplo_LectorQR.Pages;
-
-using BarcodeScanner.Mobile;
+﻿using BarcodeScanner.Mobile;
 using System.Threading.Tasks;
 
+namespace CS.LectorQR.Pages;
 public partial class MainPage : ContentPage
 {
 

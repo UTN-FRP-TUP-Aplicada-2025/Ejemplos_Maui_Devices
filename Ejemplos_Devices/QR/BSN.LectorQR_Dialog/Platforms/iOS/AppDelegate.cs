@@ -1,6 +1,6 @@
 ﻿using Foundation;
 
-namespace LectorQR_Dialog;
+namespace BSN.LectorQR_Dialog;
 
 [Register("AppDelegate")]
 public class AppDelegate : MauiUIApplicationDelegate

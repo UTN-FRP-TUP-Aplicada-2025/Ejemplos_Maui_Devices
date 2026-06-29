@@ -1,6 +1,7 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using BarcodeScanning;
+using Microsoft.Extensions.Logging;
 
-namespace BSN.LectorQR_Dialog;  
+namespace BSN.LectorQR_Dialog;
   
 public static class MauiProgram 
 {
@@ -17,7 +18,7 @@ public static class MauiProgram
                 fonts.AddFont("MaterialIconsOutlined-Regular.otf", "MaterialIconsOutlined");
             })
         #region barcode scanner
-            .UseCameraScanner();
+            .UseBarcodeScanning();
         #endregion
 
 #if DEBUG

@@ -6,7 +6,7 @@
 
 		<OutputType>Exe</OutputType>
 		
-		<RootNamespace>LectorQR_Dialog</RootNamespace>
+		<RootNamespace>CS.LectorQR_Dialog</RootNamespace>
 		
 		<UseMaui>true</UseMaui>
 		<SingleProject>true</SingleProject>
@@ -80,7 +80,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="BarcodeScanner.Mobile.Maui" Version="9.0.1" />
+		<PackageReference Include="CameraScanner.Maui" Version="1.8.31" />
 	</ItemGroup>
 
 	<ItemGroup>

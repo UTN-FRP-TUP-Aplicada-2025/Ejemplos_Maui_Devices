@@ -18,10 +18,7 @@ public static class MauiProgram
                 fonts.AddFont("MaterialIconsOutlined-Regular.otf", "MaterialIconsOutlined");
             })
         #region barcode scanner
-            .ConfigureMauiHandlers(handlers =>
-            {
-                handlers.AddBarcodeScannerHandler();
-            });
+            .UseCameraScanner();
         #endregion
 
 #if DEBUG

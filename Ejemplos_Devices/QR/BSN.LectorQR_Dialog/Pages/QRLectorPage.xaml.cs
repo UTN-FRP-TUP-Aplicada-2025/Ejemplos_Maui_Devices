@@ -1,7 +1,6 @@
-using BarcodeScanner.Mobile;
+using BarcodeScanning;
 
 using BSN.LectorQR_Dialog.Models;
-
 using System.Diagnostics;
 
 namespace BSN.LectorQR_Dialog.Pages;
@@ -32,43 +31,36 @@ public partial class QRLectorPage : ContentPage
 	{
 		InitializeComponent();
 
-        //
-        BarcodeScanner.Mobile.Methods.SetSupportBarcodeFormat(BarcodeScanner.Mobile.BarcodeFormats.QRCode | BarcodeScanner.Mobile.BarcodeFormats.Code39);
+        // Formatos ahora se declaran en XAML (BarcodeSymbologies="QRCode,Code39").
+        // Alternativa por código: Camera.BarcodeSymbologies = BarcodeFormats.QRCode | BarcodeFormats.Code39;
 
         BindingContext = this;
     }
        
     async public Task<bool> RequestCameraPermission()
     {
-        bool allowed = await BarcodeScanner.Mobile.Methods.AskForRequiredPermission();
+        bool allowed = await BarcodeScanning.Methods.AskForRequiredPermissionAsync();
         return allowed;
     }
 
-    async private void OnCameraViewOnDetecte(object sender, BarcodeScanner.Mobile.OnDetectedEventArg e)
+    private void OnCameraViewOnDetecte(object sender, BarcodeScanning.OnDetectionFinishedEventArg e)
     {
-        //if (await RequestCameraPermission()) 
-        //{
-        List<BarcodeResult> obj = e.BarcodeResults;
-
         List<QRContent> QRs = new List<QRContent>();
-        for (int i = 0; i < obj.Count; i++)
+        foreach (var b in e.BarcodeResults)
         {
-            string type = obj[i].BarcodeType == BarcodeTypes.Unknown ? "Text" : obj[i].BarcodeType.ToString();
-
-            var qr = new QRContent { Type = type, Value = obj[i].DisplayValue };
-            QRs.Add(qr);
+            string type = b.BarcodeType == BarcodeTypes.Unknown ? "Text" : b.BarcodeType.ToString();
+            QRs.Add(new QRContent { Type = type, Value = b.DisplayValue });
         }
 
         this.Dispatcher.Dispatch(async () =>
             {
-                Camera.IsScanning = false;
-                
+                Camera.CameraEnabled = false;   // detener cámara (antes: IsScanning = false)
+
                 //ResultadoTask.SetResult(result);
                 CompletarResultado(QRs);
 
                 await Navigation.PopAsync();
             });
-       // }        
     }
 
     private async void OnActiveFlashClicked(object sender, EventArgs e)
