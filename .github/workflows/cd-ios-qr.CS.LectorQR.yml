@@ -1,4 +1,4 @@
-﻿name: CD iOS - QR - BSM.LectorQR_Dialog
+﻿name: CD iOS - QR - CS.LectorQR
 
 on:
   
@@ -7,7 +7,7 @@ on:
       - main
 
     paths:
-      - 'Ejemplos_Devices/QR/BSM.LectorQR_Dialog/**'
+      - 'Ejemplos_Devices/QR/CS.LectorQR/**'
       - '!**.md'
       - '!**/*.gitignore'
       - '!**/*.gitattributes'
@@ -33,16 +33,16 @@ env:
   DOTNET_VERSION_WORKLOAD: '10.0.100'
 
   # ─── Datos específicos del proyecto ───────────────────────────────────────── 
-  PACKAGE_NAME: 'com.ejemplos.devices.qr.barcodescanner.native.maui.dialog'
+  PACKAGE_NAME: 'com.ejemplos.devices.qr.camerascanner_maui.simple'
   SOLUTION_FOLDER: 'Ejemplos_Devices'
   PROJECTS_ROOT: 'QR' 
   # PROJECT_FOLDER=${{ env.PROJECTS_ROOT }}/${{ env.PROJECT_NAME }}
-  PROJECT_NAME: 'BSM.LectorQR_Dialog'
-  PROJECT_FILE: 'BSM.LectorQR_Dialog.csproj'
+  PROJECT_NAME: 'CS.LectorQR'
+  PROJECT_FILE: 'CS.LectorQR.csproj'
   # ─────────────────────────────────────────────────────────────────────────────
   
-  #RUNTIME_IDENTIFIER_SIMULATOR: 'iossimulator-arm64' 
-  RUNTIME_IDENTIFIER_SIMULATOR: iossimulator-x64
+  RUNTIME_IDENTIFIER_SIMULATOR: 'iossimulator-arm64' 
+  #RUNTIME_IDENTIFIER_SIMULATOR: iossimulator-x64
   BUILD_CONFIG_SIMULATOR: 'Release'
   DEVICE_SIMULATOR: 'iPhone 17 Pro Max'
   SCRIPT_SIMULATOR: './Utilities/simular.sh'
@@ -53,7 +53,7 @@ env:
 jobs:
   publish-ios:
     runs-on: macos-15
-    name: iOS Publish - QR - BSM.LectorQR_Dialog
+    name: iOS Publish - QR - CS.LectorQR
 
     steps:
     - name: Verificar arquitectura del runner (la mv) 

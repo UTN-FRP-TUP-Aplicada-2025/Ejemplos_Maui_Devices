@@ -150,7 +150,7 @@ jobs:
           echo "Descargando runtime para simulador arm64"          
           sudo xcodebuild -downloadPlatform iOS -architectureVariant universal || true
         else
-          sudo xcodebuild -downloadPlatform iOSSimulator
+          sudo xcodebuild -downloadPlatform iOS
         fi
         echo "Espacio actual: $(df -Th )"
         
