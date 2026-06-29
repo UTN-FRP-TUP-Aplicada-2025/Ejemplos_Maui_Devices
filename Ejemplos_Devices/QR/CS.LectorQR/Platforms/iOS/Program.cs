@@ -1,7 +1,7 @@
 ﻿using ObjCRuntime;
 using UIKit;
 
-namespace CS.LectorQR
+namespace CS.LectorQR;
 
 public class Program
 {

@@ -1,5 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
-
+﻿using CameraScanner.Maui;
+using Microsoft.Extensions.Logging;
 
 namespace CS.LectorQR;
 

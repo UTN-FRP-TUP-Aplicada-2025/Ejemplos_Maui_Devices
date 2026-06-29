@@ -20,9 +20,14 @@
             </Button.ImageSource>
         </Button>
 
-        <gv:CameraView x:Name="Camera" Grid.Row="1" Grid.Column="0" OnDetectionFinished="OnCameraViewOnDetecte" HorizontalOptions="Fill" VerticalOptions="Fill" CameraEnabled="True" TorchOn="False" VibrationOnDetected="False" BarcodeSymbologies="QRCode,Code39"/>
+		<gv:CameraView x:Name="Camera" Grid.Row="1" Grid.Column="0"
+						OnDetectionFinished="OnCameraViewOnDetecte"
+						HorizontalOptions="Fill" VerticalOptions="Fill"
+						CameraEnabled="True"
+						TorchOn="False" VibrationOnDetected="False"
+						BarcodeSymbologies="QRCode,Code39" />
 
-        <Button x:Name="BtnVolver" Grid.Row="2" Grid.Column="0" 
+		<Button x:Name="BtnVolver" Grid.Row="2" Grid.Column="0" 
                  Clicked="OnVolverClicked" HorizontalOptions="Center" VerticalOptions="Center"
                  Background="#aa000000" CornerRadius="8">
             <Button.ImageSource>

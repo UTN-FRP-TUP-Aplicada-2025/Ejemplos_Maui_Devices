@@ -1,14 +1,14 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Ejemplo_LectorQR.Pages.MainPage"
-             xmlns:gv="clr-namespace:BarcodeScanner.Mobile;assembly=BarcodeScanner.Mobile.Maui"
+             x:Class="CS.LectorQR.Pages.MainPage"
+             xmlns:cv="clr-namespace:CameraScanner.Maui;assembly=CameraScanner.Maui"
              NavigationPage.HasNavigationBar="False">
 
     <Grid RowDefinitions="Auto,*,Auto">
 
         <StackLayout Orientation="Horizontal" Grid.Row="0">
-          
+
             <Button Text="FlashLight"
                     BackgroundColor="#0075FF"
                     TextColor="White"
@@ -22,9 +22,12 @@
                     CornerRadius="10"/>
         </StackLayout>
 
-        <gv:CameraView x:Name="Camera" OnDetected="OnCameraViewOnDetected" 
-                       Grid.Row="1" TorchOn="False" VibrationOnDetected="False"
-                       ScanInterval="50"/>
+        <cv:CameraView x:Name="Camera" Grid.Row="1"
+                       OnDetectionFinished="OnCameraViewOnDetected"
+                       HorizontalOptions="Fill" VerticalOptions="Fill"
+                       CameraEnabled="True"
+                       TorchOn="False" VibrationOnDetected="False"
+                       BarcodeFormats="QR,Code39" />
 
         <Label Text="Scan QRCode" FontSize="Medium"
                HorizontalTextAlignment="Center" Grid.Row="2" TextColor="Red" />

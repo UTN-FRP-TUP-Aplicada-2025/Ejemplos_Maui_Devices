@@ -8,7 +8,7 @@
 				 android:supportsRtl="true" 
 				 android:label="Lector QR">
 		<provider android:name="androidx.core.content.FileProvider"
-                  android:authorities="com.ejemplos.devices.fileprovider"
+                  android:authorities="com.ejemplos.devices.qr.barcodescanner_native_maui.simple.fileprovider"
                   android:exported="false"
 				  android:grantUriPermissions="true">
 		</provider>

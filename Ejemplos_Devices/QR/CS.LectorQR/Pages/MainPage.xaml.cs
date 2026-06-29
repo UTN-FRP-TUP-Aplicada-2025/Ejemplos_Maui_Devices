@@ -1,21 +1,21 @@
-﻿using BarcodeScanner.Mobile;
-using System.Threading.Tasks;
+using CameraScanner.Maui;
 
 namespace CS.LectorQR.Pages;
+
 public partial class MainPage : ContentPage
 {
-
     public MainPage()
     {
         InitializeComponent();
 
-        BarcodeScanner.Mobile.Methods.SetSupportBarcodeFormat(BarcodeScanner.Mobile.BarcodeFormats.QRCode);
+        // Los formatos se declaran en XAML (BarcodeFormats="QR,Code39").
+        // Alternativa por código: Camera.BarcodeFormats = BarcodeFormats.QR | BarcodeFormats.Code39;
     }
 
     async public Task<bool> RequestCameraPermission()
     {
-        bool allowed = await BarcodeScanner.Mobile.Methods.AskForRequiredPermission();
-        return allowed;
+        var status = await Permissions.RequestAsync<Permissions.Camera>();
+        return status == PermissionStatus.Granted;
     }
 
     private async void OnFlashLightButtonClicked(object sender, EventArgs e)
@@ -34,30 +34,26 @@ public partial class MainPage : ContentPage
     {
         if (await RequestCameraPermission())
         {
-            Camera.CameraFacing = Camera.CameraFacing == BarcodeScanner.Mobile.CameraFacing.Back
-              ? BarcodeScanner.Mobile.CameraFacing.Front
-              : BarcodeScanner.Mobile.CameraFacing.Back;
+            Camera.CameraFacing = Camera.CameraFacing == CameraFacing.Back
+              ? CameraFacing.Front
+              : CameraFacing.Back;
         }
     }
 
-    private async void OnCameraViewOnDetected(object sender, OnDetectedEventArg e)
+    private void OnCameraViewOnDetected(object sender, OnDetectionFinishedEventArg e)
     {
-        if (await RequestCameraPermission())
+        var textos = e.BarcodeResults
+            .Select(b => $"{(b.BarcodeType == BarcodeTypes.Unknown ? "Text" : b.BarcodeType.ToString())}: {b.DisplayValue}")
+            .ToList();
+
+        if (textos.Count == 0)
+            return;
+
+        this.Dispatcher.Dispatch(async () =>
         {
-            List<BarcodeResult> obj = e.BarcodeResults;
-
-            string result = string.Empty;
-            for (int i = 0; i < obj.Count; i++)
-            {
-                result += $"Type: {obj[i].BarcodeType}, Value: {obj[i].DisplayValue}{Environment.NewLine}";
-            }
-
-            this.Dispatcher.Dispatch(async () =>
-            {
-                Camera.IsScanning = false;
-                await DisplayAlertAsync("QR Detected", result, "OK");
-                Camera.IsScanning = true;
-            });
-        }
+            Camera.CameraEnabled = false;   // pausa el escaneo mientras se muestra el resultado
+            await DisplayAlertAsync("QR detectado", string.Join("\n", textos), "OK");
+            Camera.CameraEnabled = true;    // reanuda para escanear de nuevo
+        });
     }
 }
