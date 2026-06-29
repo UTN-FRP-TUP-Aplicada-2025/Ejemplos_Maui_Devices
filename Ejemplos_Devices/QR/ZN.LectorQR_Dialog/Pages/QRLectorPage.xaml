@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:gv="clr-namespace:BarcodeScanner.Mobile;assembly=BarcodeScanner.Mobile.Maui"
-             x:Class="Ejemplo_LectorQR_Dialog.Pages.QRLectorPage"
-             xmlns:local="clr-namespace:Ejemplo_LectorQR_Dialog.Pages"
-             x:DataType="local:QRLectorPage"
+             xmlns:gv="clr-namespace:Camera.MAUI;assembly=Camera.MAUI"
+             x:Class="ZN.LectorQR_Dialog.Pages.QRLectorPage"
+             xmlns:local="clr-namespace:ZN.LectorQR_Dialog.Pages"
+             x:DataType="local:ZN.LectorQR_Dialog"
              Title="QRLectorPage"
              BackgroundColor="#000000"
              NavigationPage.HasNavigationBar="False">

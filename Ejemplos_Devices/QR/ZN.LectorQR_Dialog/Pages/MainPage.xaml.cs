@@ -1,6 +1,6 @@
-﻿using Ejemplo_LectorQR_Dialog.Models;
+﻿using EZN.LectorQR_Dialog.Models;
 
-namespace Ejemplo_LectorQR_Dialog.Pages;
+namespace ZN.LectorQR_Dialog.Pages;
 
 public partial class MainPage : ContentPage
 {

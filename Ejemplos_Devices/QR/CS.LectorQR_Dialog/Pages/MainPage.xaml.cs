@@ -1,6 +1,6 @@
-﻿using LectorQR_Dialog.Models;
+﻿using CS.LectorQR_Dialog.Models;
 
-namespace LectorQR_Dialog.Pages;
+namespace CS.LectorQR_Dialog.Pages;
 
 public partial class MainPage : ContentPage
 {

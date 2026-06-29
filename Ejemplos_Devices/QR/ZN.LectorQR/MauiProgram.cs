@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
-using BarcodeScanner.Mobile;
 
-namespace LectorQR;
+
+namespace ZN.LectorQR;
 
 public static class MauiProgram
 {

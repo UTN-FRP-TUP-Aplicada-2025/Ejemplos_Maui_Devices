@@ -2,6 +2,7 @@ using BarcodeScanning;
 
 using BSN.LectorQR_Dialog.Models;
 using System.Diagnostics;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace BSN.LectorQR_Dialog.Pages;
 
@@ -51,6 +52,9 @@ public partial class QRLectorPage : ContentPage
             string type = b.BarcodeType == BarcodeTypes.Unknown ? "Text" : b.BarcodeType.ToString();
             QRs.Add(new QRContent { Type = type, Value = b.DisplayValue });
         }
+
+        if (QRs.Count == 0)
+            return;
 
         this.Dispatcher.Dispatch(async () =>
             {

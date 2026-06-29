@@ -1,7 +1,7 @@
 ﻿using Android.App;
 using Android.Runtime;
 
-namespace LectorQR;
+namespace ZN.LectorQR;
 
 [Application]
 public class MainApplication : MauiApplication

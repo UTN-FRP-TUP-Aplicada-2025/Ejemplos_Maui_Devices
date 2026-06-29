@@ -1,6 +1,4 @@
-﻿using LectorQR_Dialog.Pages;
-
-namespace LectorQR_Dialog;
+﻿namespace ZN.LectorQR_Dialog;
  
 public partial class AppShell : Shell
 {

@@ -1,6 +1,6 @@
 ﻿using Foundation;
 
-namespace LectorQR
+namespace ZN.LectorQR
 
 [Register("AppDelegate")]
 public class AppDelegate : MauiUIApplicationDelegate

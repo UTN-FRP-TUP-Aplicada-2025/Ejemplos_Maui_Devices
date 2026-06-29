@@ -1,7 +1,7 @@
-﻿using BarcodeScanner.Mobile;
+﻿using CameraScanner.Maui;
 using Microsoft.Extensions.Logging;
 
-namespace LectorQR_Dialog;  
+namespace CS.LectorQR_Dialog;  
   
 public static class MauiProgram 
 {

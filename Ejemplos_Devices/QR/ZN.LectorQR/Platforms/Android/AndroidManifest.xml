@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" 
-		  package="com.ejemplos.devices" 
+		  package="com.ejemplos.devices.qr.zxing_net_maui.simple" 
 		  android:versionCode="1" android:versionName="1.0">
 	
 	<application android:allowBackup="true" 
@@ -8,7 +8,7 @@
 				 android:supportsRtl="true" 
 				 android:label="Lector QR">
 		<provider android:name="androidx.core.content.FileProvider"
-                  android:authorities="com.ejemplos.devices.fileprovider"
+                  android:authorities="com.ejemplos.devices.qr.zxing_net_maui.simple.fileprovider"
                   android:exported="false"
 				  android:grantUriPermissions="true">
 		</provider>

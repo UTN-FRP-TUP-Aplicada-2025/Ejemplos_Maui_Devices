@@ -1,4 +1,4 @@
-﻿namespace Ejemplo_LectorQR_Dialog.Models;
+﻿namespace ZN.LectorQR_Dialog.Models;
 
 public class QRContent
 {

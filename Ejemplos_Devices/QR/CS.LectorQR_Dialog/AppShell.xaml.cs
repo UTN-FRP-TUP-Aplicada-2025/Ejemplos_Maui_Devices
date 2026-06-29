@@ -1,4 +1,4 @@
-﻿using LectorQR_Dialog.Pages;
+﻿using CS.LectorQR_Dialog.Pages;
 
 namespace CS.LectorQR_Dialog;
  
