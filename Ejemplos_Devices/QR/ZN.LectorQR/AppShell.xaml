@@ -5,7 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:ZN.LectorQR"
     xmlns:pages="clr-namespace:ZN.LectorQR.Pages"
-    Title="LectorQR">
+    Title="Lector QR">
 
     <ShellContent
         Title="Home"
