@@ -1,20 +1,21 @@
-﻿name: CD iOS - Integrada - Ejemplo_Maui_Hibrida
+﻿name: CD iOS - QR - Ejemplo_Maui_Hibrida
+
 on:
   
-  push:
-    branches: 
-      - main
+  # push:
+  #   branches: 
+  #     - main
 
-    paths:
-      - 'Ejemplos_Devices/Integrada/Ejemplo_Maui_Hibrida/**'
-      - '!**.md'
-      - '!**/*.gitignore'
-      - '!**/*.gitattributes'
+  #   paths:
+  #     - 'Ejemplos_Devices/QR/Ejemplo_Maui_Hibrida/**'
+  #     - '!**.md'
+  #     - '!**/*.gitignore'
+  #     - '!**/*.gitattributes'
 
   workflow_call:
 
 env:
-  PIPELINE_VERSION: '202606262101_ejemplos'
+  PIPELINE_VERSION: '202606301040_ejemplos'
 
   #XCODE_VERSION: '26.3'  
   #XCODE_VERSION_SHORT: '26.3'
@@ -34,14 +35,14 @@ env:
   # ─── Datos específicos del proyecto ───────────────────────────────────────── 
   PACKAGE_NAME: 'com.ejemplos.devices.integrada.hibrida'
   SOLUTION_FOLDER: 'Ejemplos_Devices'
-  PROJECTS_ROOT: 'Integrada' 
+  PROJECTS_ROOT: 'QR' 
   # PROJECT_FOLDER=${{ env.PROJECTS_ROOT }}/${{ env.PROJECT_NAME }}
   PROJECT_NAME: 'Ejemplo_Maui_Hibrida'
   PROJECT_FILE: 'Ejemplo_Maui_Hibrida.csproj'
   # ─────────────────────────────────────────────────────────────────────────────
   
-  #RUNTIME_IDENTIFIER_SIMULATOR: 'iossimulator-arm64' 
-  RUNTIME_IDENTIFIER_SIMULATOR: iossimulator-x64
+  RUNTIME_IDENTIFIER_SIMULATOR: 'iossimulator-arm64' 
+  #RUNTIME_IDENTIFIER_SIMULATOR: iossimulator-x64
   BUILD_CONFIG_SIMULATOR: 'Release'
   DEVICE_SIMULATOR: 'iPhone 17 Pro Max'
   SCRIPT_SIMULATOR: './Utilities/simular.sh'
@@ -52,7 +53,7 @@ env:
 jobs:
   publish-ios:
     runs-on: macos-15
-    name: iOS Publish - Integrada - Ejemplo_Maui_Hibrida - Rosseta
+    name: iOS Publish - QR - Ejemplo_Maui_Hibrida
 
     steps:
     - name: Verificar arquitectura del runner (la mv) 
@@ -149,7 +150,7 @@ jobs:
           echo "Descargando runtime para simulador arm64"          
           sudo xcodebuild -downloadPlatform iOS -architectureVariant universal || true
         else
-          sudo xcodebuild -downloadPlatform iOSSimulator
+          sudo xcodebuild -downloadPlatform iOS
         fi
         echo "Espacio actual: $(df -Th )"
         
@@ -409,7 +410,7 @@ jobs:
         echo "ZIP_PATH=${{ env.BASE_PATH }}/$ZIP_NAME" >> $GITHUB_ENV    
         
     - name: RELEASE SIMULADOR. Subir appName.app.zip como artefacto
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: ${{ env.ZIP_NAME }}
         path: |          
@@ -435,23 +436,29 @@ jobs:
       continue-on-error: true
       timeout-minutes: 30
       run: |
+        # echo "Esperando algo como (Signature=adhoc): "
+        # codesign -vvv --display "${APP_PATH}"
+        # cd "${{ github.workspace }}"
+        # chmod ugo+rwx ${{ env.SCRIPT_SIMULATOR }}
+        # ${{ env.SCRIPT_SIMULATOR }}
+        
         echo "Esperando algo como (Signature=adhoc): "
         codesign -vvv --display "${APP_PATH}"
         cd "${{ github.workspace }}"
         chmod ugo+rwx ${{ env.SCRIPT_SIMULATOR }}
         ${{ env.SCRIPT_SIMULATOR }}
+        # mover la evidencia que el script dejó fuera del workspace
+        cp /tmp/app_stderr.txt debug_logs/ 2>/dev/null || true
 
     - name: RELEASE SIMULADOR. Subir GIF de evidencia  
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: grabacion-simulador
         path: | 
           evidencia_app.gif
           frames/
           debug_logs/
-          debug_logs/launch_output.txt
           app_stream_full.txt
-          /tmp/app_stderr.txt
         if-no-files-found: warn
         retention-days: 1
             

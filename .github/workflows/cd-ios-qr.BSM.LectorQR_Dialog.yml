@@ -2,15 +2,15 @@
 
 on:
   
-  push:
-   branches: 
-     - main
+  # push:
+  #  branches: 
+  #    - main
 
-   paths:
-     - 'Ejemplos_Devices/QR/BSM.LectorQR_Dialog/**'
-     - '!**.md'
-     - '!**/*.gitignore'
-     - '!**/*.gitattributes'
+  #  paths:
+  #    - 'Ejemplos_Devices/QR/BSM.LectorQR_Dialog/**'
+  #    - '!**.md'
+  #    - '!**/*.gitignore'
+  #    - '!**/*.gitattributes'
 
   workflow_call:
 
@@ -33,7 +33,7 @@ env:
   DOTNET_VERSION_WORKLOAD: '10.0.100'
 
   # ─── Datos específicos del proyecto ───────────────────────────────────────── 
-  PACKAGE_NAME: 'com.ejemplos.devices.qr.barcodescanner.native.maui.dialog'
+  PACKAGE_NAME: 'com.ejemplos.devices.qr.barcodescanner_mobile_maui.dialog'
   SOLUTION_FOLDER: 'Ejemplos_Devices'
   PROJECTS_ROOT: 'QR' 
   # PROJECT_FOLDER=${{ env.PROJECTS_ROOT }}/${{ env.PROJECT_NAME }}
