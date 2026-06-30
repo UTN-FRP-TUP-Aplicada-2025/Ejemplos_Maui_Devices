@@ -15,7 +15,7 @@ on:
   workflow_call:
 
 env:
-  PIPELINE_VERSION: '202606261239_ejemplos'
+  PIPELINE_VERSION: '202606300809_ejemplos'
 
   #XCODE_VERSION: '26.3'  
   #XCODE_VERSION_SHORT: '26.3'

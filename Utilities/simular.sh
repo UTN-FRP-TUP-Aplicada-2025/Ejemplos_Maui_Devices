@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-echo "Ruta aplicación: ${APP_PATH}"
+echo "Ruta aplicaciï¿½n: ${APP_PATH}"
 echo "Package name: ${PACKAGE_NAME}"
 echo "Device simulator: ${DEVICE_SIMULATOR}"
 
@@ -16,7 +16,7 @@ UUID=$(xcrun simctl list devices "${DEVICE_SIMULATOR}" available 2>/dev/null | g
 echo "UUID del simulador: $UUID"
 
 if [ -z "$UUID" ]; then
-    echo "? No se encontró el simulador iPhone 16 Pro"
+    echo "? No se encontrï¿½ el simulador iPhone 16 Pro"
     echo "Simuladores disponibles:"
     xcrun simctl list devices available
     exit 1
@@ -24,7 +24,7 @@ fi
 
 echo "? Usando Simulador: $UUID"
 
-# Función para timeout en macOS (alternativa a timeout command)
+# Funciï¿½n para timeout en macOS (alternativa a timeout command)
 run_with_timeout() {
     local timeout=$1
     shift
@@ -38,13 +38,13 @@ echo "Verificar estado actual"
 CURRENT_STATE=$(xcrun simctl list devices | grep "$UUID" | grep -o "([^)]*)" | tail -1)
 echo "Estado actual: $CURRENT_STATE"
 
-echo "Intentar arrancar si no está booted"
+echo "Intentar arrancar si no estï¿½ booted"
 
 if [[ "$CURRENT_STATE" != *"Booted"* ]]; then
     echo "Arrancando simulador..."
     xcrun simctl boot $UUID 2>&1 || true
     
-    echo "Esperando arranque (máx 120s)..."
+    echo "Esperando arranque (mï¿½x 120s)..."
     for i in {1..12}; do
         sleep 10
         STATE=$(xcrun simctl list devices | grep "$UUID" | grep -o "([^)]*)" | tail -1)
@@ -61,14 +61,14 @@ if [[ "$CURRENT_STATE" != *"Booted"* ]]; then
         fi
     done
 else
-    echo "? Simulador ya está arrancado"
+    echo "? Simulador ya estï¿½ arrancado"
 fi
 
 echo "Esperando SpringBoard..."
 sleep 5
 
 echo ""
-echo "Preparación de la APP"
+echo "Preparaciï¿½n de la APP"
 if [ ! -d "${APP_PATH}" ]; then
     echo "? No se encuentra la app en: ${APP_PATH}"
     exit 1
@@ -109,17 +109,17 @@ echo "Firmando componentes..."
 
 # echo "3. Firma con Hardened Runtime y los permisos inyectados"
 # --options=runtime activa el Hardened Runtime
-# --entitlements inyecta la configuración para que iOS no te bloquee
+# --entitlements inyecta la configuraciï¿½n para que iOS no te bloquee
 # codesign --force --deep --sign - --options=runtime --entitlements debug.entitlements --timestamp=none "${APP_PATH}"
 
 # echo "? Firma completada. Verificando..."
 # codesign -vvv --display "${APP_PATH}"
 
 echo ""
-echo "Instalación "
+echo "Instalaciï¿½n "
 echo ""
 
-echo "Desinstalando versión previa (si existe)..."
+echo "Desinstalando versiï¿½n previa (si existe)..."
 xcrun simctl uninstall $UUID "${PACKAGE_NAME}" 2>/dev/null || true
 
 # para que siri no la vea como una descarga de internet y le de los permisos
@@ -140,28 +140,28 @@ echo "Instalando app..."
 if xcrun simctl install $UUID "${APP_PATH}"; then
     echo "? App instalada correctamente"
 
-    echo "Otorgando permisos de notificación..."
+    echo "Otorgando permisos de notificaciï¿½n..."
     xcrun simctl privacy $UUID grant notifications "${PACKAGE_NAME}" || {
-        echo "?? simctl privacy falló (permisos de macOS). Intentando vía AppleScript..."
-        osascript -e 'tell application "System Events" to tell process "Simulator" to click button "Allow" of window 1' || echo "No se pudo hacer clic automático."
+        echo "?? simctl privacy fallï¿½ (permisos de macOS). Intentando vï¿½a AppleScript..."
+        osascript -e 'tell application "System Events" to tell process "Simulator" to click button "Allow" of window 1' || echo "No se pudo hacer clic automï¿½tico."
     }
 
     xcrun simctl spawn $UUID notifyutil -p com.apple.SpringBoard.icons-changed || echo "?? No se pudo refrescar iconos, continuando..."
     #xcrun simctl spawn $UUID log stream --level info > "$LOG_FILE" 2>&1 &
 
 else
-    echo "? Falló la instalación"
+    echo "? Fallï¿½ la instalaciï¿½n"
     exit 1
 fi
 
 sleep 10
 
-echo "Verificando instalación...-si no verifica, fue fantasma , copio pero no registro la app"
+echo "Verificando instalaciï¿½n...-si no verifica, fue fantasma , copio pero no registro la app"
 echo "Verificando si la app es un fantasma..."
 if xcrun simctl listapps $UUID | grep -q "${PACKAGE_NAME}"; then
-    echo "? Confirmado: La app está registrada."
+    echo "? Confirmado: La app estï¿½ registrada."
 else
-    echo "? ERROR: La app se instaló pero NO aparece en el sistema (posible problema de firma)."
+    echo "? ERROR: La app se instalï¿½ pero NO aparece en el sistema (posible problema de firma)."
     exit 1
 fi
 
@@ -182,15 +182,16 @@ echo ""
 echo "Lanzamiento de la APP"
 #LAUNCH_OUTPUT=$(xcrun simctl launch $UUID ${PACKAGE_NAME} 2>&1)
 xcrun simctl launch --stderr=/tmp/app_stderr.txt $UUID ${PACKAGE_NAME}
+#xcrun simctl launch --stderr=debug_logs/app_stderr.txt $UUID ${PACKAGE_NAME}
 echo "$LAUNCH_OUTPUT" | tee debug_logs/launch_output.txt
 
-# Forzar creación del contenedor de datos (el Sandbox)
+# Forzar creaciï¿½n del contenedor de datos (el Sandbox)
 xcrun simctl get_app_container $UUID "${PACKAGE_NAME}" data
 
 APP_PID=$(echo "$LAUNCH_OUTPUT" | grep -oE '[0-9]+' | head -1)
 echo "App lanzada (PID: $APP_PID)"
 
-echo "Esperando inicialización de la app..."
+echo "Esperando inicializaciï¿½n de la app..."
 sleep 5
 
 echo ""
@@ -230,12 +231,12 @@ wait $LOG_PID 2>/dev/null || true
 [ -f "$LOG_FILE" ] && cp "$LOG_FILE" debug_logs/ || true
 
 echo ""
-echo "Generación de git"
+echo "Generaciï¿½n de git"
 FRAME_FILES=(frames/f*.png)
 if [ ${#FRAME_FILES[@]} -gt 0 ] && [ -f "${FRAME_FILES[0]}" ]; then
     echo "Procesando ${#FRAME_FILES[@]} frames..."
     
-    # Usar gtimeout si está disponible (brew install coreutils), sino usar perl
+    # Usar gtimeout si estï¿½ disponible (brew install coreutils), sino usar perl
     if command -v gtimeout &> /dev/null; then
         TIMEOUT_CMD="gtimeout 30s"
     else
@@ -306,7 +307,7 @@ if ls debug_logs/*.txt 1> /dev/null 2>&1; then
         SIZE=$(ls -lh "$log" | awk '{print $5}')
         NAME=$(basename "$log")
         if [ "$SIZE" = "102B" ]; then
-            echo "  ??  $NAME: $SIZE (posiblemente vacío)"
+            echo "  ??  $NAME: $SIZE (posiblemente vacï¿½o)"
         else
             echo "  ? $NAME: $SIZE"
         fi

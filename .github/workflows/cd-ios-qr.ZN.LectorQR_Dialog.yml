@@ -2,20 +2,20 @@
 
 on:
   
-  push:
-    branches: 
-      - main
+  # push:
+  #   branches: 
+  #     - main
 
-    paths:
-      - 'Ejemplos_Devices/QR/ZN.LectorQR_Dialog/**'
-      - '!**.md'
-      - '!**/*.gitignore'
-      - '!**/*.gitattributes'
+  #   paths:
+  #     - 'Ejemplos_Devices/QR/ZN.LectorQR_Dialog/**'
+  #     - '!**.md'
+  #     - '!**/*.gitignore'
+  #     - '!**/*.gitattributes'
 
   workflow_call:
 
 env:
-  PIPELINE_VERSION: '202606262101_ejemplos'
+  PIPELINE_VERSION: '202606300809_ejemplos'
 
   #XCODE_VERSION: '26.3'  
   #XCODE_VERSION_SHORT: '26.3'
@@ -437,11 +437,19 @@ jobs:
       continue-on-error: true
       timeout-minutes: 30
       run: |
+        # echo "Esperando algo como (Signature=adhoc): "
+        # codesign -vvv --display "${APP_PATH}"
+        # cd "${{ github.workspace }}"
+        # chmod ugo+rwx ${{ env.SCRIPT_SIMULATOR }}
+        # ${{ env.SCRIPT_SIMULATOR }}
+        
         echo "Esperando algo como (Signature=adhoc): "
         codesign -vvv --display "${APP_PATH}"
         cd "${{ github.workspace }}"
         chmod ugo+rwx ${{ env.SCRIPT_SIMULATOR }}
         ${{ env.SCRIPT_SIMULATOR }}
+        # mover la evidencia que el script dejó fuera del workspace
+        cp /tmp/app_stderr.txt debug_logs/ 2>/dev/null || true
 
     - name: RELEASE SIMULADOR. Subir GIF de evidencia  
       uses: actions/upload-artifact@v4
@@ -451,9 +459,7 @@ jobs:
           evidencia_app.gif
           frames/
           debug_logs/
-          debug_logs/launch_output.txt
           app_stream_full.txt
-          /tmp/app_stderr.txt
         if-no-files-found: warn
         retention-days: 1
             
