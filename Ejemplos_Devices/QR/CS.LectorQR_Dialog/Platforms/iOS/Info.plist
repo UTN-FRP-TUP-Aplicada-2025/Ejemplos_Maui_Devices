@@ -35,10 +35,10 @@
 		<string>15.0</string>
 
 		<key>CFBundleName</key>
-		<string>Ejemplo_LectorQR_Dialog</string>
+		<string>CS.LectorQR_Dialog</string>
 
 		<key>CFBundleDisplayName</key>
-		<string>QR Lector</string>
+		<string>CS QR Lector Dialog</string>
 
 		<key>CFBundleIdentifier</key>
 		<string>com.ejemplos.devices.qr.camerascanner.maui.dialog</string>

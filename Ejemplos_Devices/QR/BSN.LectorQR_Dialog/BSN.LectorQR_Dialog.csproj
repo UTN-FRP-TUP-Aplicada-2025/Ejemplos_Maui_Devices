@@ -13,7 +13,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		
-		<ApplicationTitle>QR Lector</ApplicationTitle>
+		<ApplicationTitle>BSN QR Lector Dialog</ApplicationTitle>
 		<ApplicationId>com.ejemplos.devices.qr.barcodescanner_native_maui.dialog</ApplicationId>
 		
 		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>

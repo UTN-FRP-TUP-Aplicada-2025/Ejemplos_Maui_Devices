@@ -35,13 +35,13 @@
 		<string>15.0</string>
 
 		<key>CFBundleName</key>
-		<string>Ejemplo_LectorQR_Dialog</string>
+		<string>BSM.LectorQR_Dialog</string>
 
 		<key>CFBundleDisplayName</key>
-		<string>QR Lector</string>
+		<string>BSM QR Lector Dialog</string>
 
 		<key>CFBundleIdentifier</key>
-		<string>com.ejemplos.devices.qr.barcodescanner.mobile.maui.dialog</string>
+		<string>com.ejemplos.devices.qr.barcodescanner_mobile_maui.dialog</string>
 
 		<key>CFBundleVersion</key>
 		<string>1.0</string>

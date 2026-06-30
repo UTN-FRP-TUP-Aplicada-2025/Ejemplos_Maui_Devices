@@ -14,7 +14,7 @@
 		<Nullable>enable</Nullable>
 
 		<ApplicationTitle>Lector QR BarcodeScanner.Mobile.Maui</ApplicationTitle>
-		<ApplicationId>com.ejemplos.devices.qr.barcodescanner.mobile.maui.simple</ApplicationId>
+		<ApplicationId>com.ejemplos.devices.qr.barcodescanner_mobile_maui.simple</ApplicationId>
 
 		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
 		<ApplicationVersion>1</ApplicationVersion>

@@ -13,7 +13,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		
-		<ApplicationTitle>QR Lector</ApplicationTitle>
+		<ApplicationTitle>CS QR Lector Dialog</ApplicationTitle>
 		<ApplicationId>com.ejemplos.devices.qr.camerascanner.maui.dialog</ApplicationId>
 		
 		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
