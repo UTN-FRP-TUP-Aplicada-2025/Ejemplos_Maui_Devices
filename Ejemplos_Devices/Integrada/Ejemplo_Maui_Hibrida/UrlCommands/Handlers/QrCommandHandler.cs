@@ -30,21 +30,22 @@ public sealed class QrCommandHandler : IUrlCommandHandler
         var tcs = new TaskCompletionSource<List<QRContent>?>();
         Action<List<QRContent>?> callback = qrs => tcs.TrySetResult(qrs);
 
-        await Shell.Current.GoToAsync(nameof(QRLectorPage),
-            new ShellNavigationQueryParameters { { "OnQrCallback", callback } });
-
-        var qrs = await tcs.Task;                 // null o vacío = canceló
-        if (qrs is null || qrs.Count == 0)
-            return new BridgeOutcome(true, null);
+        //await Shell.Current.GoToAsync(nameof(QRLectorPage),new ShellNavigationQueryParameters { { "OnQrCallback", callback } });
+        //await  Navigation.PushAsync(nameof(QRLectorPage));
+       
+        //var qrs = await tcs.Task;                 // null o vacío = canceló
+        //if (qrs is null || qrs.Count == 0) return new BridgeOutcome(true, null);
+        var destinoPage = new QRLectorPage();
+        await Application.Current.Windows[0].Page.Navigation.PushAsync(destinoPage);
+        List<QRContent> qrs = await destinoPage.ResultadoTask.Task;
+        var qr = qrs.FirstOrDefault();
 
         // Inyectar la LISTA COMPLETA serializada (a prueba de comillas vía JsonSerializer):
         // la página Blazor decide si toma [0].Value o itera.
         var json = JsonSerializer.Serialize(qrs);
-        string scriptjs =
-            $"document.getElementById({JsonSerializer.Serialize(targetId)}).textContent = {JsonSerializer.Serialize(json)};";
-
+        string scriptjs = $"document.getElementById({JsonSerializer.Serialize(targetId)}).textContent = {JsonSerializer.Serialize(json)};";
         _bridge.RunScript(scriptjs);
-
+       
         return new BridgeOutcome(true, null);     // se queda en la página
     }
 

@@ -91,6 +91,7 @@
         <h4>Lectura QR</h4>
     </div>
     <div class="card-body">
+        <p>Se espera que muestre el contenido del QR debajo:</p>
         <button @onclick="OnQR" class="btn btn-primary">Leer QR</button><br/>
         <div id="contenidoQR">@QRContenido</div>
     </div>
@@ -103,6 +104,7 @@
         <h4>Redirigir a una pagina externa</h4>
     </div>
     <div class="card-body">
+        <p>Se espera en ios que abra safari</p>
         <button @onclick="OnRedirect" class="btn btn-primary">Redirigir</button><br />
         <div id="contenidoRedirigir">@RedirigirContenido</div>
     </div>

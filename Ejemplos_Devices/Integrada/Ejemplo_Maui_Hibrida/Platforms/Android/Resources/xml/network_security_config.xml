@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+	<base-config cleartextTrafficPermitted="true">
+		<trust-anchors>
+			<certificates src="system" />
+		</trust-anchors>
+	</base-config>
+
+	<!-- Confianza adicional SOLO para el dominio real de la app.
+	     Cadena Let's Encrypt/ISRG: aplicada.somee.com <- YE2 <- Root YE <- ISRG Root X2.
+	     El servidor envía hoja + intermedios; embebemos raíz + intermedios para que el
+	     WebView (Chromium) pueda construir la ruta de confianza aunque el dispositivo
+	     no traiga la raíz ISRG Root X2 (caso típico en Android viejo, p.ej. Moto g42). -->
+	<domain-config>
+		<domain includeSubdomains="true">aplicada.somee.com</domain>
+		<trust-anchors>
+			<certificates src="system" />
+			<certificates src="@raw/isrg_root_x2" />
+			<certificates src="@raw/root_ye" />
+			<certificates src="@raw/ye2" />
+		</trust-anchors>
+	</domain-config>
+</network-security-config>

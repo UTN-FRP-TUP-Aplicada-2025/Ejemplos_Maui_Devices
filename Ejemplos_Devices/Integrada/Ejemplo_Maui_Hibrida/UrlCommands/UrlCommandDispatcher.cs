@@ -18,8 +18,7 @@ public sealed class UrlCommandDispatcher
     {
         foreach (var handler in _handlers)
         {
-            if (handler.CanHandle(url))
-                return await handler.HandleAsync(url);
+            if (handler.CanHandle(url)) return await handler.HandleAsync(url);
         }
 
         // Ningún comando matchea: navegación normal.
