@@ -4,19 +4,27 @@
   </Folder>
   <Folder Name="/Docs/">
     <File Path="../README.md" />
-    <File Path="Docs/AsyncRelayCommandOptions.md" />
-    <File Path="Docs/Eventos.md" />
-    <File Path="Docs/GetEnviromentVersion.md" />
-    <File Path="Docs/propuesta-rosetta.md" />
   </Folder>
-  <Folder Name="/Docs/QR/">
-    <File Path="Docs/QR_Nuget/01-analisis-uso-actual.md" />
-    <File Path="Docs/QR_Nuget/02-alternativas-nuget.md" />
-    <File Path="Docs/QR_Nuget/03-matriz-rid.md" />
-    <File Path="Docs/QR_Nuget/04-recomendacion.md" />
-    <File Path="Docs/QR_Nuget/05-plan-migracion.md" />
-    <File Path="Docs/QR_Nuget/README.md" />
+  <Folder Name="/Docs/certificado-ssl/">
+    <File Path="Docs/certificados-ssl/Anexo-A-Comandos.md" />
+    <File Path="Docs/certificados-ssl/Anexo-B-Glosario.md" />
+    <File Path="Docs/certificados-ssl/README.md" />
   </Folder>
+  <Folder Name="/Docs/otros/">
+    <File Path="Docs/otros/AsyncRelayCommandOptions.md" />
+    <File Path="Docs/otros/Eventos.md" />
+    <File Path="Docs/otros/GetEnviromentVersion.md" />
+    <File Path="Docs/otros/propuesta-rosetta.md" />
+  </Folder>
+  <Folder Name="/Docs/qr-nuget/">
+    <File Path="Docs/qr-nuget/01-analisis-uso-actual.md" />
+    <File Path="Docs/qr-nuget/02-alternativas-nuget.md" />
+    <File Path="Docs/qr-nuget/03-matriz-rid.md" />
+    <File Path="Docs/qr-nuget/04-recomendacion.md" />
+    <File Path="Docs/qr-nuget/05-plan-migracion.md" />
+    <File Path="Docs/qr-nuget/README.md" />
+  </Folder>
+  <Folder Name="/Docs/web-hibrida/" />
   <Folder Name="/Ejemplos/" />
   <Folder Name="/Ejemplos/Camera/">
     <Project Path="Camera/Ejemplo_Photo_MediaPicker/Ejemplo_Photo_MediaPicker.csproj" Id="b9e9559a-bfbf-45e1-be27-127f510308b2">

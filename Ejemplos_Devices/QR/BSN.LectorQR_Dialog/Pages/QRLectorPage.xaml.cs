@@ -31,7 +31,7 @@ public partial class QRLectorPage : ContentPage
 	{
 		InitializeComponent();
 
-        // Formatos ahora se declaran en XAML (BarcodeSymbologies="QRCode,Code39").
+        // Formatos ahora se declaran en XAML (BarcodeSymbologies="QRCode,Code39"). 
         // Alternativa por código: Camera.BarcodeSymbologies = BarcodeFormats.QRCode | BarcodeFormats.Code39;
 
         BindingContext = this;

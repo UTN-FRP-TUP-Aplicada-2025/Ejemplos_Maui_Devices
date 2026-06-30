@@ -1,4 +1,4 @@
-﻿name: CD iOS - QR - Ejemplo_Maui_Hibrida
+﻿name: CD iOS - Integrada - Ejemplo_Maui_Hibrida
 
 on:
   
@@ -7,7 +7,7 @@ on:
   #     - main
 
   #   paths:
-  #     - 'Ejemplos_Devices/QR/Ejemplo_Maui_Hibrida/**'
+  #     - 'Ejemplos_Devices/Integrada/Ejemplo_Maui_Hibrida/**'
   #     - '!**.md'
   #     - '!**/*.gitignore'
   #     - '!**/*.gitattributes'
@@ -35,7 +35,7 @@ env:
   # ─── Datos específicos del proyecto ───────────────────────────────────────── 
   PACKAGE_NAME: 'com.ejemplos.devices.integrada.hibrida'
   SOLUTION_FOLDER: 'Ejemplos_Devices'
-  PROJECTS_ROOT: 'QR' 
+  PROJECTS_ROOT: 'Integrada' 
   # PROJECT_FOLDER=${{ env.PROJECTS_ROOT }}/${{ env.PROJECT_NAME }}
   PROJECT_NAME: 'Ejemplo_Maui_Hibrida'
   PROJECT_FILE: 'Ejemplo_Maui_Hibrida.csproj'
@@ -53,7 +53,7 @@ env:
 jobs:
   publish-ios:
     runs-on: macos-15
-    name: iOS Publish - QR - Ejemplo_Maui_Hibrida
+    name: iOS Publish - Integrada - Ejemplo_Maui_Hibrida
 
     steps:
     - name: Verificar arquitectura del runner (la mv) 
