@@ -1,8 +1,7 @@
 ﻿using Android.App;
 using Android.Content.PM;
-using Android.OS;
 
-namespace Ejemplo_LectorQR_Dialog;
+namespace BSM.LectorQR_Dialog;
 
 [Activity(Theme = "@style/Maui.SplashTheme",
             MainLauncher = true,

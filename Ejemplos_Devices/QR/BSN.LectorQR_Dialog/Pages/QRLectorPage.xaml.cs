@@ -52,18 +52,15 @@ public partial class QRLectorPage : ContentPage
             QRs.Add(new QRContent { Type = type, Value = b.DisplayValue });
         }
 
-        if (QRs.Count == 0)
-            return;
+        if (QRs.Count == 0) return;
 
         this.Dispatcher.Dispatch(async () =>
-            {
-                Camera.CameraEnabled = false;   // detener cámara (antes: IsScanning = false)
-
-                //ResultadoTask.SetResult(result);
-                CompletarResultado(QRs);
-
-                await Navigation.PopAsync();
-            });
+        {
+            Camera.CameraEnabled = false;   // detener cámara (antes: IsScanning = false)
+            //ResultadoTask.SetResult(result);
+            CompletarResultado(QRs);
+            await Navigation.PopAsync();
+        });
     }
 
     private async void OnActiveFlashClicked(object sender, EventArgs e)

@@ -1,28 +1,24 @@
-using BarcodeScanner.Mobile;
+using Android.Text;
+using BarcodeScanning;
 
 using Ejemplo_Maui_Hibrida.Models;
-
 using System.Diagnostics;
 
 namespace Ejemplo_Maui_Hibrida.Pages;
 
-[QueryProperty(nameof(OnQrCallback), "OnQrCallback")]
 public partial class QRLectorPage : ContentPage
 {
     private int _completed = 0;
     public TaskCompletionSource<List<QRContent>> ResultadoTask { get; set; } = new();
 
-    // null/lista vacía = canceló (igual que el callback de la cámara).
-    public Action<List<QRContent>?>? OnQrCallback { get; set; }
-
     string flashIcon = "";
-    public string FlashIcon 
+    public string FlashIcon
     {
-        get 
+        get
         {
             return flashIcon;
         }
-        set 
+        set
         {
             if (value != null)
             {
@@ -33,45 +29,39 @@ public partial class QRLectorPage : ContentPage
     }
 
     public QRLectorPage()
-	{
-		InitializeComponent();
+    {
+        InitializeComponent();
 
-        BarcodeScanner.Mobile.Methods.SetSupportBarcodeFormat(BarcodeScanner.Mobile.BarcodeFormats.QRCode | BarcodeScanner.Mobile.BarcodeFormats.Code39);
+        // Formatos ahora se declaran en XAML (BarcodeSymbologies="QRCode,Code39").
+        // Alternativa por código: Camera.BarcodeSymbologies = BarcodeFormats.QRCode | BarcodeFormats.Code39;
 
         BindingContext = this;
     }
-       
+
     async public Task<bool> RequestCameraPermission()
     {
-        bool allowed = await BarcodeScanner.Mobile.Methods.AskForRequiredPermission();
+        bool allowed = await BarcodeScanning.Methods.AskForRequiredPermissionAsync();
         return allowed;
     }
 
-    async private void OnCameraViewOnDetecte(object sender, BarcodeScanner.Mobile.OnDetectedEventArg e)
+    private void OnCameraViewOnDetecte(object sender, BarcodeScanning.OnDetectionFinishedEventArg e)
     {
-        //if (await RequestCameraPermission())
-        //{
-        List<BarcodeResult> obj = e.BarcodeResults;
-
         List<QRContent> QRs = new List<QRContent>();
-        for (int i = 0; i < obj.Count; i++)
+        foreach (var b in e.BarcodeResults)
         {
-            string type = obj[i].BarcodeType == BarcodeTypes.Unknown ? "Text" : obj[i].BarcodeType.ToString();
-
-            var qr = new QRContent { Type = type, Value = obj[i].DisplayValue };
-            QRs.Add(qr);
+            string type = b.BarcodeType == BarcodeTypes.Unknown ? "Text" : b.BarcodeType.ToString();
+            QRs.Add(new QRContent { Type = type, Value = b.DisplayValue });
         }
 
-        this.Dispatcher.Dispatch(async () =>
-            {
-                Camera.IsScanning = false;
-                
-                //ResultadoTask.SetResult(result);
-                CompletarResultado(QRs);
+        if (QRs.Count == 0) return;
 
-                await Navigation.PopAsync();
-            });
-       // }        
+        this.Dispatcher.Dispatch(async () =>
+        {
+            Camera.CameraEnabled = false;   // detener cámara (antes: IsScanning = false)
+            //ResultadoTask.SetResult(result);
+            CompletarResultado(QRs);
+            await Navigation.PopAsync();
+        });
     }
 
     private async void OnActiveFlashClicked(object sender, EventArgs e)
@@ -85,7 +75,7 @@ public partial class QRLectorPage : ContentPage
         {
             await DisplayAlertAsync("Alert", "Dale permiso si queres QR!", "OK");
         }
-       
+
     }
 
     private async void OnVolverClicked(object sender, EventArgs e)
@@ -141,7 +131,6 @@ public partial class QRLectorPage : ContentPage
         if (Interlocked.Exchange(ref _completed, 1) == 0)
         {
             ResultadoTask.TrySetResult(result);
-            OnQrCallback?.Invoke(result);
         }
     }
 

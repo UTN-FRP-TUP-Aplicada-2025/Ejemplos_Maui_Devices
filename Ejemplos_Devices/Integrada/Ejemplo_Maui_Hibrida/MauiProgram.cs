@@ -1,4 +1,4 @@
-﻿using BarcodeScanner.Mobile;
+﻿using BarcodeScanning;
 
 using CommunityToolkit.Maui;
 using CommunityToolkit.Maui.Core;
@@ -39,12 +39,8 @@ public static class MauiProgram
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 fonts.AddFont("MaterialIconsOutlined-Regular.otf", "MaterialIconsOutlined");
             })
-
-        #region barcode scanner
-            .ConfigureMauiHandlers(handlers =>
-            {
-                handlers.AddBarcodeScannerHandler();
-            })
+        #region QR 
+            .UseBarcodeScanning()
         #endregion
 
         #region printer
