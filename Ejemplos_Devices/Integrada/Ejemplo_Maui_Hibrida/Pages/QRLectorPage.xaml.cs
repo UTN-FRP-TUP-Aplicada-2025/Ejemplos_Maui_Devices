@@ -1,4 +1,3 @@
-using Android.Text;
 using BarcodeScanning;
 
 using Ejemplo_Maui_Hibrida.Models;

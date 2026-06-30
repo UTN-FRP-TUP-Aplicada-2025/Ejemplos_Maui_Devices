@@ -4,8 +4,7 @@ namespace Ejemplo_Maui_Hibrida.Behaviors;
 // sobre el WebView. El VM no conoce el control. Reemplaza a WebViewReloadBehavior.
 public class WebViewBridgeBehavior : Behavior<WebView>
 {
-    public static readonly BindableProperty BridgeProperty =
-        BindableProperty.Create(nameof(Bridge), typeof(IWebViewBridge),
+    public static readonly BindableProperty BridgeProperty = BindableProperty.Create(nameof(Bridge), typeof(IWebViewBridge),
             typeof(WebViewBridgeBehavior), propertyChanged: OnBridgeChanged);
 
     public IWebViewBridge? Bridge

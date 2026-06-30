@@ -4,7 +4,6 @@ namespace Ejemplo_Maui_Hibrida;
 
 public partial class MainPage : ContentPage
 {
-
     public MainPage(MainViewModel mainViewModel)
     {
         InitializeComponent();
