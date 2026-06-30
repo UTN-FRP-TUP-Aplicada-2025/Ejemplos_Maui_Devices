@@ -2,20 +2,20 @@
 
 on:
   
-  # push:
-  #  branches: 
-  #    - main
+  push:
+   branches: 
+     - main
 
-  #  paths:
-  #    - 'Ejemplos_Devices/QR/BSM.LectorQR_Dialog/**'
-  #    - '!**.md'
-  #    - '!**/*.gitignore'
-  #    - '!**/*.gitattributes'
+   paths:
+     - 'Ejemplos_Devices/QR/BSM.LectorQR_Dialog/**'
+     - '!**.md'
+     - '!**/*.gitignore'
+     - '!**/*.gitattributes'
 
   workflow_call:
 
 env:
-  PIPELINE_VERSION: '202606300809_ejemplos'
+  PIPELINE_VERSION: '202606300822_ejemplos'
 
   #XCODE_VERSION: '26.3'  
   #XCODE_VERSION_SHORT: '26.3'
@@ -410,7 +410,7 @@ jobs:
         echo "ZIP_PATH=${{ env.BASE_PATH }}/$ZIP_NAME" >> $GITHUB_ENV    
         
     - name: RELEASE SIMULADOR. Subir appName.app.zip como artefacto
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: ${{ env.ZIP_NAME }}
         path: |          
@@ -451,7 +451,7 @@ jobs:
         cp /tmp/app_stderr.txt debug_logs/ 2>/dev/null || true
 
     - name: RELEASE SIMULADOR. Subir GIF de evidencia  
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: grabacion-simulador
         path: | 

@@ -20,7 +20,7 @@ public static class MauiProgram
         #region QR 
             .UseBarcodeScanning();
         #endregion
-
+         
 #if DEBUG
         builder.Logging.AddDebug();
 #endif
