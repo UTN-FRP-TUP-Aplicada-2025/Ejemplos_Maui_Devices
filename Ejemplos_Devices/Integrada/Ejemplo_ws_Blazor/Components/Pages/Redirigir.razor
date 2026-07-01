@@ -7,20 +7,67 @@
 
 <h3>Redirigir</h3>
 
-<button class="btn btn-primary" @onclick="OnRedirect">Redirigir</button>
-<br/>
+<!-- controller -->
+<div class="card m-2 p-2" style="background-color: #ffeeaf;">
+    <div class="card-head">
+        <h4>Redirect desde blazor</h4>
+    </div>
+    <div class="card-body">
+        <button class="btn btn-primary" @onclick="OnRedirect">Redirigir</button>
+        <br/>
 
-<a href="https://www.google.com" class="btn btn-primary" >Ir a Google (href)</a>
-<br/>
+        <a href="https://www.google.com" class="btn btn-primary" >Ir a Google (href)</a>
+        <br/>
 
-<a @onclick="() => OnRedirect()" class="btn btn-primary" href="javascript:void(0)">Ir a Google (javascript)</a>
-<br/>
+        <a @onclick="() => OnRedirect()" class="btn btn-primary" href="javascript:void(0)">Ir a Google (javascript)</a>
+        <br/>
 
-<a @onclick="() => OnRedirect()" class="btn btn-primary" @onclick:preventDefault>Ir a Google (prevent)</a>
-<br/>
+        <a @onclick="() => OnRedirect()" class="btn btn-primary" @onclick:preventDefault>Ir a Google (prevent)</a>
+        <br/>
 
-<a href="https://www.google.com" class="btn btn-primary" target="_blank">Ir a Google (href _blank)</a>
-<br/>
+        <a href="https://www.google.com" class="btn btn-primary" target="_blank">Ir a Google (href _blank)</a>
+        <br/>
+
+    </div>
+</div>
+
+<!-- controller -->
+<div class="card m-2 p-2" style="background-color: #ffeeaf;">
+    <div class="card-head">
+        <h4>Reproducción salto Safari (blazor a httpbin.org)</h4>
+    </div>
+    <div class="card-body">
+
+        <!-- El disparador es un subconjunto: POST/form cross-origin y/o apertura de ventana nueva (window.open/_blank).-->
+        <!-- EJEMPLO reproducción — Variante POST cross-origin (imita el pago) -->
+        <form method="post" action="https://httpbin.org/post" id="fpost">
+            <input type="hidden" name="monto" value="500000" />
+        </form>
+        <button onclick="document.getElementById('fpost').submit()" class="btn btn-primary">POST cross-origin</button>
+
+        <!-- EJEMPLO reproducción — Variante nueva ventana cross-origin -->
+        <button onclick="window.open('https://www.google.com')" class="btn btn-primary">window.open cross-origin</button>
+        <a href="https://www.google.com" target="_blank" class="btn btn-primary">target=_blank cross-origin</a>
+    </div>
+</div>
+
+<!-- controller -->
+<div class="card m-2 p-2" style="background-color: #ffeeaf;">
+    <div class="card-head">
+        <h4>Reproducción salto Safari (Controller)</h4>
+    </div>
+    <div class="card-body">
+
+        @* (A) POST same-origin -> 302 cross-host: ¿salta el REDIRECT? *@
+        <form method="post" action="/api/pagofake/pago">
+            <button type="submit" class="btn btn-primary">A · POST same-origin → 302 cross-host</button>
+        </form>
+
+        @* (B) form POST cross-origin autoenviado (imita el pago real = H1) *@
+        <a href="/api/pagofake/pago-form" class="btn btn-warning">B · form POST cross-origin autoenviado (H1)</a>
+    </div>
+</div>
+
 
 @code {
 
