@@ -1,0 +1,31 @@
+﻿@page "/redirigir"
+
+@inject NavigationManager Navigation
+
+@rendermode InteractiveServer
+@attribute [StreamRendering]
+
+<h3>Redirigir</h3>
+
+<button class="btn btn-primary" @onclick="OnRedirect">Redirigir</button>
+<br/>
+
+<a href="https://www.google.com" class="btn btn-primary" >Ir a Google (href)</a>
+<br/>
+
+<a @onclick="() => OnRedirect()" class="btn btn-primary" href="javascript:void(0)">Ir a Google (javascript)</a>
+<br/>
+
+<a @onclick="() => OnRedirect()" class="btn btn-primary" @onclick:preventDefault>Ir a Google (prevent)</a>
+<br/>
+
+<a href="https://www.google.com" class="btn btn-primary" target="_blank">Ir a Google (href _blank)</a>
+<br/>
+
+@code {
+
+    void OnRedirect()
+    {
+        Navigation.NavigateTo("https://www.google.com", forceLoad: true);
+    }
+}

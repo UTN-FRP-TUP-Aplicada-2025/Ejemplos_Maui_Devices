@@ -72,7 +72,7 @@ La URL marcada para QR tiene dos partes significativas:
   (`QrCommandHandler.cs:51-61`). Si falta, el handler **cancela y no hace nada**
   (`QrCommandHandler.cs:25-27`).
 
-Origen en la web (`Panel.razor:242-246`):
+Origen en la web (`Panel.razor:248-252`):
 
 ```csharp
 public void OnQR()
@@ -86,7 +86,7 @@ public void OnQR()
 > enrutamiento interno de Blazor). Sólo así el `WebView` dispara `Navigating` con esa URL y la app
 > puede interceptarla. Sin `forceLoad`, Blazor resolvería la ruta en cliente y la app nunca se entera.
 
-El `<div>` destino vive en `Panel.razor:96`:
+El `<div>` destino vive en `Panel.razor:104`:
 
 ```razor
 <div id="contenidoQR">@QRContenido</div>
@@ -129,7 +129,7 @@ sequenceDiagram
 
 ### 4.2 Disparo desde la web
 
-`Panel.razor:242-246` → `Navigation.NavigateTo(..., forceLoad: true)`.
+`Panel.razor:248-252` → `Navigation.NavigateTo(..., forceLoad: true)`.
 El `WebView` intenta navegar de verdad y dispara su evento `Navigating`.
 
 ### 4.3 Intercepción en el WebView
@@ -374,7 +374,7 @@ Para alinear QR con el patrón de foto, `QRLectorPage` debería:
 
 | Archivo | Líneas clave |
 |---|---|
-| `Ejemplo_ws_Blazor/Components/Pages/Panel.razor` | `96` (div destino), `242-246` (`OnQR`) |
+| `Ejemplo_ws_Blazor/Components/Pages/Panel.razor` | `104` (div destino), `248-252` (`OnQR`) |
 | `Ejemplo_Maui_Hibrida/Pages/MainPage.xaml` | `26-37` (WebView + behaviors), `52` (botón QR) |
 | `Ejemplo_Maui_Hibrida/Pages/MainPage.xaml.cs` | `18` (URL inicial) |
 | `Ejemplo_Maui_Hibrida/Converters/WebNavigatingEventArgsConverter.cs` | `7-8` |

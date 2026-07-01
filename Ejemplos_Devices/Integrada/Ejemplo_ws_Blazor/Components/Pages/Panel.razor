@@ -11,28 +11,34 @@
 
 <PageTitle>Home</PageTitle>
 
-
-<div class="card">
+<!-- GPS -->
+<div class="card m-2 p-2" style="background-color: #ffeeaf;">
     <div class="card-head">
-        <h4>Solicitar de posición</h4>
+        <h4>Solicitar coordenadas</h4>
     </div>
     <div class="card-body">
         <button @onclick="OnSolicitarCoordenadas" class="btn btn-primary">Tomar Coordenadas</button><br />
+        <p>Toma y muestra las coordenadas desde el GPS.</p>
         <div>@ContenidoCoordenada</div>        
     </div>
 </div>
 
-<div class="card">
+<!-- Phone CALL y API -->
+<div class="card m-2 p-2" style="background-color: #ffeeaf;">
     <div class="card-head">
         <h4>LLamar y reporte de posición</h4>
     </div>
     <div class="card-body">
+        <h5>LLamada directa</h5>
         <button @onclick="OnLLamar" class="btn btn-primary">LLamar</button><br/>
+        <br/>
+        <h5>LLamada directa+reporte api</h5>
         <button @onclick="OnLLamarYSendAPI" class="btn btn-primary">LLamar y reportar</button><br/>
     </div>
 </div>
 
-<div class="card">
+<!-- Photo -->
+<div class="card m-2 p-2" style="background-color: #ffeeaf;">
     <div class="card-head">
         <h4>Tomar foto</h4>
     </div>
@@ -50,7 +56,8 @@
     </div>
 </div>
 
-<div class="card">
+<!-- Photo Selfie-->
+<div class="card m-2 p-2" style="background-color: #ffeeaf;">
     <div class="card-head">
         <h4>Tomar selfie</h4>
     </div>
@@ -66,7 +73,7 @@
     </div>
 </div>
 
-<div class="card">
+<div class="card m-2 p-2" style="background-color: #ffeeaf;">
     <div class="card-head">
         <h4>Prueba de interacción de página</h4>
     </div>
@@ -76,36 +83,35 @@
     </div>
 </div>
 
-<div class="card">
+<div class="card m-2 p-2" style="background-color: #ffeeaf;">
     <div class="card-head">
         <h4>Post API</h4>
     </div>
     <div class="card-body">
         <button @onclick="OnSendAPI" class="btn btn-primary">Enviar Post API</button><br/>
+        <p>LLama a un restapi y muestra la respuesta</p>
         <div id="contenidoSendAPI">@ContenidoSendAPI</div>
     </div>
 </div>
 
-<div class="card">
+<div class="card m-2 p-2" style="background-color: #ffeeaf;">
     <div class="card-head">
         <h4>Lectura QR</h4>
     </div>
     <div class="card-body">
-        <p>Se espera que muestre el contenido del QR debajo:</p>
         <button @onclick="OnQR" class="btn btn-primary">Leer QR</button><br/>
+        <p>Debe mostrar el QR:</p>
         <div id="contenidoQR">@QRContenido</div>
     </div>
 </div>
 
-
-
-<div class="card">
+<div class="card m-2 p-2" style="background-color: #ffeeaf;">
     <div class="card-head">
         <h4>Redirigir a una pagina externa</h4>
     </div>
-    <div class="card-body">
-        <p>Se espera en ios que abra safari</p>
+    <div class="card-body">        
         <button @onclick="OnRedirect" class="btn btn-primary">Redirigir</button><br />
+        <p>Se espera en ios que abra safari</p>
         <div id="contenidoRedirigir">@RedirigirContenido</div>
     </div>
 </div>
