@@ -10,8 +10,7 @@ public class PagoFakeController : ControllerBase
     // (A) Aísla tu duda "¿es el redirect?": POST same-origin -> 302 a host EXTERNO.
     [HttpPost("pago")]
     [IgnoreAntiforgeryToken]                      // form de prueba, sin token
-    public IActionResult PagoRedirect()
-        => Redirect("https://httpbin.org/anything");   // 302 cross-host
+    public IActionResult PagoRedirect() => Redirect("https://httpbin.org/anything");   // 302 cross-host
 
     // (B) Imita EXACTO el pago real: devuelve HTML que autoenvía un form POST a otro host
     //     (igual que GenerarOrdenCobroMACRO devolvía el form de asjservicios).
