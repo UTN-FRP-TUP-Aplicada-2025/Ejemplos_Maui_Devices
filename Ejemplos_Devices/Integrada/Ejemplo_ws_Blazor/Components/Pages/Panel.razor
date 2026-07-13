@@ -116,6 +116,19 @@
     </div>
 </div>
 
+<div class="card m-2 p-2" style="background-color: #ffeeaf;">
+    <div class="card-head">
+        <h4>Impresión de ticket</h4>
+    </div>
+    <div class="card-body">
+        
+        <button @onclick="OnGenerarTicket" class="btn btn-primary">Generar Ticket</button><br />
+        <div id="contenidoTicket" sytle="border-color: black">@ContenidoTicket</div>
+
+        <button @onclick="OnImprimirTicker" class="btn btn-primary">Imprimir</button><br />
+        
+    </div>
+</div>
 
 @code {
 
@@ -214,7 +227,7 @@
     //1- desde la pagina se redirecciona con esta url
     public void OnTomarSelfie()
     {
-        Navigation.NavigateTo("/panel?selfie=selfie&param=Selfie1", forceLoad: true);
+        Navigation.NavigateTo("/panel?selfie=selfie&param=imgSelfie1", forceLoad: true);
     }
     async public Task OnMostrarContenidoSelfie()
     {
@@ -270,6 +283,18 @@
     async public Task OnTest()
     {
         ContenidoTest = $"{DateTime.Now}";        
+    }
+    #endregion
+
+
+    #region print ticket
+    string ContenidoTicket { get; set; } = "";
+
+    public void OnGenerarTicket() { }
+
+    public void OnImprimirTicker()
+    {
+        Navigation.NavigateTo("/panel?action=print", forceLoad: true);
     }
     #endregion
 }

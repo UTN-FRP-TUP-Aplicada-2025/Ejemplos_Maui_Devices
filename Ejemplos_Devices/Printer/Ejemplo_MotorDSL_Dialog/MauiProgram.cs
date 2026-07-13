@@ -24,13 +24,17 @@ public static class MauiProgram
             .UseMauiCommunityToolkit()
             .UseMauiCommunityToolkitCore()
             //
+            .AddPrintServices()
             .AddServices()
+            //
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 fonts.AddFont("MaterialIconsOutlined-Regular.otf", "MaterialIconsOutlined");
             });
+
+        #region motor dsl
 
         // Motor DSL: core pipeline + templates + profiles + renderers MAUI (PDF, ESC/POS bitmap, SkiaSharp).
         // El template registrado es un JSON integrado: ya tiene todos los valores resueltos.
@@ -44,6 +48,8 @@ public static class MauiProgram
         // Transport Bluetooth (Android Classic SPP)
         builder.Services.AddBluetoothPrinterTransport();
 
+        #endregion
+
 #if DEBUG
         builder.Logging.AddDebug();
 #endif
@@ -51,14 +57,17 @@ public static class MauiProgram
         return builder.Build();
     }
 
-    static MauiAppBuilder AddServices(this MauiAppBuilder builder)
+    static MauiAppBuilder AddPrintServices(this MauiAppBuilder builder)
     {
-        
         #region printer overlay
         builder.Services.AddSingleton<PrinterService>();
         builder.Services.AddSingleton<PrinterOverlayViewModel>();
         #endregion
 
+        return builder;
+    }
+    static MauiAppBuilder AddServices(this MauiAppBuilder builder)
+    {
         #region main
         builder.Services.AddSingleton<MainViewModel>();
         builder.Services.AddSingleton<MainPage>();

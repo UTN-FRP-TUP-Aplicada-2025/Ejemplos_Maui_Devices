@@ -2,10 +2,10 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             xmlns:controls="clr-namespace:Ejemplo_Maui_Hibrida.Controls"
-             xmlns:behaviors="clr-namespace:Ejemplo_Maui_Hibrida.Behaviors"
+             xmlns:controls="clr-namespace:LibApp.Devices.Common.Controls"
+             xmlns:behaviors="clr-namespace:LibApp.CustomWebView.Behaviors"
              xmlns:pageModels="clr-namespace:Ejemplo_Maui_Hibrida.ViewModels"
-             xmlns:conv="clr-namespace:Ejemplo_Maui_Hibrida.Converters"
+             xmlns:conv="clr-namespace:LibApp.CustomWebView.Converts"
              x:Class="Ejemplo_Maui_Hibrida.MainPage"
              x:DataType="pageModels:MainViewModel"
              NavigationPage.HasNavigationBar="False"
@@ -22,6 +22,7 @@
         <!-- El WebView se ve SOLO cuando el overlay de Red está oculto:
              así nunca se muestra la página de error del navegador. -->
         <RefreshView  Grid.Row="0" IsRefreshing="{Binding IsRefreshing}"
+                      Command="{Binding RefreshCommand}"
                       IsVisible="{Binding NetworkOverlayViewModel.IsVisible, Converter={StaticResource InvertedBool}}">
             <WebView x:Name="webView" Source="{Binding Url}">
                 <WebView.Behaviors>
