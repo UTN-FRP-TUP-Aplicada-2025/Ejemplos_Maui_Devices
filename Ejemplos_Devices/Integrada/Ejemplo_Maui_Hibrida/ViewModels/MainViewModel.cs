@@ -98,4 +98,10 @@ public partial class MainViewModel : ObservableObject
         else
             await NetworkOverlayViewModel.NotifyNavigationFailedAsync(e.Url, e.Result);
     }
+
+    [RelayCommand]
+    private async Task Volver()
+    {
+        Url = "https://aplicada.somee.com";
+    }
 }

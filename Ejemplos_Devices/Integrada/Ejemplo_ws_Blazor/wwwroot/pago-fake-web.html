@@ -1,0 +1,22 @@
+<!-- EJEMPLO para reproducir — wwwroot/pago-fake.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/app.css" />
+</head>
+<body>
+    <!-- EJEMPLO reproducción — Variante POST cross-origin (imita el pago) 
+    <form method="post" action="https://httpbin.org/post" id="fpost">
+        -->
+
+        <form method="post" action="https://httpbin.org/anything" id="form1">
+            <input type="hidden" name="monto" value="500000" />
+        </form>
+        <button class="btn btn-primary" onclick="document.getElementById('fpost').submit()">POST cross-origin</button>
+
+        <!-- EJEMPLO reproducción — Variante nueva ventana cross-origin -->
+        <button   class="btn btn-primary" onclick="window.open('https://www.google.com')">window.open cross-origin</button>
+        <a href="https://www.google.com" target="_blank"  class="btn btn-primary">target=_blank cross-origin</a>
+</body>
+</html>
