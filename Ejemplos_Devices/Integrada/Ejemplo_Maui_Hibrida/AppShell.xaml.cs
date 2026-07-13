@@ -1,4 +1,5 @@
-﻿using Ejemplo_Maui_Hibrida.Pages;
+﻿using LibApp.Devices.Camera.Pages;
+using LibApp.Devices.QRLector.Pages;
 
 namespace Ejemplo_Maui_Hibrida;
 
@@ -9,6 +10,7 @@ public partial class AppShell : Shell
         InitializeComponent();
 
         Routing.RegisterRoute(nameof(MyMediaPickerPage), typeof(MyMediaPickerPage));
+        Routing.RegisterRoute(nameof(MyMediaSelfiePickerPage), typeof(MyMediaSelfiePickerPage));
         Routing.RegisterRoute(nameof(QRLectorPage), typeof(QRLectorPage));
     }
 }

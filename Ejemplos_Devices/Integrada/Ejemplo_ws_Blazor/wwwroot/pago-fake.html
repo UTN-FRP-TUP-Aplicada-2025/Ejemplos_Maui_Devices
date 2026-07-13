@@ -1,0 +1,12 @@
+<!-- EJEMPLO para reproducir — wwwroot/pago-fake.html -->
+<!DOCTYPE html>
+<html>
+<body>
+    <form method="post" action="https://httpbin.org/post" id="form1">
+        <input type="hidden" name="MONTO" value="500000" />
+        <input type="hidden" name="TRANSACCION" value="EM.123" />
+    </form>
+
+    <script>document.forms[0].submit();</script>  <!-- autoenvío, igual que el pago real -->
+</body>
+</html>

@@ -45,7 +45,8 @@ env:
   #RUNTIME_IDENTIFIER_SIMULATOR: iossimulator-x64
   BUILD_CONFIG_SIMULATOR: 'Release'
   DEVICE_SIMULATOR: 'iPhone 17 Pro Max'
-  SCRIPT_SIMULATOR: './Utilities/simular.sh'
+  SCRIPT_SIMULATOR: './Utilities/simular_ui.sh'
+  MAESTRO_VERSION: '1.41.0'
 
   DOTNET_WORKLOAD_INSTALL_ADDITIONAL_ARGS: --ios-simulator-runtime=26.0
   MD_APPLE_SDK_ROOT: /Applications/Xcode_26.0.app
@@ -428,20 +429,17 @@ jobs:
 
      # RUN SIMULADOR
 
-    - name: Install ffmpeg
-      run: |    
-        brew install ffmpeg  
-    
-    - name: RELEASE SIMULADOR. GRABAR VIDEO Y CREAR GIF
+    - name: Instalar Maestro (dedo virtual)
+      run: |
+        export MAESTRO_VERSION="${{ env.MAESTRO_VERSION }}"
+        curl -Ls "https://get.maestro.mobile.dev" | bash
+        echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
+        "$HOME/.maestro/bin/maestro" --version || true
+
+    - name: RELEASE SIMULADOR. GRABAR VIDEO (recorrido automatizado)
       continue-on-error: true
       timeout-minutes: 30
       run: |
-        # echo "Esperando algo como (Signature=adhoc): "
-        # codesign -vvv --display "${APP_PATH}"
-        # cd "${{ github.workspace }}"
-        # chmod ugo+rwx ${{ env.SCRIPT_SIMULATOR }}
-        # ${{ env.SCRIPT_SIMULATOR }}
-        
         echo "Esperando algo como (Signature=adhoc): "
         codesign -vvv --display "${APP_PATH}"
         cd "${{ github.workspace }}"
@@ -450,13 +448,12 @@ jobs:
         # mover la evidencia que el script dejó fuera del workspace
         cp /tmp/app_stderr.txt debug_logs/ 2>/dev/null || true
 
-    - name: RELEASE SIMULADOR. Subir GIF de evidencia  
+    - name: RELEASE SIMULADOR. Subir video de evidencia
       uses: actions/upload-artifact@v5
       with:
         name: grabacion-simulador
-        path: | 
-          evidencia_app.gif
-          frames/
+        path: |
+          recorrido.mp4
           debug_logs/
           app_stream_full.txt
         if-no-files-found: warn

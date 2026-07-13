@@ -1,17 +1,23 @@
 ﻿using BarcodeScanning;
-
 using CommunityToolkit.Maui;
 using CommunityToolkit.Maui.Core;
-
-using Ejemplo_Maui_Hibrida.Behaviors;
-using Ejemplo_Maui_Hibrida.Pages;
-using Ejemplo_Maui_Hibrida.Services;
-using Ejemplo_Maui_Hibrida.UrlCommands;
-using Ejemplo_Maui_Hibrida.UrlCommands.Handlers;
+using Ejemplo_Maui_Hibrida.LibApp.Devices.GPS;
+using Ejemplo_Maui_Hibrida.LibApp.UrlCommands.Handlers;
 using Ejemplo_Maui_Hibrida.ViewModels;
-
+using LibApp.CustomWebView.Behaviors;
+using LibApp.Devices.Camera.Pages;
+using LibApp.Devices.GPS.Services;
+using LibApp.Devices.GPS.ViewModels;
+using LibApp.Devices.Images;
+using LibApp.Devices.MotorDSL.Services;
+using LibApp.Devices.MotorDSL.ViewModels;
+using LibApp.Devices.Networks.Services;
+using LibApp.Devices.Networks.ViewModels;
+using LibApp.Devices.Phone.Services;
+using LibApp.Devices.Phone.ViewModels;
+using LibApp.UrlCommands;
+using LibApp.UrlCommands.Handlers;
 using Microsoft.Extensions.Logging;
-
 using MotorDsl.Bluetooth;
 using MotorDsl.Core.Models;
 using MotorDsl.Extensions;
@@ -30,7 +36,8 @@ public static class MauiProgram
             .UseMauiCommunityToolkit()
             .UseMauiCommunityToolkitCore()
             .UseMauiCommunityToolkitCamera()
-            // 
+            //
+            .AddPrintServices()
             .AddServices()
             //
             .ConfigureFonts(fonts =>
@@ -54,7 +61,7 @@ public static class MauiProgram
             .AddMotorDslMaui()
             // Transport Bluetooth (Android Classic SPP) 
             .Services.AddBluetoothPrinterTransport();
-#endregion
+        #endregion
 
 #if DEBUG
 		builder.Logging.AddDebug();
@@ -62,6 +69,17 @@ public static class MauiProgram
 
         return builder.Build();
     }
+
+    static MauiAppBuilder AddPrintServices(this MauiAppBuilder builder)
+    {
+        #region printer overlay
+        builder.Services.AddSingleton<PrinterService>();
+        builder.Services.AddSingleton<PrinterOverlayViewModel>();
+        #endregion
+
+        return builder;
+    }
+
     static MauiAppBuilder AddServices(this MauiAppBuilder builder)
     {
         #region devices services
@@ -93,6 +111,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<IUrlCommandHandler, SelfieCommandHandler>();
         builder.Services.AddSingleton<IUrlCommandHandler, QrCommandHandler>();
         builder.Services.AddSingleton<IUrlCommandHandler, SendApiCommandHandler>();
+        builder.Services.AddSingleton<IUrlCommandHandler, PrintCommandHandler>();        
         builder.Services.AddSingleton<UrlCommandDispatcher>();
         #endregion
 

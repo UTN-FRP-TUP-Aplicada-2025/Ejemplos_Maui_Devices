@@ -1,0 +1,177 @@
+#!/bin/bash
+# ─────────────────────────────────────────────────────────────────────────────
+# simular_ui.sh — Ejecuta pruebas UI automatizadas ("dedo virtual" con Maestro)
+# sobre el simulador iOS y graba un VIDEO real del recorrido con simctl recordVideo.
+#
+# Reemplaza el enfoque pasivo (screenshots -> GIF) de simular.sh.
+# NO modifica la app. Deja intacto simular.sh (usado por otros pipelines).
+#
+# Variables esperadas del entorno (las provee el workflow):
+#   APP_PATH          ruta al .app compilado para el simulador
+#   PACKAGE_NAME      bundle id (com.ejemplos.devices.integrada.hibrida)
+#   DEVICE_SIMULATOR  nombre del simulador (iPhone 17 Pro Max)
+#   PROJECT_NAME      nombre del binario dentro del .app (Ejemplo_Maui_Hibrida)
+#
+# Artefactos que deja en el CWD:
+#   recorrido.mp4     video del recorrido automatizado
+#   debug_logs/       logs de dispositivo/app/sistema + crash reports
+#   app_stream_full.txt
+# ─────────────────────────────────────────────────────────────────────────────
+set -e
+
+echo "Ruta aplicacion: ${APP_PATH}"
+echo "Package name:    ${PACKAGE_NAME}"
+echo "Device:          ${DEVICE_SIMULATOR}"
+
+# Resuelve la ubicacion del flujo Maestro relativo a este script (robusto ante el CWD).
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+FLOW="${SCRIPT_DIR}/flows/recorrido.yaml"
+VIDEO_OUT="recorrido.mp4"
+
+mkdir -p debug_logs
+
+# --- Timeout portable en macOS (alternativa a `timeout`) ---
+run_with_timeout() {
+    local timeout=$1; shift
+    perl -e "alarm $timeout; exec @ARGV" "$@"
+}
+
+# ─── Simulador: obtener UUID y asegurar booteo ───────────────────────────────
+echo ""
+echo "Obtener UUID del simulador"
+UUID=$(xcrun simctl list devices "${DEVICE_SIMULATOR}" available 2>/dev/null \
+       | grep -m 1 -oE '[0-9A-F]{8}-([0-9A-F]{4}-){3}[0-9A-F]{12}' || true)
+
+if [ -z "$UUID" ]; then
+    echo "ERROR: No se encontro el simulador '${DEVICE_SIMULATOR}'"
+    echo "Simuladores disponibles:"
+    xcrun simctl list devices available
+    exit 1
+fi
+echo "Usando simulador: $UUID"
+
+echo "Asegurando booteo (bootstatus -b arranca si hace falta y espera)..."
+xcrun simctl bootstatus "$UUID" -b || true
+echo "Esperando SpringBoard..."
+sleep 5
+
+# ─── Preparacion e instalacion de la app ─────────────────────────────────────
+echo ""
+echo "Preparacion de la APP"
+if [ ! -d "${APP_PATH}" ]; then
+    echo "ERROR: No se encuentra la app en: ${APP_PATH}"
+    exit 1
+fi
+
+echo "Limpiando atributos y cuarentena..."
+find "${APP_PATH}" -name ".DS_Store" -delete 2>/dev/null || true
+chmod -R 755 "${APP_PATH}"
+xattr -rc "${APP_PATH}" 2>/dev/null || true
+chmod +x "${APP_PATH}/${PROJECT_NAME}" 2>/dev/null || true
+sudo xattr -rd com.apple.quarantine "${APP_PATH}" 2>/dev/null || true
+
+echo "Desinstalando version previa (si existe)..."
+xcrun simctl uninstall "$UUID" "${PACKAGE_NAME}" 2>/dev/null || true
+sleep 3
+
+echo "Instalando app..."
+if xcrun simctl install "$UUID" "${APP_PATH}"; then
+    echo "App instalada"
+    xcrun simctl privacy "$UUID" grant notifications "${PACKAGE_NAME}" 2>/dev/null || true
+    xcrun simctl spawn "$UUID" notifyutil -p com.apple.SpringBoard.icons-changed 2>/dev/null || true
+else
+    echo "ERROR: Fallo la instalacion"
+    exit 1
+fi
+sleep 5
+
+echo "Verificando registro de la app..."
+if xcrun simctl listapps "$UUID" | grep -q "${PACKAGE_NAME}"; then
+    echo "Confirmado: la app esta registrada."
+else
+    echo "ERROR: la app se instalo pero NO aparece registrada (posible problema de firma)."
+    exit 1
+fi
+
+# ─── Captura de logs en background ───────────────────────────────────────────
+echo ""
+echo "Iniciando captura de logs (stream)..."
+LOG_FILE="app_stream_full.txt"
+xcrun simctl spawn "$UUID" log stream --level info > "$LOG_FILE" 2>&1 &
+LOG_PID=$!
+echo "Log stream PID: $LOG_PID"
+sleep 3
+
+# ─── GRABACION DE VIDEO (nativa) en background ───────────────────────────────
+# Se arranca ANTES del recorrido para capturar toda la sesion (splash -> flujo).
+# IMPORTANTE: se cierra con SIGINT (kill -s INT), nunca kill -9, para que el
+# encoder finalice el contenedor MP4 (atomo moov) y el video sea reproducible.
+echo ""
+echo "Iniciando grabacion de video: $VIDEO_OUT"
+xcrun simctl io "$UUID" recordVideo --codec h264 --mask black --force "$VIDEO_OUT" &
+REC_PID=$!
+echo "recordVideo PID: $REC_PID"
+sleep 2
+
+# ─── DEDO VIRTUAL: Maestro ejecuta el recorrido ──────────────────────────────
+echo ""
+echo "Ejecutando recorrido con Maestro: $FLOW"
+MAESTRO_STATUS=0
+if command -v maestro >/dev/null 2>&1; then
+    maestro --device "$UUID" test -e APP_ID="${PACKAGE_NAME}" "$FLOW" || MAESTRO_STATUS=$?
+    echo "Maestro finalizo con status: $MAESTRO_STATUS"
+else
+    echo "AVISO: 'maestro' no esta instalado; se graba el arranque de la app sin interaccion."
+    # Fallback: al menos lanzar la app para que el video no quede vacio.
+    xcrun simctl launch "$UUID" "${PACKAGE_NAME}" || true
+    sleep 15
+    MAESTRO_STATUS=127
+fi
+
+# ─── Detener la grabacion de forma limpia ────────────────────────────────────
+echo ""
+echo "Deteniendo grabacion de video (SIGINT)..."
+kill -s INT "$REC_PID" 2>/dev/null || true
+wait "$REC_PID" 2>/dev/null || true
+
+if [ -f "$VIDEO_OUT" ]; then
+    echo "Video generado: $(ls -lh "$VIDEO_OUT" | awk '{print $5}')"
+else
+    echo "AVISO: no se genero el video."
+fi
+
+# ─── Detener captura de logs ─────────────────────────────────────────────────
+echo ""
+echo "Deteniendo log stream..."
+kill -TERM "$LOG_PID" 2>/dev/null || true
+sleep 2
+kill -KILL "$LOG_PID" 2>/dev/null || true
+wait "$LOG_PID" 2>/dev/null || true
+[ -f "$LOG_FILE" ] && cp "$LOG_FILE" debug_logs/ || true
+
+# ─── Logs del sistema / app / crash reports ──────────────────────────────────
+echo ""
+echo "Capturando logs del dispositivo..."
+run_with_timeout 30 xcrun simctl spawn "$UUID" log show --last 5m > debug_logs/device_full_log.txt 2>&1 || echo "Timeout/error en device log"
+run_with_timeout 30 xcrun simctl spawn "$UUID" log show --last 5m --predicate "senderIdentifier == '${PACKAGE_NAME}'" > debug_logs/app_specific_log.txt 2>&1 || echo "Timeout/error en app log"
+run_with_timeout 30 xcrun simctl spawn "$UUID" log show --last 5m --predicate "process == '${PROJECT_NAME}'" > debug_logs/app_process_log.txt 2>&1 || echo "Timeout/error en process log"
+
+echo ""
+echo "Buscando crash reports..."
+CRASH_DIR="$HOME/Library/Logs/DiagnosticReports"
+if [ -d "$CRASH_DIR" ]; then
+    find "$CRASH_DIR" -name "*${PROJECT_NAME}*" -mtime -1 -exec cp {} debug_logs/ \; 2>/dev/null || true
+    find "$CRASH_DIR" \( -name "*.ips" -o -name "*.crash" \) -mtime -1 -exec cp {} debug_logs/ \; 2>/dev/null || true
+fi
+
+# ─── Resumen ─────────────────────────────────────────────────────────────────
+echo ""
+echo "===== Resumen ====="
+[ -f "$VIDEO_OUT" ] && echo "Video:  $VIDEO_OUT ($(ls -lh "$VIDEO_OUT" | awk '{print $5}'))" || echo "Video:  NO generado"
+echo "Logs:   $(ls debug_logs/*.txt 2>/dev/null | wc -l | tr -d ' ') archivos en debug_logs/"
+echo "Maestro status: $MAESTRO_STATUS"
+echo "Script completado"
+
+# No propagamos el fallo de Maestro para no romper el pipeline (el step ya usa
+# continue-on-error). El video/logs quedan como evidencia igualmente.
+exit 0

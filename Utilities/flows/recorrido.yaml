@@ -1,0 +1,35 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# recorrido.yaml — "Dedo virtual" (enfoque app pura / caja negra)
+#
+# Toca los 3 botones NATIVOS de MainPage por su TEXTO VISIBLE. No requiere
+# AutomationId ni inspección del WebView: los botones son controles MAUI nativos
+# y su texto se expone como accessibility label en iOS.
+#
+# El appId se inyecta desde el script con:  maestro test -e APP_ID=<bundle>
+# Fallback si algún tapOn por texto fallara: usar coordenada, p.ej.
+#   - tapOn: { point: "16%, 95%" }   # botón izquierdo de la fila inferior
+# ─────────────────────────────────────────────────────────────────────────────
+appId: ${APP_ID}
+---
+- launchApp
+
+# Espera splash + carga inicial del WebView (o el overlay de red si no hay web).
+- waitForAnimationToEnd: { timeout: 8000 }
+
+# 1) GPS → dispara el overlay de posicionamiento (animación satélite).
+- tapOn: "Geo Posicionar"
+- waitForAnimationToEnd: { timeout: 5000 }
+
+# 2) Llamar → dispara el overlay de llamada.
+- tapOn: "Llamar"
+- waitForAnimationToEnd: { timeout: 5000 }
+
+# 3) Leer QR → abre el lector de QR.
+#    NOTA: el simulador iOS no tiene cámara real; la vista se verá negra/como
+#    intento. Es esperado y sirve como evidencia de que la navegación funciona.
+- tapOn: "Leer QR"
+- waitForAnimationToEnd: { timeout: 5000 }
+
+# Vuelve a la pantalla principal (best-effort; gesto de retroceso en iOS).
+- back
+- waitForAnimationToEnd: { timeout: 3000 }

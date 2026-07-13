@@ -107,34 +107,42 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="MotorDsl.Core" Version="1.0.12" />
-		<PackageReference Include="MotorDsl.Parser" Version="1.0.12" />
-		<PackageReference Include="MotorDsl.Rendering" Version="1.0.12" />
-		<PackageReference Include="MotorDsl.Extensions" Version="1.0.12" />
-		<PackageReference Include="MotorDsl.Printing.Abstractions" Version="1.0.12" />
-		<PackageReference Include="MotorDsl.Bluetooth" Version="1.0.12" />
-		<PackageReference Include="MotorDsl.Maui" Version="1.0.12" />
+		<PackageReference Include="MotorDsl.Core" Version="1.0.13" />
+		<PackageReference Include="MotorDsl.Parser" Version="1.0.13" />
+		<PackageReference Include="MotorDsl.Rendering" Version="1.0.13" />
+		<PackageReference Include="MotorDsl.Extensions" Version="1.0.13" />
+		<PackageReference Include="MotorDsl.Printing.Abstractions" Version="1.0.13" />
+		<PackageReference Include="MotorDsl.Bluetooth" Version="1.0.13" />
+		<PackageReference Include="MotorDsl.Maui" Version="1.0.13" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="Controls\StatusOverlayView.xaml.cs">
+	  <Compile Update="LibApp\Devices\Common\Controls\StatusOverlayView.xaml.cs">
 	    <DependentUpon>StatusOverlayView.xaml</DependentUpon>
 	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="Controls\StatusOverlayView.xaml">
+	  <MauiXaml Update="LibApp\Devices\Common\Controls\StatusOverlayView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Pages\MyMediaPickerPage.xaml">
+	  <MauiXaml Update="LibApp\Devices\Camera\Pages\MyMediaPickerPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Pages\MyMediaSelfiePickerPage.xaml">
+	  <MauiXaml Update="LibApp\Devices\Camera\Pages\MyMediaSelfiePickerPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Pages\QRLectorPage.xaml">
+	  <MauiXaml Update="LibApp\Devices\MotorDSL\Pages\OverlayBlueToothThermalPrintPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="LibApp\Devices\QRLector\Pages\QRLectorPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="LibApp\Devices\MotorDSL\NewFolder\" />
+	  <Folder Include="LibApp\Devices\QRLector\Services\" />
 	</ItemGroup>
 
 </Project>

@@ -1,8 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
-using Ejemplo_Maui_Hibrida.Behaviors;
-using Ejemplo_Maui_Hibrida.UrlCommands;
+using LibApp.CustomWebView.Behaviors;
+using LibApp.Devices.GPS.ViewModels;
+using LibApp.Devices.Networks.ViewModels;
+using LibApp.Devices.Phone.ViewModels;
+using LibApp.UrlCommands;
 
 namespace Ejemplo_Maui_Hibrida.ViewModels;
 
@@ -65,6 +68,11 @@ public partial class MainViewModel : ObservableObject
         if (outcome.NavigateTo is not null)
             Url = outcome.NavigateTo;
     }
+
+    // Gesto pull-to-refresh: recarga el WebView vía el bridge. El spinner se cierra
+    // cuando el WebView termina de navegar (Navigated => IsRefreshing = false).
+    [RelayCommand]
+    private void Refresh() => WebBridge.Reload();
 
     [RelayCommand]
     private async Task Navigating(WebNavigatingEventArgs e)
