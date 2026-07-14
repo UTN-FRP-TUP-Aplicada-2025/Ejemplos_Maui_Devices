@@ -80,6 +80,15 @@
 		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <AndroidResource Remove="LibApp\Devices\MotorDSL\NewFolder\**" />
+	  <Compile Remove="LibApp\Devices\MotorDSL\NewFolder\**" />
+	  <EmbeddedResource Remove="LibApp\Devices\MotorDSL\NewFolder\**" />
+	  <MauiCss Remove="LibApp\Devices\MotorDSL\NewFolder\**" />
+	  <MauiXaml Remove="LibApp\Devices\MotorDSL\NewFolder\**" />
+	  <None Remove="LibApp\Devices\MotorDSL\NewFolder\**" />
+	</ItemGroup>
+
 	<!-- Soporte qr -->
 	<ItemGroup>
 		<PackageReference Include="BarcodeScanning.Native.Maui" Version="3.0.4" />
@@ -141,7 +150,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="LibApp\Devices\MotorDSL\NewFolder\" />
 	  <Folder Include="LibApp\Devices\QRLector\Services\" />
 	</ItemGroup>
 

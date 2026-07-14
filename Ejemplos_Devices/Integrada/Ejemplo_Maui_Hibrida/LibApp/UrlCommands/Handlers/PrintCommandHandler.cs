@@ -58,6 +58,9 @@ public class PrintCommandHandler : IUrlCommandHandler
         // 2. El overlay maneja permisos, descubrimiento, selección, conexión e impresión.
         //    Si el documento vino vacío (fallo de red / contrato inválido), el render falla
         //    y el overlay muestra el error correspondiente ("No se pudo generar el documento").
+
+        //		LocalizedMessage	"[Microsoft.Maui.ApplicationModel.PermissionException]: You need to declare using the permission: `android.permission.BLUETOOTH_SCAN` in your AndroidManifest.xml"	string
+
         await _printer.ImprimirAsync(render);
 
         return new BridgeOutcome(true, null);

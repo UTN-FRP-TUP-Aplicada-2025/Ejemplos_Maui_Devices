@@ -37,4 +37,30 @@
 
         return builder;
     }
-````
+```
+
+AndroidManifest.xml
+```xml
+    ...
+
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+	<uses-permission android:name="android.permission.INTERNET" />
+
+	<!-- Bluetooth (legacy API < 31) -->
+	<uses-permission android:name="android.permission.BLUETOOTH" />
+	<uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+	<!-- Bluetooth (API 31+ / Android 12+) -->
+	<uses-permission android:name="android.permission.BLUETOOTH_SCAN"
+					 android:usesPermissionFlags="neverForLocation" />
+	<uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+
+	<!-- Ubicación (necesario para escaneo Bluetooth) -->
+	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+	<queries>
+		<intent>
+			<action android:name="android.bluetooth.adapter.action.REQUEST_ENABLE" />
+		</intent>
+	</queries>
+```
