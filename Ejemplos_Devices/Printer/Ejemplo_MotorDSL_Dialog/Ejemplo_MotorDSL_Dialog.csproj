@@ -87,13 +87,13 @@
 	</ItemGroup>
 	<!-- NuGet packages (instead of ProjectReference) — validates published packages -->
 	<ItemGroup>
-		<PackageReference Include="MotorDsl.Core" Version="1.0.12" />
-		<PackageReference Include="MotorDsl.Parser" Version="1.0.12" />
-		<PackageReference Include="MotorDsl.Rendering" Version="1.0.12" />
-		<PackageReference Include="MotorDsl.Extensions" Version="1.0.12" />
-		<PackageReference Include="MotorDsl.Printing.Abstractions" Version="1.0.12" />
-		<PackageReference Include="MotorDsl.Bluetooth" Version="1.0.12" />
-		<PackageReference Include="MotorDsl.Maui" Version="1.0.12" />
+		<PackageReference Include="MotorDsl.Core" Version="1.0.13" />
+		<PackageReference Include="MotorDsl.Parser" Version="1.0.13" />
+		<PackageReference Include="MotorDsl.Rendering" Version="1.0.13" />
+		<PackageReference Include="MotorDsl.Extensions" Version="1.0.13" />
+		<PackageReference Include="MotorDsl.Printing.Abstractions" Version="1.0.13" />
+		<PackageReference Include="MotorDsl.Bluetooth" Version="1.0.13" />
+		<PackageReference Include="MotorDsl.Maui" Version="1.0.13" />
 	</ItemGroup>
 
 </Project>

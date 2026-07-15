@@ -21,7 +21,13 @@ public sealed class UrlCommandDispatcher
             if (handler.CanHandle(url)) return await handler.HandleAsync(url);
         }
 
-        // Ningún comando matchea: navegación normal.
-        return new BridgeOutcome(false, url);
+        // Ningún comando matchea: navegación normal, no hay que reescribir la URL.
+        // NavigateTo debe quedar en null: es exclusivo del caso GPS (re-navegar con
+        // coordenadas). Devolver el propio "url" acá provoca que MainViewModel.Navigating
+        // reasigne Url = e.Url en TODA navegación normal (incluido el reload del gesto
+        // pull-to-refresh), lo que reasigna WebView.Source y dispara una segunda
+        // navegación superpuesta a la que ya está en curso, impidiendo que Navigated
+        // llegue a cerrar el RefreshView (IsRefreshing nunca vuelve a false de forma limpia).
+        return new BridgeOutcome(false, null);
     }
 }

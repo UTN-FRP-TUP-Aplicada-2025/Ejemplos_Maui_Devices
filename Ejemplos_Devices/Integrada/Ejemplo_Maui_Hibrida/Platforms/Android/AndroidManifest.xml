@@ -47,7 +47,20 @@
 	<uses-permission android:name="android.permission.CALL_PHONE" />
 
 	<uses-permission android:name="android.permission.READ_PHONE_STATE" />
-	
+
+	<!--
+        Bluetooth (impresión térmica, action=print): mismo patrón que
+        Ejemplo_MotorDSL_Dialog. Sin estos permisos, EnsurePermissionsAsync
+        lanza PermissionException ("declare BLUETOOTH_SCAN...").
+    -->
+	<!-- Bluetooth (legacy API < 31) -->
+	<uses-permission android:name="android.permission.BLUETOOTH" />
+	<uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+	<!-- Bluetooth (API 31+ / Android 12+) -->
+	<uses-permission android:name="android.permission.BLUETOOTH_SCAN"
+					 android:usesPermissionFlags="neverForLocation" />
+	<uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+
 	<!--
         Visibilidad de paquetes (Android 11+): declarar el intent del marcador
         permite resolver/abrir el dialer del SO (PhoneDialer / CallMode.Dialer).
@@ -56,6 +69,9 @@
 		<intent>
 			<action android:name="android.intent.action.DIAL" />
 			<data android:scheme="tel" />
+		</intent>
+		<intent>
+			<action android:name="android.bluetooth.adapter.action.REQUEST_ENABLE" />
 		</intent>
 	</queries>
 

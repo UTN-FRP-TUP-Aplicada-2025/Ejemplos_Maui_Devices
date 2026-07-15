@@ -40,12 +40,14 @@
         </RefreshView>
 
         <!-- El orden = prioridad visual: el último declarado queda arriba.
-             GPS primero; Red después; Llamada al final (máxima prioridad). -->
+             GPS primero; Red después; Llamada; Impresión al final (máxima prioridad). -->
         <controls:StatusOverlayView BindingContext="{Binding GpsOverlayViewModel}"/>
 
         <controls:StatusOverlayView BindingContext="{Binding NetworkOverlayViewModel}"/>
 
         <controls:StatusOverlayView BindingContext="{Binding CallOverlayViewModel}"/>
+
+        <controls:StatusOverlayView BindingContext="{Binding PrinterOverlayViewModel}"/>
 
         <HorizontalStackLayout Grid.Row="1">
 			<Button Text="Volver" Command="{Binding VolverCommand}" Margin="10"/>

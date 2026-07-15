@@ -3,6 +3,40 @@
 Cambios notables de los ejemplos de dispositivos MAUI (`Ejemplos_Maui_Devices`).
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
 
+## [2026-07-15] — Fix navegación WebView, overlay de impresión y permisos Bluetooth
+
+### Agregado
+
+- **`PrinterOverlayViewModel` integrado a `MainViewModel`/`MainPage.xaml`** en
+  `Ejemplo_Maui_Hibrida`: se registra e inyecta junto a los overlays de GPS, Red
+  y Llamada, y se agrega al layout con máxima prioridad visual.
+- **Permisos Bluetooth en `AndroidManifest.xml`** (`BLUETOOTH`, `BLUETOOTH_ADMIN`,
+  `BLUETOOTH_SCAN` con `neverForLocation`, `BLUETOOTH_CONNECT`) y query del intent
+  `android.bluetooth.adapter.action.REQUEST_ENABLE`, necesarios para que
+  `EnsurePermissionsAsync` no falle con `PermissionException`.
+
+### Corregido
+
+- **Doble navegación en el `WebView` al hacer pull-to-refresh.** `UrlCommandDispatcher`
+  devolvía `url` como `NavigateTo` en cualquier navegación normal, provocando que
+  `MainViewModel.Navigating` reasignara `Url`/`WebView.Source` y disparara una
+  segunda navegación superpuesta que impedía cerrar el `RefreshView`
+  (`IsRefreshing` no volvía a `false`). Ahora `NavigateTo` queda en `null` salvo
+  para el caso GPS.
+
+### Cambiado
+
+- **`MotorDsl.*` 1.0.12 → 1.0.13** en `Ejemplo_MotorDSL_Dialog.csproj` (los 7
+  paquetes), alineado con la versión ya usada en `Ejemplo_Maui_Hibrida`.
+- Comentarios de depuración eliminados/reescritos en `PrintCommandHandler.cs`.
+
+### Eliminado
+
+- **Soporte Windows removido de `Ejemplo_Maui_Hibrida`**: `Platforms/Windows/`
+  (`App.xaml`, `App.xaml.cs`, `Package.appxmanifest`, `app.manifest`) y las
+  propiedades `SupportedOSPlatformVersion`/`TargetPlatformMinVersion` para
+  `windows` en el `.csproj`.
+
 ## [2026-07-13] — Impresión térmica MotorDSL + reorganización a `LibApp/`
 
 ### Agregado

@@ -45,22 +45,19 @@ public class PrintCommandHandler : IUrlCommandHandler
         //     endpoint: https://aplicada.somee.com/api/Tikects/comprobante
         string document = await ObtenerDocumentoAsync();
 
-        //"{\"id\":\"comprobante-ticket-48213\",\"version\":\"1.0\",\"format\":\"integrated\",\"root\":{\"type\":\"container\",\"layout\":\"vertical\",\"children\":[{\"type\":\"image\",\"source\":\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==\",\"imageType\":\"bitmap\",\"width\":200,\"style\":{\"align\":\"center\"}},{\"type\":\"text\",\"value\":\"MUNICIPALIDAD DE SAN FERNANDO\",\"style\":{\"align\":\"center\",\"bold\":true}},{\"type\":\"text\",\"value\":\"COMPROBANTE DE TICKET\",\"style\":{\"align\":\"center\",\"bold\":true}},{\"type\":\"text\",\"value\":\"Sistema de Gestión de Incidentes\",\"style\":{\"align\":\"center\"}},{\"type\":\"text\",\"value\":\"================================\"},{\"type\":\"text\",\"value\":\"Ticket N°: 48213\",\"style\":{\"bold\":true}},{\"type\":\"text\",\"value\":\"Fecha: 13/07/2026 10:42\"},{\"type\":\"text\",\"value\":\"Tipo de ticket: Reclamo\"},{\"type\":\"text\",\"value\":\"Título: Bache sobre calzada\"},{\"type\":\"text\",\"value\":\"Origen: App Ciudadano\"},{\"type\":\"text\",\"value\":\"Usuario: jperez\"},{\"type\":\"text\",\"value\":\"===========================..."
         var render = _engine.Render(document, profile);
 
-        //"BitmapEscPos rendering failed: SkiaSharp no pudo decodificar la imagen desde base64."
         if (render.Errors.Count > 0)
         {
-            // como atraves del overlay se puede mostrar el error, no es necesario cancelar la navegación ni redirigir a otra URL.?
+            // El overlay ya cubre este caso (ver ImprimirAsync → "No se pudo generar el documento"),
+            // por eso alcanza con cerrar el comando sin cancelar navegación ni redirigir.
             return new BridgeOutcome(true, null);
         }
 
         // 2. El overlay maneja permisos, descubrimiento, selección, conexión e impresión.
         //    Si el documento vino vacío (fallo de red / contrato inválido), el render falla
         //    y el overlay muestra el error correspondiente ("No se pudo generar el documento").
-
-        //		LocalizedMessage	"[Microsoft.Maui.ApplicationModel.PermissionException]: You need to declare using the permission: `android.permission.BLUETOOTH_SCAN` in your AndroidManifest.xml"	string
-
+        //    Requiere los permisos Bluetooth declarados en AndroidManifest.xml (BLUETOOTH_SCAN/CONNECT).
         await _printer.ImprimirAsync(render);
 
         return new BridgeOutcome(true, null);

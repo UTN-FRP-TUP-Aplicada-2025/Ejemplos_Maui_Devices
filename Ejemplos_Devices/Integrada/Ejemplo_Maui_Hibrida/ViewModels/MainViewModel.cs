@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 
 using LibApp.CustomWebView.Behaviors;
 using LibApp.Devices.GPS.ViewModels;
+using LibApp.Devices.MotorDSL.ViewModels;
 using LibApp.Devices.Networks.ViewModels;
 using LibApp.Devices.Phone.ViewModels;
 using LibApp.UrlCommands;
@@ -26,15 +27,19 @@ public partial class MainViewModel : ObservableObject
     [ObservableProperty]
     CallOverlayViewModel callOverlayViewModel;
 
+    [ObservableProperty]
+    PrinterOverlayViewModel printerOverlayViewModel;
+
     private readonly UrlCommandDispatcher _dispatcher;
 
     public IWebViewBridge WebBridge { get; }
 
-    public MainViewModel(NetworkOverlayViewModel network, GpsOverlayViewModel gps, CallOverlayViewModel call, UrlCommandDispatcher dispatcher, IWebViewBridge webBridge)
+    public MainViewModel(NetworkOverlayViewModel network, GpsOverlayViewModel gps, CallOverlayViewModel call, PrinterOverlayViewModel printer, UrlCommandDispatcher dispatcher, IWebViewBridge webBridge)
     {
         gpsOverlayViewModel = gps;
         networkOverlayViewModel = network;
         callOverlayViewModel = call;
+        printerOverlayViewModel = printer;
         _dispatcher = dispatcher;
         WebBridge = webBridge;
     }
