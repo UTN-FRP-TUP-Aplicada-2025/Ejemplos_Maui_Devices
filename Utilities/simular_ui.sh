@@ -52,25 +52,46 @@ echo "Usando simulador: $UUID"
 
 # El simulador puede llegar "precalentado" (booteado en segundo plano durante el
 # build, ver el step "Verificando simulador instalado" del workflow). Si ya está
-# Booted, seguimos sin esperar. Si no, booteamos con TIMEOUT + un reintento limpio
-# para no colgarnos indefinidamente en "Waiting on BackBoard" (flakiness conocida
-# del simulador iOS en CI) y quemar el timeout del job.
+# Booted, seguimos sin esperar. Si no, lo booteamos LEVANTANDO Simulator.app: en
+# runners headless con Xcode recién instalado, el boot por 'simctl' se cuelga en
+# "Waiting on BackBoard" porque el stack gráfico (BackBoard/SpringBoard) no arranca
+# solo; abrir la GUI lo fuerza. Los runners macOS de GitHub corren una sesión GUI
+# (Aqua), así que es 100% automatizado (no requiere interacción; Maestro sigue
+# manejando la app por simctl). Todo con TIMEOUT + un reintento limpio para no
+# colgarnos y quemar el timeout del job.
 echo "Verificando estado del simulador..."
 ESTADO=$(xcrun simctl list devices | grep "$UUID" | grep -oE '\(Booted\)|\(Booting\)|\(Shutdown\)' | head -1 || true)
 echo "Estado actual: ${ESTADO:-desconocido}"
 
+# Simulator.app del Xcode activo (no el preinstalado): lo resuelve xcode-select.
+SIMULATOR_APP="$(xcode-select -p)/Applications/Simulator.app"
+abrir_gui() {
+    # Abre la GUI apuntando al device activo → fuerza el arranque de BackBoard.
+    open -a "$SIMULATOR_APP" --args -CurrentDeviceUDID "$UUID" 2>/dev/null \
+        || open -a Simulator --args -CurrentDeviceUDID "$UUID" 2>/dev/null || true
+}
+
 if [ "$ESTADO" = "(Booted)" ]; then
     echo "Simulador ya precalentado (Booted) — no se espera boot."
 else
-    echo "Asegurando booteo (con timeout y reintento limpio)..."
+    echo "Asegurando booteo (GUI + timeout y reintento limpio)..."
+    xcrun simctl shutdown all 2>/dev/null || true   # slate limpio: descarta estados zombi
+    abrir_gui
+    sleep 5
     if ! run_with_timeout 240 xcrun simctl bootstatus "$UUID" -b; then
         echo "AVISO: boot colgado (>240s, tipico 'Waiting on BackBoard'). Reinicio limpio..."
         xcrun simctl shutdown "$UUID" 2>/dev/null || true
         sleep 3
         xcrun simctl erase "$UUID" 2>/dev/null || true
         sleep 3
-        run_with_timeout 300 xcrun simctl bootstatus "$UUID" -b \
-            || { echo "ERROR: el simulador no bootea tras reintento."; exit 1; }
+        abrir_gui                                    # reabrir la GUI sobre el device reseteado
+        sleep 5
+        if ! run_with_timeout 300 xcrun simctl bootstatus "$UUID" -b; then
+            echo "ERROR: el simulador no bootea tras reintento."
+            echo "=== CoreSimulator.log (ultimas 120 lineas) para diagnostico ==="
+            tail -n 120 "$HOME/Library/Logs/CoreSimulator/CoreSimulator.log" 2>/dev/null || true
+            exit 1
+        fi
     fi
 fi
 echo "Esperando SpringBoard..."

@@ -3,27 +3,33 @@
 Cambios notables de los ejemplos de dispositivos MAUI (`Ejemplos_Maui_Devices`).
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
 
-## [2026-07-18] — Robustez del arranque del simulador iOS en el CI (precalentado + timeout/retry)
+## [2026-07-18] — Robustez del arranque del simulador iOS en el CI (boot por GUI + precalentado + timeout/retry)
 
 Alcance: la técnica de simulación end2end (`Utilities/simular_ui.sh` + workflow de la híbrida).
 Motivado por un run donde el step de grabación se colgó **30 min** en el arranque del simulador
-(«Waiting on BackBoard») y terminó en timeout. No se tocó código de la app.
+(«Waiting on BackBoard») y terminó en timeout. Un primer intento con solo timeout/retry acotó el
+cuelgue a ~9 min pero **el simulador seguía sin bootear** (ni tras `erase`): la causa real es que
+el boot **headless** por `simctl` no levanta el stack gráfico. No se tocó código de la app.
 
 ### Corregido
 
-- **`Utilities/simular_ui.sh` — el arranque del simulador ya no se cuelga indefinidamente.**
-  `xcrun simctl bootstatus "$UUID" -b` no tenía cota de tiempo: si el simulador quedaba trabado
-  en «Waiting on BackBoard», esperaba hasta agotar el timeout del job. Ahora:
-  - Si el simulador ya está `Booted` (precalentado, ver abajo), **sigue sin esperar**.
-  - Si no, bootea con **timeout de 240 s**; si se cuelga, hace `shutdown` + `erase` y
-    **reintenta una vez** (300 s). Peor caso ~9 min en vez de 30.
+- **`Utilities/simular_ui.sh` — el simulador ahora sí bootea, levantando `Simulator.app`.** En un
+  runner headless con Xcode instalado a mano, `xcrun simctl boot`/`bootstatus -b` se cuelga en
+  «Waiting on BackBoard» porque BackBoard/SpringBoard no arrancan solos. Ahora el boot **abre la GUI
+  del Simulador** (`open -a "$(xcode-select -p)/Applications/Simulator.app" --args -CurrentDeviceUDID`),
+  que fuerza ese stack. Los runners macOS de GitHub corren sesión GUI (Aqua), así que es automatizado;
+  Maestro sigue manejando la app por `simctl`.
+- **Sigue acotado con timeout + reintento limpio.** Short-circuit si ya está `Booted`; si no,
+  `bootstatus -b` con **240 s** → si se cuelga, `shutdown` + `erase` + **reabrir GUI** + **300 s**.
+  Peor caso ~9 min en vez de 30. Si aun así falla, vuelca las últimas 120 líneas de
+  `~/Library/Logs/CoreSimulator/CoreSimulator.log` para diagnóstico.
 
 ### Cambiado
 
-- **`.github/workflows/cd-ios-Integrada.Ejemplo_Maui_Hibrida.yml` — precalentado del simulador.**
-  El `simctl boot` del step «Verificando simulador instalado» pasa a ser fire-and-forget tolerante
-  (`|| true`): el simulador arranca en segundo plano **durante el build** y llega booteado al step
-  de grabación, evitando pagar el arranque en frío.
+- **`.github/workflows/cd-ios-Integrada.Ejemplo_Maui_Hibrida.yml` — precalentado con GUI.**
+  El step «Verificando simulador instalado» ahora **abre `Simulator.app`** y bootea (fire-and-forget):
+  el simulador arranca en segundo plano **durante el build** y llega caliente al step de grabación,
+  evitando pagar el arranque en frío.
 
 ## [2026-07-18] — Flujo end2end de la híbrida rehecho y activación del CI de simulación
 

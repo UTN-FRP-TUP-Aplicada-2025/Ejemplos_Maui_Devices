@@ -161,11 +161,13 @@ jobs:
         echo "simuladores disponibles: $(xcrun simctl list devices)"
         echo "Path sdk runtime: $(xcrun --sdk iphoneos --show-sdk-path)"        
         echo "Buscando actool: $(xcrun -sdk iphonesimulator -find actool)"        
-        echo "Precalentando el simulador ${{ env.DEVICE_SIMULATOR }} (boot async): "
-        # Fire-and-forget: 'simctl boot' vuelve enseguida y el simulador sigue
-        # booteando en segundo plano (servicio CoreSimulator) mientras corre el
-        # build. Así llega "caliente" al step de grabación y no se paga el boot.
-        # '|| true': tolerante si ya estaba booteado o el estado no permite boot.
+        echo "Precalentando el simulador ${{ env.DEVICE_SIMULATOR }} (GUI, async): "
+        # Se abre Simulator.app para que levante el stack grafico (BackBoard/
+        # SpringBoard): el boot headless por 'simctl' se cuelga en "Waiting on
+        # BackBoard". Fire-and-forget: la GUI + el boot arrancan en segundo plano
+        # durante el build y el simulador llega "caliente" al step de grabacion.
+        # Los runners macOS de GitHub corren sesion GUI (Aqua): 100% automatizado.
+        open -a "$(xcode-select -p)/Applications/Simulator.app" 2>/dev/null || open -a Simulator 2>/dev/null || true
         xcrun simctl boot "${{ env.DEVICE_SIMULATOR }}" || true
 
         echo "carpeta que luego el sdk en el build busca el actool "
