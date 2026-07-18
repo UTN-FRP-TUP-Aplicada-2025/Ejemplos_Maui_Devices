@@ -36,10 +36,18 @@
 # ─────────────────────────────────────────────────────────────────────────────
 appId: ${APP_ID}
 ---
-- launchApp
+# stopApp:false → NO reinicia la app: el script la pre-carga (pre-warm) antes de
+# grabar, así el arranque en frío (Release + WebView remoto, lento) no se graba.
+- launchApp: { stopApp: false }
 
-# Espera splash + carga inicial del WebView (https://aplicada.somee.com).
-- waitForAnimationToEnd: { timeout: 8000 }
+# Espera ACTIVA a que la UI nativa esté lista (hasta 120s), en vez de un wait fijo:
+# el cold start del WebView puede tardar y, si tocáramos antes, el flujo fallaría
+# sobre el splash y las interacciones no llegarían a grabarse. "Geo Pos" es un
+# botón nativo de la barra inferior → buen indicador de "pantalla lista".
+- extendedWaitUntil:
+    visible: "Geo Pos"
+    timeout: 120000
+- waitForAnimationToEnd: { timeout: 3000 }
 
 # 1) Geo Pos → dispara el overlay de GPS (animación de posicionamiento).
 - tapOn: "Geo Pos"

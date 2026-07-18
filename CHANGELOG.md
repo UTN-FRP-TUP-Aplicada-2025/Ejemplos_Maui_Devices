@@ -3,6 +3,26 @@
 Cambios notables de los ejemplos de dispositivos MAUI (`Ejemplos_Maui_Devices`).
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
 
+## [2026-07-18] — El video end2end ahora captura el recorrido completo (pre-warm + espera activa)
+
+Alcance: `Utilities/simular_ui.sh` + `Utilities/end2end/com.ejemplos.devices.integrada.hibrida.yaml`.
+Motivado por un run donde el simulador booteó y grabó (1:50) pero **el video terminaba sobre el
+arranque de la app y no registraba las interacciones**: el arranque en frío (Release + WebView
+remoto) se comía la grabación y el flujo Maestro fallaba en el primer `tapOn` porque tocaba antes
+de que la UI estuviera lista. No se tocó código de la app.
+
+### Corregido
+
+- **El flujo Maestro espera de forma activa a que la UI esté lista.** Se reemplazó el
+  `waitForAnimationToEnd: { timeout: 8000 }` fijo posterior a `launchApp` por
+  `extendedWaitUntil: { visible: "Geo Pos", timeout: 120000 }`. Maestro ya no toca nada hasta que
+  el botón nativo existe → las interacciones ocurren (y quedan en el video) aunque el cold start
+  sea lento.
+- **La grabación ya no gasta el arranque en frío.** `simular_ui.sh` hace **pre-warm**: lanza la
+  app y espera su carga (`sleep 45`) **antes** de arrancar `recordVideo`. El flujo usa
+  `launchApp: { stopApp: false }`, así que Maestro **no reinicia** la app pre-cargada (un solo
+  arranque en frío, no grabado). El video queda enfocado en el recorrido.
+
 ## [2026-07-18] — Robustez del arranque del simulador iOS en el CI (boot por GUI + precalentado + timeout/retry)
 
 Alcance: la técnica de simulación end2end (`Utilities/simular_ui.sh` + workflow de la híbrida).

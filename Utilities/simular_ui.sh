@@ -144,8 +144,22 @@ LOG_PID=$!
 echo "Log stream PID: $LOG_PID"
 sleep 3
 
+# ─── PRE-WARM de la app (antes de grabar) ────────────────────────────────────
+# El primer arranque de la app (Release + WebView remoto) es lento; si lo
+# grabaramos, el video se llenaria de splash y el recorrido no entraria. La
+# lanzamos y esperamos a que cargue ANTES de arrancar recordVideo. El flujo
+# Maestro usa `launchApp: { stopApp: false }`, asi que NO la reinicia: un solo
+# arranque en frio, y NO queda grabado.
+echo ""
+echo "Pre-warm: lanzando la app para que cargue antes de grabar..."
+xcrun simctl launch "$UUID" "${PACKAGE_NAME}" 2>/dev/null || true
+echo "Esperando carga inicial (splash + WebView)..."
+sleep 45
+
 # ─── GRABACION DE VIDEO (nativa) en background ───────────────────────────────
-# Se arranca ANTES del recorrido para capturar toda la sesion (splash -> flujo).
+# Se arranca con la app YA cargada (pre-warm arriba): el video captura el
+# recorrido, no el arranque en frio. El flujo Maestro espera de forma activa a
+# que la UI este lista (extendedWaitUntil sobre "Geo Pos") antes de tocar.
 # IMPORTANTE: se cierra con SIGINT (kill -s INT), nunca kill -9, para que el
 # encoder finalice el contenedor MP4 (atomo moov) y el video sea reproducible.
 echo ""
