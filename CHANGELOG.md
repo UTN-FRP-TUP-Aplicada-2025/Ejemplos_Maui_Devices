@@ -3,6 +3,28 @@
 Cambios notables de los ejemplos de dispositivos MAUI (`Ejemplos_Maui_Devices`).
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
 
+## [2026-07-18] — Robustez del arranque del simulador iOS en el CI (precalentado + timeout/retry)
+
+Alcance: la técnica de simulación end2end (`Utilities/simular_ui.sh` + workflow de la híbrida).
+Motivado por un run donde el step de grabación se colgó **30 min** en el arranque del simulador
+(«Waiting on BackBoard») y terminó en timeout. No se tocó código de la app.
+
+### Corregido
+
+- **`Utilities/simular_ui.sh` — el arranque del simulador ya no se cuelga indefinidamente.**
+  `xcrun simctl bootstatus "$UUID" -b` no tenía cota de tiempo: si el simulador quedaba trabado
+  en «Waiting on BackBoard», esperaba hasta agotar el timeout del job. Ahora:
+  - Si el simulador ya está `Booted` (precalentado, ver abajo), **sigue sin esperar**.
+  - Si no, bootea con **timeout de 240 s**; si se cuelga, hace `shutdown` + `erase` y
+    **reintenta una vez** (300 s). Peor caso ~9 min en vez de 30.
+
+### Cambiado
+
+- **`.github/workflows/cd-ios-Integrada.Ejemplo_Maui_Hibrida.yml` — precalentado del simulador.**
+  El `simctl boot` del step «Verificando simulador instalado» pasa a ser fire-and-forget tolerante
+  (`|| true`): el simulador arranca en segundo plano **durante el build** y llega booteado al step
+  de grabación, evitando pagar el arranque en frío.
+
 ## [2026-07-18] — Flujo end2end de la híbrida rehecho y activación del CI de simulación
 
 Alcance: la técnica de prueba **end2end sobre la UI real** de `Ejemplo_Maui_Hibrida`

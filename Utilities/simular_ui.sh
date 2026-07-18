@@ -50,8 +50,29 @@ if [ -z "$UUID" ]; then
 fi
 echo "Usando simulador: $UUID"
 
-echo "Asegurando booteo (bootstatus -b arranca si hace falta y espera)..."
-xcrun simctl bootstatus "$UUID" -b || true
+# El simulador puede llegar "precalentado" (booteado en segundo plano durante el
+# build, ver el step "Verificando simulador instalado" del workflow). Si ya está
+# Booted, seguimos sin esperar. Si no, booteamos con TIMEOUT + un reintento limpio
+# para no colgarnos indefinidamente en "Waiting on BackBoard" (flakiness conocida
+# del simulador iOS en CI) y quemar el timeout del job.
+echo "Verificando estado del simulador..."
+ESTADO=$(xcrun simctl list devices | grep "$UUID" | grep -oE '\(Booted\)|\(Booting\)|\(Shutdown\)' | head -1 || true)
+echo "Estado actual: ${ESTADO:-desconocido}"
+
+if [ "$ESTADO" = "(Booted)" ]; then
+    echo "Simulador ya precalentado (Booted) — no se espera boot."
+else
+    echo "Asegurando booteo (con timeout y reintento limpio)..."
+    if ! run_with_timeout 240 xcrun simctl bootstatus "$UUID" -b; then
+        echo "AVISO: boot colgado (>240s, tipico 'Waiting on BackBoard'). Reinicio limpio..."
+        xcrun simctl shutdown "$UUID" 2>/dev/null || true
+        sleep 3
+        xcrun simctl erase "$UUID" 2>/dev/null || true
+        sleep 3
+        run_with_timeout 300 xcrun simctl bootstatus "$UUID" -b \
+            || { echo "ERROR: el simulador no bootea tras reintento."; exit 1; }
+    fi
+fi
 echo "Esperando SpringBoard..."
 sleep 5
 
