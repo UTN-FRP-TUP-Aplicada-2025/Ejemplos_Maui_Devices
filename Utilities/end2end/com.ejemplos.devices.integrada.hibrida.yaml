@@ -1,35 +1,73 @@
 # ─────────────────────────────────────────────────────────────────────────────
-# recorrido.yaml — "Dedo virtual" (enfoque app pura / caja negra)
+# com.ejemplos.devices.integrada.hibrida.yaml — "Dedo virtual" para
+#   Ejemplos_Devices/Integrada/Ejemplo_Maui_Hibrida
 #
-# Toca los 3 botones NATIVOS de MainPage por su TEXTO VISIBLE. No requiere
+# Descubierto por Estrategia B (grabación de navegación → normalización a las
+# convenciones del repo). Textos VERIFICADOS contra dispositivo real vía adb
+# `uiautomator dump` (Motorola Moto G42, Android, 1080px):
+#   "Volver", "Geo Pos" y "Llamar" existen y son tappables.
+#   "Geo Pos" corrige el texto viejo "Geo Posicionar", que no matcheaba.
+# NOTA (Android 1080px): la barra de 4 botones no entra a lo ancho y "Leer QR"
+# aparece recortado a la derecha. El target del CI es el simulador iOS
+# (iPhone 17 Pro Max, más ancho), donde la botonera entra; ver paso 3.
+# La validación real del recorrido ocurre en el GitHub Action
+# (cd-ios-Integrada.Ejemplo_Maui_Hibrida.yml → instala Maestro → simular_ui.sh).
+#
+# Toca controles NATIVOS de MainPage por su TEXTO VISIBLE. No requiere
 # AutomationId ni inspección del WebView: los botones son controles MAUI nativos
 # y su texto se expone como accessibility label en iOS.
 #
 # El appId se inyecta desde el script con:  maestro test -e APP_ID=<bundle>
-# Fallback si algún tapOn por texto fallara: usar coordenada, p.ej.
-#   - tapOn: { point: "16%, 95%" }   # botón izquierdo de la fila inferior
+#
+# Storyboard (MainPage → barra inferior de 4 botones):
+#   [Volver] [Geo Pos] [Llamar] [Leer QR]
+#   - "Volver"  → resetea la URL del WebView a https://aplicada.somee.com (home).
+#   - "Geo Pos" → TakeGPSCommand: reescribe la URL con coordenadas y dispara el
+#                 overlay de GPS (animación de espera; en simulador puede pasar a
+#                 capa de error si no hay ubicación). El overlay cubre solo el
+#                 WebView (fila 0); la barra de botones (fila 1) sigue accesible.
+#   - "Llamar"  → TakePhoneCommand: dispara el overlay de llamada / marcador.
+#   - "Leer QR" → TakeQRCommand: navega a QRLectorPage (página completa con cámara).
+#                 En el simulador iOS la cámara se ve NEGRA (no hay cámara real):
+#                 es esperado y sirve igual como evidencia de navegación.
+#
+# Corrección vs. flujo previo: el botón de GPS dice **"Geo Pos"** (MainPage.xaml),
+# NO "Geo Posicionar" como tenía el YAML anterior — ese texto no matcheaba.
 # ─────────────────────────────────────────────────────────────────────────────
 appId: ${APP_ID}
 ---
 - launchApp
 
-# Espera splash + carga inicial del WebView (o el overlay de red si no hay web).
+# Espera splash + carga inicial del WebView (https://aplicada.somee.com).
 - waitForAnimationToEnd: { timeout: 8000 }
 
-# 1) GPS → dispara el overlay de posicionamiento (animación satélite).
-- tapOn: "Geo Posicionar"
+# 1) Geo Pos → dispara el overlay de GPS (animación de posicionamiento).
+- tapOn: "Geo Pos"
 - waitForAnimationToEnd: { timeout: 5000 }
 
-# 2) Llamar → dispara el overlay de llamada.
+# 2) Llamar → dispara el overlay de llamada / marcador del SO.
 - tapOn: "Llamar"
 - waitForAnimationToEnd: { timeout: 5000 }
 
-# 3) Leer QR → abre el lector de QR.
-#    NOTA: el simulador iOS no tiene cámara real; la vista se verá negra/como
-#    intento. Es esperado y sirve como evidencia de que la navegación funciona.
+# 3) Leer QR → abre QRLectorPage (página completa).
+#    NOTA 1: el simulador iOS no tiene cámara real; la vista se verá negra. Es
+#    esperado y sirve como evidencia de que la navegación funciona.
+#    NOTA 2 (VERIFICADO en Android 1080px): la fila de 4 botones no entra y este
+#    botón queda recortado a la derecha. En el simulador iOS del CI (más ancho)
+#    se espera que entre. Si en algún runner quedara recortado, descomentar el
+#    fallback por coordenada de abajo.
 - tapOn: "Leer QR"
+# - tapOn: { point: "90%, 88%" }   # fallback si "Leer QR" quedara recortado a la derecha
 - waitForAnimationToEnd: { timeout: 5000 }
 
-# Vuelve a la pantalla principal (best-effort; gesto de retroceso en iOS).
-- back
+# 4) Volver desde QRLectorPage a MainPage.
+#    El botón "Volver" de la página QR es SOLO ícono (glyph arrow_back, sin texto),
+#    por lo que no hay `tapOn` por texto: se usa coordenada (última opción) sobre
+#    el botón inferior-centrado. Fallback adicional: gesto `back` de iOS.
+- tapOn: { point: "50%, 92%" }   # botón "Volver" (ícono) al pie de QRLectorPage
+- waitForAnimationToEnd: { timeout: 3000 }
+
+# 5) Volver (barra inferior de MainPage) → resetea el WebView a la home.
+#    Demuestra el 4º botón nativo; best-effort si el paso 4 ya dejó MainPage arriba.
+- tapOn: "Volver"
 - waitForAnimationToEnd: { timeout: 3000 }

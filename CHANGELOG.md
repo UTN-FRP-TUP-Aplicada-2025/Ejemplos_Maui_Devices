@@ -3,6 +3,34 @@
 Cambios notables de los ejemplos de dispositivos MAUI (`Ejemplos_Maui_Devices`).
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
 
+## [2026-07-18] — Flujo end2end de la híbrida rehecho y activación del CI de simulación
+
+Alcance: la técnica de prueba **end2end sobre la UI real** de `Ejemplo_Maui_Hibrida`
+(Maestro «dedo virtual» + grabación de video en el simulador iOS). No se tocó código de la app.
+
+### Cambiado
+
+- **`Utilities/end2end/com.ejemplos.devices.integrada.hibrida.yaml` — flujo rehecho desde la UI
+  real** (Estrategia B: grabación de navegación → normalización a las convenciones del repo).
+  Textos **verificados contra dispositivo real** (Motorola Moto G42, Android, 1080px, vía
+  `adb uiautomator dump`): la barra inferior de `MainPage` declara cuatro botones nativos
+  `Volver` · `Geo Pos` · `Llamar` · `Leer QR`.
+  - **Corrige el texto del botón de GPS: «Geo Pos», no «Geo Posicionar»** — el texto viejo no
+    matcheaba con ningún control y hacía fallar el `tapOn`.
+  - Agrega el recorrido completo: `Geo Pos` → `Llamar` → `Leer QR` (abre `QRLectorPage`) →
+    `Volver` (botón sólo-ícono `arrow_back` al pie de la página QR, por coordenada) →
+    `Volver` de la barra de `MainPage` (resetea el `WebView` a la home).
+  - Documenta el límite verificado en Android 1080px (la fila de 4 botones no entra y `Leer QR`
+    queda recortado a la derecha) y deja un **fallback por coordenada comentado**; el target del
+    CI es el simulador iOS (iPhone 17 Pro Max, más ancho), donde la botonera entra.
+
+### Activado
+
+- **`.github/workflows/cd-ios-Integrada.Ejemplo_Maui_Hibrida.yml` — se reactiva el disparador
+  `push`** sobre `main`, filtrado a `Ejemplos_Devices/Integrada/Ejemplo_Maui_Hibrida/**`
+  (excluyendo `*.md`, `.gitignore`, `.gitattributes`). Estaba comentado; ahora el flujo de
+  simulación corre automáticamente ante cambios de la app híbrida.
+
 ## [2026-07-17] — Armonización de los overlays de dispositivo y primer proyecto de tests
 
 Aplica `Ejemplos_Maui_Devices.Documentos/Analisis/Plan-Armonizacion-Overlays.md`.
