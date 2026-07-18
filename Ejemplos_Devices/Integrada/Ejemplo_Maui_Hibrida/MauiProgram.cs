@@ -1,4 +1,5 @@
 ﻿using BarcodeScanning;
+using LibApp.Devices.Common.Services;
 using CommunityToolkit.Maui;
 using CommunityToolkit.Maui.Core;
 using Ejemplo_Maui_Hibrida.LibApp.Devices.GPS;
@@ -73,7 +74,7 @@ public static class MauiProgram
     static MauiAppBuilder AddPrintServices(this MauiAppBuilder builder)
     {
         #region printer overlay
-        builder.Services.AddSingleton<PrinterService>();
+        builder.Services.AddSingleton<IPrinterService, PrinterService>();
         builder.Services.AddSingleton<PrinterOverlayViewModel>();
         #endregion
 
@@ -83,10 +84,11 @@ public static class MauiProgram
     static MauiAppBuilder AddServices(this MauiAppBuilder builder)
     {
         #region devices services
-        builder.Services.AddSingleton<GpsService>();
+        builder.Services.AddSingleton<IGpsService, GpsService>();
         builder.Services.AddSingleton(Connectivity.Current);
-        builder.Services.AddSingleton<NetworkService>();
-        builder.Services.AddSingleton<CallService>();
+        builder.Services.AddSingleton<IUiDispatcher, MainThreadDispatcher>();
+        builder.Services.AddSingleton<INetworkService, NetworkService>();
+        builder.Services.AddSingleton<ICallService, CallService>();
         builder.Services.AddSingleton<ApiRelayService>();
         #endregion
 

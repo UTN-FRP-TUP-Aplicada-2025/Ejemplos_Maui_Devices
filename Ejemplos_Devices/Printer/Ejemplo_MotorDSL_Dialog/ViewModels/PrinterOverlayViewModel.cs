@@ -50,7 +50,7 @@ public partial class PrinterOverlayViewModel : StatusOverlayViewModel
             var detalle = render.Errors.FirstOrDefault() ?? "Error de render";
             var fallo = PrinterErrorCatalog.RenderFallido(detalle);
             ShowError("error", fallo.Title, fallo.DisplayMessage,
-                new OverlayAction("Cerrar", CerrarOverlayCommand, OverlayActionStyle.Secondary));
+                Cerrar(unico: true));
             return;
         }
         _bytes = bytes;
@@ -59,7 +59,7 @@ public partial class PrinterOverlayViewModel : StatusOverlayViewModel
         {
             ShowError("print_disabled", "Impresión no disponible",
                 "Este dispositivo no puede imprimir por Bluetooth.",
-                new OverlayAction("Cerrar", CerrarOverlayCommand, OverlayActionStyle.Secondary));
+                Cerrar(unico: true));
             return;
         }
 
@@ -119,7 +119,7 @@ public partial class PrinterOverlayViewModel : StatusOverlayViewModel
             case DiscoverResult.NotSupported:
                 ShowError("print_disabled", "Impresión no disponible",
                     "Este dispositivo no puede imprimir por Bluetooth.",
-                    new OverlayAction("Cerrar", CerrarOverlayCommand, OverlayActionStyle.Secondary));
+                    Cerrar(unico: true));
                 break;
         }
     }
@@ -267,7 +267,7 @@ public partial class PrinterOverlayViewModel : StatusOverlayViewModel
             case BluetoothPermissionResult.Restricted:
                 ShowError("block", "Acceso restringido",
                     "El Bluetooth está restringido por una política del dispositivo.",
-                    new OverlayAction("Cerrar", CerrarOverlayCommand, OverlayActionStyle.Secondary));
+                    Cerrar(unico: true));
                 break;
         }
     }
@@ -289,6 +289,16 @@ public partial class PrinterOverlayViewModel : StatusOverlayViewModel
         var partes = id.Split(':');
         return partes.Length >= 2 ? string.Join(":", partes[^2..]) : id;
     }
+
+    /// <summary>
+    /// «Cerrar». Cuando es la única acción de la pantalla es <b>primaria</b>: un botón único en
+    /// gris comunica «esto no es importante» siendo lo único que el usuario puede hacer.
+    /// Recordar que Primary es «el DataTrigger de Secondary no disparó», así que omitirlo no da
+    /// ningún error y la pantalla queda sin nada que destaque.
+    /// </summary>
+    private OverlayAction Cerrar(bool unico = false)
+        => new("Cerrar", CerrarOverlayCommand,
+               unico ? OverlayActionStyle.Primary : OverlayActionStyle.Secondary);
 
     [RelayCommand] private void CerrarOverlay() => Hide();
 

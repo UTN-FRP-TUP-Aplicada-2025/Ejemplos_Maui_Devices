@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 
 using LibApp.CustomWebView.Behaviors;
+using LibApp.Devices.Common.Services;
 using LibApp.Devices.Common.ViewModels;
 using LibApp.Devices.Networks.Models;
 using LibApp.Devices.Networks.Services;
@@ -10,25 +11,36 @@ using LibApp.Devices.Networks.Services;
 namespace LibApp.Devices.Networks.ViewModels;
 
 /// <summary>
-/// Coordina el overlay de red con prioridad de estados. La verdad de fondo
-/// sobre "cargó o no" es el <see cref="WebNavigationResult"/> del WebView;
+/// Coordina el overlay de red. Es el único overlay <b>reactivo</b>: se suscribe a la
+/// conectividad del SO y puede aparecer sin que nadie lo invoque.
+/// <para>
+/// La verdad de fondo sobre «cargó o no» es el <see cref="WebNavigationResult"/> del WebView;
 /// el evento de conectividad y la sonda son ayudas.
+/// </para>
 /// </summary>
 public partial class NetworkOverlayViewModel : StatusOverlayViewModel
 {
-    private readonly NetworkService _net;
+    private readonly INetworkService _net;
     private readonly IWebViewBridge _bridge;
+    private readonly IUiDispatcher _ui;
 
     // true  => al recuperar la conexión hay que REFRESCAR el WebView (fallo de navegación).
     // false => corte emergente con página ya cargada: sólo subir/bajar el overlay.
     private bool _needsReload;
 
-    public NetworkOverlayViewModel(NetworkService net, IWebViewBridge bridge)
+    // Última URL que falló: es la que se resondea al reintentar.
+    private string _ultimaUrl = string.Empty;
+
+    public NetworkOverlayViewModel(INetworkService net, IWebViewBridge bridge, IUiDispatcher ui)
     {
         _net = net;
         _bridge = bridge;
-        _net.ConnectivityChanged += online =>
-            MainThread.BeginInvokeOnMainThread(() => OnConnectivity(online));
+        _ui = ui;
+
+        // El evento llega en el hilo del SO. Marshalar es obligatorio: toca propiedades
+        // observables. Va por IUiDispatcher y no por MainThread para que el VM siga siendo
+        // ejercitable fuera de un dispositivo.
+        _net.ConnectivityChanged += online => _ui.BeginInvoke(() => OnConnectivity(online));
         Hide();
     }
 
@@ -42,6 +54,7 @@ public partial class NetworkOverlayViewModel : StatusOverlayViewModel
     /// <summary>La navegación del WebView falló: probamos la red y procesamos el resultado.</summary>
     public async Task NotifyNavigationFailedAsync(string url, WebNavigationResult result)
     {
+        _ultimaUrl = url;
         _needsReload = true;
         ShowBusy("Reconectando…", "Comprobando el acceso al sitio…", "reconexion.gif");
         Procesar(await _net.CheckUrlAsync(url));
@@ -117,6 +130,8 @@ public partial class NetworkOverlayViewModel : StatusOverlayViewModel
 
     private void MostrarOffline()
     {
+        // Sin "Cerrar": sin red no hay nada que ver detrás, así que no se ofrece salida. Es el
+        // único overlay que además desmonta el WebView (ver MainPage.xaml).
         ShowError("wifi_off", "Sin conexión a internet",
             "Comprobá tu conexión Wi-Fi o tus datos móviles para continuar.",
             new OverlayAction("Reintentar", ReintentarCommand),
@@ -124,5 +139,5 @@ public partial class NetworkOverlayViewModel : StatusOverlayViewModel
     }
 
     [RelayCommand]
-    private void AbrirConfiguracion() => AppInfo.ShowSettingsUI();
+    private void AbrirConfiguracion() => _net.OpenAppSettings();
 }

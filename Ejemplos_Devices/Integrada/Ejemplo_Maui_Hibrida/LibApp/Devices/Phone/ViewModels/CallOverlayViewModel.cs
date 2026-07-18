@@ -1,4 +1,3 @@
-using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
 using LibApp.Devices.Common.ViewModels;
@@ -7,24 +6,26 @@ using LibApp.Devices.Phone.Services;
 
 namespace LibApp.Devices.Phone.ViewModels;
 
+/// <summary>
+/// Orquesta el inicio de una llamada sobre la capa de overlay. Espejo de
+/// GpsOverlayViewModel y PrinterOverlayViewModel.
+/// </summary>
 public partial class CallOverlayViewModel : StatusOverlayViewModel
 {
-    private readonly CallService _callService;
+    private readonly ICallService _callService;
 
-    // Último número y modo, para poder reintentar tras conceder el permiso.
+    // Último número y modo: el VM es singleton, así que el reintento funciona aunque el caller
+    // original ya no exista.
     private string _ultimoNumero = "";
     private CallMode _ultimoModo = CallMode.Direct;
 
-    [ObservableProperty]
-    private string estado = "";
-
-    public CallOverlayViewModel(CallService callService)
+    public CallOverlayViewModel(ICallService callService)
     {
         _callService = callService;
         Hide();
     }
 
-    async public Task<CallResult> LlamarAsync(string numero, CallMode mode = CallMode.Direct)
+    public async Task<CallResult> LlamarAsync(string numero, CallMode mode = CallMode.Direct)
     {
         _ultimoNumero = numero;
         _ultimoModo = mode;
@@ -32,99 +33,80 @@ public partial class CallOverlayViewModel : StatusOverlayViewModel
         ShowBusy("Iniciando llamada", "Aguarde un instante, conectando la llamada…", "timer.gif");
 
         var result = await _callService.LlamarAsync(numero, mode);
-
-        if (result is CallResult.Success)
-        {
-            Hide();
-            return result;
-        }
-
-        MostrarResultado(result);
+        Procesar(result);
         return result;
     }
 
-    [RelayCommand]
-    public void AbrirAjustes() => _callService.OpenAppSettings();
-
-    [RelayCommand]
-    public void CerrarOverlay() => Hide();
-
-    /// <summary>
-    /// Reintenta solicitar el permiso de llamadas y reinvoca con el último número/modo.
-    /// </summary>
-    [RelayCommand]
-    public Task PedirPermiso() => LlamarAsync(_ultimoNumero, _ultimoModo);
-
-    /// <summary>
-    /// Reintenta la llamada con el último número/modo.
-    /// </summary>
-    [RelayCommand]
-    public Task Reintentar() => LlamarAsync(_ultimoNumero, _ultimoModo);
-
-    private void ShowPermissionDenied(bool canRetry)
+    // Un solo camino: sin el guard previo que dejaba el 'case Success' del switch inalcanzable.
+    private void Procesar(CallResult result)
     {
-        var title = canRetry ? "Permiso de llamadas necesario" : "Acceso a llamadas denegado";
-        var message = canRetry
-            ? "Para llamar directamente necesitamos permiso para realizar llamadas. Podés intentar concederlo."
-            : "Para llamar directamente necesitamos permiso para realizar llamadas. Habilitalo desde los ajustes de la aplicación.";
-
-        // Android con posibilidad de reintento => "Pedir permiso".
-        // Android "no volver a preguntar" => "Abrir configuración".
-        var primary = canRetry
-            ? new OverlayAction("Pedir permiso", PedirPermisoCommand)
-            : new OverlayAction("Abrir configuración", AbrirAjustesCommand, OverlayActionStyle.Secondary);
-
-        ShowError("phone_locked", title, message,
-            primary,
-            new OverlayAction("Cerrar", CerrarOverlayCommand, OverlayActionStyle.Secondary));
-    }
-
-    private void ShowRestricted()
-    {
-        ShowError("phone_disabled", "Acceso restringido",
-            "Las llamadas están restringidas por una política del dispositivo. Consultá con el administrador.",
-            new OverlayAction("Cerrar", CerrarOverlayCommand, OverlayActionStyle.Secondary));
-    }
-
-    private void MostrarResultado(CallResult result)
-    {
-        switch (result)
+        if (result is CallResult.Success)
         {
-            case CallResult.Success s:
-                Estado = $"Llamada iniciada a {s.Numero} ({s.Mode}).";
-                Hide();
+            Hide();
+            return;
+        }
+
+        Mostrar(CallErrorCatalog.Describir(result));
+    }
+
+    /// <summary>
+    /// Cada fallo con su pantalla y su botonera. El mensaje que ve el usuario nunca es el de la
+    /// excepción: antes <c>Failure</c> mostraba <c>f.Message</c> crudo — texto de Android, en
+    /// inglés, sin acción posible.
+    /// </summary>
+    private void Mostrar(CallFailure fallo)
+    {
+        var acciones = new List<OverlayAction>();
+        var glyph = "error";
+
+        switch (fallo.Code)
+        {
+            case CallErrorCatalog.PermisoNecesario:
+                glyph = "phone_locked";
+                acciones.Add(new OverlayAction("Pedir permiso", PedirPermisoCommand));
                 break;
 
-            case CallResult.PermissionDenied d:
-                ShowPermissionDenied(d.CanRetry);
+            case CallErrorCatalog.PermisoDenegado:
+                glyph = "phone_locked";
+                acciones.Add(new OverlayAction("Abrir configuración", AbrirAjustesCommand));
                 break;
 
-            case CallResult.PermissionRestricted:
-                ShowRestricted();
+            case CallErrorCatalog.PermisoRestringido:
+                glyph = "phone_disabled";
+                acciones.Add(new OverlayAction("Cerrar", CerrarOverlayCommand));
                 break;
 
-            case CallResult.NotSupported:
-                ShowError("dialpad", "Llamadas no disponibles",
-                    "Este dispositivo no puede realizar llamadas telefónicas.",
-                    new OverlayAction("Cerrar", CerrarOverlayCommand, OverlayActionStyle.Secondary));
+            case CallErrorCatalog.NoSoportado:
+                glyph = "dialpad";
+                acciones.Add(new OverlayAction("Cerrar", CerrarOverlayCommand));
                 break;
 
-            case CallResult.InvalidNumber:
-                ShowError("error", "Número inválido",
-                    "El número de teléfono está vacío o no es válido.",
-                    new OverlayAction("Cerrar", CerrarOverlayCommand, OverlayActionStyle.Secondary));
+            // Número inválido: no lo elige el usuario, viene del handler. Reintentar daría lo
+            // mismo, así que sólo se cierra.
+            case CallErrorCatalog.NumeroInvalido:
+                acciones.Add(new OverlayAction("Cerrar", CerrarOverlayCommand));
                 break;
 
-            case CallResult.Cancelled:
-                Estado = "Operación cancelada por el usuario.";
-                Hide();
-                break;
-
-            case CallResult.Failure f:
-                ShowError("error", "No se pudo realizar la llamada", f.Message,
-                    new OverlayAction("Reintentar", ReintentarCommand),
-                    new OverlayAction("Cerrar", CerrarOverlayCommand, OverlayActionStyle.Secondary));
+            default:
+                acciones.Add(new OverlayAction("Reintentar", ReintentarCommand));
                 break;
         }
+
+        if (!acciones.Any(a => a.Text == "Cerrar"))
+            acciones.Add(new OverlayAction("Cerrar", CerrarOverlayCommand, OverlayActionStyle.Secondary));
+
+        ShowError(glyph, fallo.Title, fallo.DisplayMessage, acciones.ToArray());
     }
+
+    [RelayCommand] private void AbrirAjustes() => _callService.OpenAppSettings();
+
+    [RelayCommand] private void CerrarOverlay() => Hide();
+
+    /// <summary>
+    /// Reintenta con el último número. `PedirPermiso` y `Reintentar` hacen lo mismo —rehacer el
+    /// flujo—, pero se conservan separados porque nombran intenciones distintas en la botonera.
+    /// </summary>
+    [RelayCommand] private Task PedirPermiso() => LlamarAsync(_ultimoNumero, _ultimoModo);
+
+    [RelayCommand] private Task Reintentar() => LlamarAsync(_ultimoNumero, _ultimoModo);
 }

@@ -5,7 +5,7 @@ namespace LibApp.Devices.GPS.Services;
 /// <summary>
 /// Servicio de alto nivel: compone permisos + lectura GPS y devuelve un GpsResult tipado.
 /// </summary>
-public class GpsService
+public class GpsService : IGpsService
 {
     private static readonly TimeSpan DefaultTimeout = TimeSpan.FromSeconds(15);
 
@@ -34,21 +34,15 @@ public class GpsService
         #region Leer ubicación
         try
         {
-            /*
-            var request = new GeolocationRequest(GeolocationAccuracy.Best, DefaultTimeout);
+            // Lectura FRESCA del dispositivo (Opción A, ADR-0009). NO se usa
+            // GetLastKnownLocationAsync: ese atajo resolvía casi instantáneo y hacía que la capa
+            // de espera parpadeara (defecto 1.b). Con una lectura real, el "Buscando posición GPS"
+            // representa una espera verdadera y el overlay se cierra de forma determinista en
+            // GpsOverlayViewModel.Procesar (no depende de la re-navegación).
+            var request = new GeolocationRequest(GeolocationAccuracy.Medium, DefaultTimeout);
             var location = await Geolocation.Default.GetLocationAsync(request, ct);
 
-            return location is null  ? new GpsResult.NoSignal() : new GpsResult.Success(location);
-            */
-
-            var location = await Geolocation.GetLastKnownLocationAsync();
-            if (!(location != null && (DateTimeOffset.Now - location.Timestamp) < TimeSpan.FromMinutes(1)))
-            {
-                var req = new GeolocationRequest(GeolocationAccuracy.Medium, TimeSpan.FromSeconds(10));
-                location = await Geolocation.GetLocationAsync(req, ct);
-            }
-
-            return location is null  ? new GpsResult.NoSignal() : new GpsResult.Success(location);
+            return location is null ? new GpsResult.NoSignal() : new GpsResult.Success(location);
         }
         catch (OperationCanceledException)
         {
@@ -67,12 +61,6 @@ public class GpsService
             return new GpsResult.Failure(ex.Message);
         }
         #endregion 
-    }
-
-    public async Task<LocationPermissionResult> CheckAsync()
-    {
-        var status = await Permissions.CheckStatusAsync<Permissions.LocationWhenInUse>();
-        return Map(status, puedeReintentar: true);
     }
 
     public async Task<LocationPermissionResult> RequestAsync()
@@ -107,10 +95,22 @@ public class GpsService
 
     public void OpenAppSettings() => AppInfo.ShowSettingsUI();
 
-    private static LocationPermissionResult Map(PermissionStatus status, bool puedeReintentar) => status switch
+    /// <summary>
+    /// Abre los ajustes de ubicación del SO. Distinto de <see cref="OpenAppSettings"/>: el permiso
+    /// lo concede la app, pero el GPS se enciende desde el sistema.
+    /// <para>
+    /// NO enciende el GPS: sólo lleva al usuario al panel donde puede hacerlo. No existe API para
+    /// encenderlo sin intervención del usuario.
+    /// </para>
+    /// </summary>
+    public void OpenLocationSettings()
     {
-        PermissionStatus.Granted => LocationPermissionResult.Granted,
-        PermissionStatus.Restricted => LocationPermissionResult.Restricted,
-        _ => puedeReintentar ? LocationPermissionResult.DeniedCanRetry : LocationPermissionResult.Denied
-    };
+#if ANDROID
+        var intent = new Android.Content.Intent(Android.Provider.Settings.ActionLocationSourceSettings);
+        intent.SetFlags(Android.Content.ActivityFlags.NewTask);
+        Android.App.Application.Context.StartActivity(intent);
+#else
+        OpenAppSettings();
+#endif
+    }
 }

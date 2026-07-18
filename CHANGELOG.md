@@ -3,6 +3,87 @@
 Cambios notables de los ejemplos de dispositivos MAUI (`Ejemplos_Maui_Devices`).
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
 
+## [2026-07-17] — Armonización de los overlays de dispositivo y primer proyecto de tests
+
+Aplica `Ejemplos_Maui_Devices.Documentos/Analisis/Plan-Armonizacion-Overlays.md`.
+Alcance: los cuatro overlays de `Ejemplo_Maui_Hibrida` (GPS, Red, Telefonía, Impresión).
+**La librería `MotorDsl.*` no se modificó** (sigue en 1.0.13).
+
+### Agregado
+
+- **`Ejemplo_Maui_Hibrida.Tests` — el primer proyecto de tests de la solución**: 116 tests xUnit
+  sobre `net10.0`, que corren en el runner de escritorio **sin emulador ni dispositivo**. Es
+  viable porque los ViewModels no tocan la plataforma y los servicios quedan detrás de
+  interfaces. Accede al código por **linkeo de fuentes**, no por `ProjectReference`: la app es
+  `net10.0-android` y un proyecto `net10.0` no puede referenciarla.
+- **Los cinco invariantes del patrón, ejecutables** (`Invariantes.cs`): toda variante no-`Success`
+  muestra exactamente una pantalla (I-1); toda variante es alcanzable (I-2, por reflexión sobre
+  la jerarquía de records); ningún mensaje crudo llega al usuario (I-3); toda pantalla tiene un
+  único botón primario (I-4); el resultado tipado no se colapsa (I-5). **Agregar una variante sin
+  pantalla ahora rompe la suite** — es lo que C# no verifica y lo que dejó a `BluetoothOff`
+  inalcanzable durante toda la vida del PoC.
+- **`IGpsService`, `ICallService`, `INetworkService`, `IPrinterService`**: costuras entre los
+  ViewModels y la plataforma. Los VMs dependían de los tipos concretos, que usan estáticos de
+  MAUI (`Preferences`, `Permissions`, `AppInfo`) imposibles de ejercitar fuera de un dispositivo.
+- **`IUiDispatcher`** (`Common/Services/`): abstrae `MainThread`. Lo necesita sólo el overlay de
+  Red, el único reactivo.
+- **Catálogos de errores con código en GPS (`GPS-*`) y Telefonía (`TEL-*`)**, espejo del de
+  impresión: mensaje accionable en español + código dictable a soporte, con el original
+  preservado para log.
+- **`GpsService.OpenLocationSettings()`**: los ajustes de ubicación del SO son distintos de los
+  de la app. El permiso lo concede la app; el GPS se enciende desde el sistema.
+
+### Corregido
+
+- **GPS no decía nada cuando fallaba.** Cinco de sus ocho variantes (`GpsDisabled`,
+  `NotSupported`, `NoSignal`, `Cancelled`, `Failure`) escribían el mensaje en la propiedad
+  `Coordenadas` —que **no estaba bindeada a ningún control**— y ocultaban el overlay. Apagabas el
+  GPS y la app no decía que el GPS estaba apagado. Ahora cada una tiene su pantalla con su salida.
+- **`Coordenadas` (GPS) y `Estado` (Telefonía) eliminadas**: verificado que no tenían **ningún**
+  consumidor — cero bindings, cero lectores. Las dos asignaciones de `Estado` estaban además en
+  ramas inalcanzables.
+- **El `case Success` del switch era código muerto** en GPS y Telefonía: un guard previo retornaba
+  antes, y con él moría la única asignación real de la propiedad de salida. Eliminado el guard.
+- **GPS colapsaba las 7 variantes no-`Success` en `Failure("")`** con mensaje vacío: eran
+  indistinguibles desde fuera del ViewModel. Ahora devuelve la variante que recibió.
+- **Telefonía mostraba `f.Message` crudo**: el texto de una excepción de Android, en inglés y sin
+  acción posible. Ahora se clasifica.
+- **Pantallas sin botón primario** en los cuatro dominios. `Primary` es «el DataTrigger de
+  Secondary no disparó», así que omitirlo no da error: la pantalla queda sin nada que destaque.
+  Afectaba al permiso denegado de GPS/Telefonía y a **toda pantalla cuya única acción es
+  «Cerrar»**, incluidas las de impresión.
+- **El mensaje de fallo de DNS nombraba un host que el usuario nunca visitó.**
+  `NetworkService.CheckUrlAsync(url, …)` ignoraba el parámetro `url` y reportaba el de la sonda:
+  el usuario leía «No fue posible encontrar www.msftconnecttest.com». La sonda sigue yendo a un
+  endpoint fijo —detectar portal cautivo lo exige— pero ahora se reporta el host del sitio.
+- **`NetworkOverlayViewModel` era el único que tocaba la plataforma directamente**
+  (`MainThread`, `AppInfo`); ahora delega, como los otros tres.
+- **`GpsService.CheckAsync()` y `Map()` eliminados**: sin llamadores.
+- **`GpsCommandHandler`**: el comentario afirmaba «el overlay ya muestra el error», falso para 5
+  de 8 variantes.
+
+### Cambiado
+
+- **El workflow CI de la app híbrida se recategorizó** de `gps` a una categoría propia
+  `Integrada`: `.github/workflows/cd-ios-gps.Ejemplo_Maui_Hibrida.yml` →
+  `.github/workflows/cd-ios-Integrada.Ejemplo_Maui_Hibrida.yml`. El contenido del workflow es
+  idéntico; solo cambia el nombre de archivo/categoría. Siguen siendo **18 workflows** en total y
+  la categoría `gps` queda con un único ejemplo (`Ejemplo_GPS`).
+
+### Notas
+
+- **La suite arrancó en 34 rojos** (GPS 21, Telefonía 7, Impresión 3, Red 3) y terminó en 116/116.
+  Los rojos iniciales son el entregable: convirtieron los defectos documentados en fallas
+  ejecutables. Los verdes de impresión son la red de no-regresión del único dominio ya validado
+  en dispositivo.
+- **La suite encontró tres afirmaciones falsas del propio plan**, entre ellas que los ViewModels
+  eran platform-free: no tener `#if` no equivale a no tocar la plataforma.
+- **Pendiente**: la prueba en dispositivo real. La suite verifica que el ViewModel decide bien;
+  que eso llegue a la pantalla —y que los glyphs existan en la fuente— sigue necesitando un
+  teléfono. `ActionLocationSourceSettings` y `ActionBluetoothSettings` siguen sin verificar.
+- La capa Busy sigue sin admitir botones: **toda espera sigue siendo no-cancelable**. Es la deuda
+  estructural del patrón y no se atacó en este lote.
+
 ## [2026-07-16] — UX de impresión: errores con código, estados alcanzables y salida al cambiar de impresora
 
 Aplica los hallazgos de `PrintThermal_Motor_Maui.Documentacion/Analisis/Analisis-UX-UI.md`.

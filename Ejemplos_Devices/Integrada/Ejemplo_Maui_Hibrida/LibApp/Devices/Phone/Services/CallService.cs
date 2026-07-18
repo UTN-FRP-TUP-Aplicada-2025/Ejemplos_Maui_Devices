@@ -10,7 +10,7 @@ namespace LibApp.Devices.Phone.Services;
 /// Servicio de alto nivel: compone permisos + ejecución de la llamada y
 /// devuelve un <see cref="CallResult"/> tipado. Espejo de GpsService.
 /// </summary>
-public class CallService
+public class CallService : ICallService
 {
     public CallService()
     {

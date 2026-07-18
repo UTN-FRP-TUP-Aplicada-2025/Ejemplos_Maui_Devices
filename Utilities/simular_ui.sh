@@ -25,7 +25,7 @@ echo "Device:          ${DEVICE_SIMULATOR}"
 
 # Resuelve la ubicacion del flujo Maestro relativo a este script (robusto ante el CWD).
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-FLOW="${SCRIPT_DIR}/flows/recorrido.yaml"
+FLOW="${SCRIPT_DIR}/end2end/${PACKAGE_NAME}.yaml"
 VIDEO_OUT="recorrido.mp4"
 
 mkdir -p debug_logs

@@ -10,7 +10,7 @@ namespace LibApp.Devices.MotorDSL.Services;
 /// envío sobre <see cref="IThermalPrinterService"/> y devuelve resultados
 /// tipados. Espejo de CallService/GpsService. No referencia ningún ViewModel.
 /// </summary>
-public class PrinterService
+public class PrinterService : IPrinterService
 {
     private const string DefaultIdKey = "default_printer_id";
     private const string DefaultNameKey = "default_printer_name";

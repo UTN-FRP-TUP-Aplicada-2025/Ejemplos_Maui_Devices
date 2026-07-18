@@ -1,6 +1,13 @@
 <Solution>
   <Folder Name="/.Utilities/">
+    <File Path="../Utilities/download_sectigo.ps1" />
     <File Path="../Utilities/simular.sh" />
+    <File Path="../Utilities/simular_ui.sh" />
+  </Folder>
+  <Folder Name="/.Utilities/end2end/">
+    <File Path="../Utilities/end2end/com.ejemplos.devices.gps.yaml" />
+    <File Path="../Utilities/end2end/com.ejemplos.devices.integrada.hibrida.yaml" />
+    <File Path="../Utilities/end2end/com.ejemplos.devices.qr.dialog.yaml" />
   </Folder>
   <Folder Name="/Docs/">
     <File Path="../README.md" />
@@ -200,7 +207,7 @@
     <File Path="../.github/workflows/cd-ios-camera.Ejemplo_Photo_MiMediaPicker_Task.yml" />
     <File Path="../.github/workflows/cd-ios-camera.Ejemplo_Photo_MiMediaSelfie_Callback_Normalizacion.yml" />
     <File Path="../.github/workflows/cd-ios-gps.Ejemplo_GPS.yml" />
-    <File Path="../.github/workflows/cd-ios-gps.Ejemplo_Maui_Hibrida.yml" />
+    <File Path="../.github/workflows/cd-ios-Integrada.Ejemplo_Maui_Hibrida.yml" />
     <File Path="../.github/workflows/cd-ios-phone.Ejemplo_Dialer.yml" />
     <File Path="../.github/workflows/cd-ios-phone.Ejemplo_DirectCall.yml" />
     <File Path="../.github/workflows/cd-ios-printer.Ejemplo_MotorDSL.yml" />

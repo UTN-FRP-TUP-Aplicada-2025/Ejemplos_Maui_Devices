@@ -1,0 +1,82 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!--
+      net10.0 plano, NO net10.0-android: así la suite corre en el runner de escritorio y en CI,
+      sin emulador ni dispositivo. Es viable porque los ViewModels no tienen una sola directiva
+      #if: todo el código de plataforma vive en los servicios, detrás de I*Service.
+    -->
+    <TargetFramework>net10.0</TargetFramework>
+    <UseMaui>true</UseMaui>
+    <SkipValidateMauiImplicitPackageReferences>true</SkipValidateMauiImplicitPackageReferences>
+
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="xunit" Version="2.9.2" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2" />
+
+    <!-- Las mismas versiones que consume la app. MotorDsl.Core y Printing.Abstractions son
+         net10.0 plano: no arrastran nada de Android. -->
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+    <PackageReference Include="MotorDsl.Core" Version="1.0.13" />
+    <PackageReference Include="MotorDsl.Printing.Abstractions" Version="1.0.13" />
+  </ItemGroup>
+
+  <!--
+    LINKEO DE FUENTES, no ProjectReference.
+    Ejemplo_Maui_Hibrida es net10.0-android: un proyecto net10.0 NO puede referenciarlo. La
+    alternativa sería extraer LibApp/ a una librería multi-target, lo que contradiría ADR-0001
+    (cada ejemplo autocontenido y copiable).
+    Se linkea SÓLO lo platform-free. Los servicios concretos (PrinterService, GpsService,
+    CallService, NetworkService) quedan afuera a propósito: tienen #if ANDROID y estáticos de
+    MAUI (Preferences, Permissions, AppInfo) que lanzarían en runtime. Sus interfaces sí entran,
+    y los tests las implementan con fakes.
+  -->
+  <ItemGroup>
+    <Compile Include="..\Ejemplo_Maui_Hibrida\LibApp\Devices\Common\ViewModels\StatusOverlayViewModel.cs"
+             Link="Origen\Common\StatusOverlayViewModel.cs" />
+
+    <!-- Models: resultados tipados y catálogos. Sin dependencias de plataforma. -->
+    <Compile Include="..\Ejemplo_Maui_Hibrida\LibApp\Devices\GPS\Models\*.cs"      Link="Origen\GPS\Models\%(Filename)%(Extension)" />
+    <Compile Include="..\Ejemplo_Maui_Hibrida\LibApp\Devices\Phone\Models\*.cs"    Link="Origen\Phone\Models\%(Filename)%(Extension)" />
+    <Compile Include="..\Ejemplo_Maui_Hibrida\LibApp\Devices\Networks\Models\*.cs" Link="Origen\Networks\Models\%(Filename)%(Extension)" />
+    <Compile Include="..\Ejemplo_Maui_Hibrida\LibApp\Devices\MotorDSL\Models\*.cs" Link="Origen\MotorDSL\Models\%(Filename)%(Extension)" />
+
+    <!-- Sólo las interfaces de servicio, nunca las implementaciones. -->
+    <Compile Include="..\Ejemplo_Maui_Hibrida\LibApp\Devices\GPS\Services\IGpsService.cs"          Link="Origen\GPS\IGpsService.cs" />
+    <Compile Include="..\Ejemplo_Maui_Hibrida\LibApp\Devices\Phone\Services\ICallService.cs"       Link="Origen\Phone\ICallService.cs" />
+    <Compile Include="..\Ejemplo_Maui_Hibrida\LibApp\Devices\Networks\Services\INetworkService.cs" Link="Origen\Networks\INetworkService.cs" />
+    <Compile Include="..\Ejemplo_Maui_Hibrida\LibApp\Devices\MotorDSL\Services\IPrinterService.cs" Link="Origen\MotorDSL\IPrinterService.cs" />
+    <Compile Include="..\Ejemplo_Maui_Hibrida\LibApp\CustomWebView\Behaviors\IWebViewBridge.cs"    Link="Origen\Common\IWebViewBridge.cs" />
+
+    <!-- Sólo la interfaz: MainThreadDispatcher vive en el mismo archivo y sí toca MainThread,
+         pero es una clase aparte que los tests nunca instancian. -->
+    <Compile Include="..\Ejemplo_Maui_Hibrida\LibApp\Devices\Common\Services\IUiDispatcher.cs"    Link="Origen\Common\IUiDispatcher.cs" />
+
+    <!-- Los ViewModels: el sujeto de prueba. -->
+    <Compile Include="..\Ejemplo_Maui_Hibrida\LibApp\Devices\GPS\ViewModels\GpsOverlayViewModel.cs"          Link="Origen\GPS\GpsOverlayViewModel.cs" />
+    <Compile Include="..\Ejemplo_Maui_Hibrida\LibApp\Devices\Phone\ViewModels\CallOverlayViewModel.cs"       Link="Origen\Phone\CallOverlayViewModel.cs" />
+    <Compile Include="..\Ejemplo_Maui_Hibrida\LibApp\Devices\Networks\ViewModels\NetworkOverlayViewModel.cs" Link="Origen\Networks\NetworkOverlayViewModel.cs" />
+    <Compile Include="..\Ejemplo_Maui_Hibrida\LibApp\Devices\MotorDSL\ViewModels\PrinterOverlayViewModel.cs" Link="Origen\MotorDSL\PrinterOverlayViewModel.cs" />
+
+    <!-- Puente de comandos por URL: sólo el contrato y el handler de GPS son platform-free
+         (dependen de GpsOverlayViewModel + Models). Se linkean para cubrir el round-trip de
+         cultura de las coordenadas (ADR-0009 D2). El resto de handlers tocan Shell/Application. -->
+    <Compile Include="..\Ejemplo_Maui_Hibrida\LibApp\UrlCommands\IUrlCommandHandler.cs"          Link="Origen\UrlCommands\IUrlCommandHandler.cs" />
+    <Compile Include="..\Ejemplo_Maui_Hibrida\LibApp\UrlCommands\BridgeOutcome.cs"               Link="Origen\UrlCommands\BridgeOutcome.cs" />
+    <Compile Include="..\Ejemplo_Maui_Hibrida\LibApp\UrlCommands\Handlers\GpsCommandHandler.cs"  Link="Origen\UrlCommands\GpsCommandHandler.cs" />
+    <Compile Include="..\Ejemplo_Maui_Hibrida\LibApp\UrlCommands\UrlCommandDispatcher.cs"        Link="Origen\UrlCommands\UrlCommandDispatcher.cs" />
+
+    <!-- El interceptor de navegación: sujeto de prueba del guard de reentrada (ADR-0009 D1).
+         Usa tipos de Microsoft.Maui.Controls (WebNavigating/NavigatedEventArgs); resuelven en
+         net10.0 con UseMaui=true, igual que Microsoft.Maui.Devices.Sensors.Location. -->
+    <Compile Include="..\Ejemplo_Maui_Hibrida\ViewModels\MainViewModel.cs"                       Link="Origen\ViewModels\MainViewModel.cs" />
+  </ItemGroup>
+
+</Project>

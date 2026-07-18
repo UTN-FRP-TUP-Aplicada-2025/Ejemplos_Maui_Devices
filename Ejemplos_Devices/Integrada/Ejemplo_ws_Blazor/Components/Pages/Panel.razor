@@ -19,7 +19,7 @@
     <div class="card-body">
         <button @onclick="OnSolicitarCoordenadas" class="btn btn-primary">Tomar Coordenadas</button><br />
         <p>Toma y muestra las coordenadas desde el GPS.</p>
-        <div>@ContenidoCoordenada</div>        
+        <div id="contenidoCoordenada">@ContenidoCoordenada</div>
     </div>
 </div>
 
@@ -156,7 +156,9 @@
     string ContenidoCoordenada { get; set; } = "";
     public void OnSolicitarCoordenadas()
     {
-        Navigation.NavigateTo("/panel?coordenadas=coordenadas", forceLoad: true);
+        // La app intercepta la navegación (e.Cancel), toma el GPS e INYECTA el resultado en
+        // #contenidoCoordenada por JS (sin recargar). Mismo patrón que foto/selfie/QR: param={id}.
+        Navigation.NavigateTo("/panel?coordenadas=coordenadas&param=contenidoCoordenada", forceLoad: true);
     }
 
     //la app interviene  la url y redirecciona con:

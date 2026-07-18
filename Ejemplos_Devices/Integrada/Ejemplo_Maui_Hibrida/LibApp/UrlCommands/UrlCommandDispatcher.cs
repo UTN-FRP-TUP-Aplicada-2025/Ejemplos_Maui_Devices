@@ -16,10 +16,8 @@ public sealed class UrlCommandDispatcher
 
     public async Task<BridgeOutcome> DispatchAsync(string url)
     {
-        foreach (var handler in _handlers)
-        {
-            if (handler.CanHandle(url)) return await handler.HandleAsync(url);
-        }
+        var handler = _handlers.FirstOrDefault(h => h.CanHandle(url));
+        if (handler is not null) return await handler.HandleAsync(url);
 
         // Ningún comando matchea: navegación normal, no hay que reescribir la URL.
         // NavigateTo debe quedar en null: es exclusivo del caso GPS (re-navegar con

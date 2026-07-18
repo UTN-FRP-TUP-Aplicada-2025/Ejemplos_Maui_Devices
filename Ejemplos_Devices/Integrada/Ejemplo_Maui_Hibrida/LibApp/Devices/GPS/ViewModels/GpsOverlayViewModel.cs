@@ -1,5 +1,3 @@
-
-using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using LibApp.Devices.Common.ViewModels;
 using LibApp.Devices.GPS.Models;
@@ -7,115 +5,107 @@ using LibApp.Devices.GPS.Services;
 
 namespace LibApp.Devices.GPS.ViewModels;
 
+/// <summary>
+/// Orquesta la captura de ubicación sobre la capa de overlay: permisos → lectura → resultado.
+/// Espejo de PrinterOverlayViewModel y CallOverlayViewModel.
+/// </summary>
 public partial class GpsOverlayViewModel : StatusOverlayViewModel
 {
-    private readonly GpsService _gpsService;
+    private readonly IGpsService _gpsService;
 
-    [ObservableProperty]
-    private string coordenadas = "";
-
-    public GpsOverlayViewModel(GpsService gpsService)
+    public GpsOverlayViewModel(IGpsService gpsService)
     {
         _gpsService = gpsService;
         Hide();
     }
 
-    async public Task<GpsResult> SolicitarGeolocalizacion()
+    /// <summary>
+    /// Punto de entrada del flujo. Devuelve <b>la variante que produjo el servicio</b>: antes
+    /// colapsaba todo lo no-<c>Success</c> en <c>Failure("")</c> con mensaje vacío, y las siete
+    /// causas quedaban indistinguibles para el llamador.
+    /// </summary>
+    public async Task<GpsResult> SolicitarGeolocalizacion()
     {
         ShowBusy("Buscando posición GPS",
             "Aguarde unos segundos, y será redirigido automáticamente",
             "satelite.gif");
 
         var result = await _gpsService.ObtenerUbicacionAsync();
+        Procesar(result);
+        return result;
+    }
 
+    // Un solo camino: sin el guard previo que dejaba el 'case Success' del switch inalcanzable
+    // y, con él, muerta la única asignación real de la propiedad de salida.
+    private void Procesar(GpsResult result)
+    {
+        // Opción A (ADR-0009): en éxito se oculta ACÁ, de forma determinista y autocontenida.
+        // NO se delega el cierre en MainViewModel.Navigated: si la re-navegación apunta a una URL
+        // idéntica (pedir de nuevo la misma coordenada), el WebView no navega, Navigated no se
+        // dispara y el overlay quedaba colgado en "Buscando posición GPS". La lectura fresca del
+        // servicio hace que la espera sea real (objetivo de 1.b) sin necesitar la Opción B.
         if (result is GpsResult.Success)
         {
             Hide();
-            return result;
+            return;
         }
 
-        MostrarResultado(result);
-        return new GpsResult.Failure("");
+        Mostrar(GpsErrorCatalog.Describir(result));
     }
-
-    [RelayCommand]
-    public void AbrirAjustes() => _gpsService.OpenAppSettings();
-
-    [RelayCommand]
-    public void CerrarOverlay() => Hide();
 
     /// <summary>
-    /// Reintenta solicitar el permiso/ubicación GPS al usuario.
+    /// Cada fallo tiene su pantalla con su botonera. Ninguna variante puede terminar en un
+    /// <c>Hide()</c> silencioso: apagar el GPS no producía ningún mensaje porque el texto se
+    /// escribía en una propiedad que no estaba bindeada al overlay.
     /// </summary>
-    [RelayCommand]
-    public Task PedirPermiso() => SolicitarGeolocalizacion();
-
-    private void ShowPermissionDenied(bool canRetry)
+    private void Mostrar(GpsFailure fallo)
     {
-        var title = canRetry ? "Permiso de ubicación necesario" : "Acceso a la ubicación denegado";
-        var message = canRetry
-            ? "Para obtener coordenadas GPS necesitamos acceso a la ubicación. Podés intentar conceder el permiso."
-            : "Para obtener coordenadas GPS necesitamos acceso a la ubicación. Habilitalo desde los ajustes de la aplicación.";
+        var acciones = new List<OverlayAction>();
 
-        // Android con posibilidad de reintento => "Pedir permiso".
-        // Android "no volver a preguntar" / iOS => "Abrir configuración".
-        var primary = canRetry
-            ? new OverlayAction("Pedir permiso", PedirPermisoCommand)
-            : new OverlayAction("Abrir configuración", AbrirAjustesCommand, OverlayActionStyle.Secondary);
-
-        ShowError("location_off", title, message,
-            primary,
-            new OverlayAction("Cerrar", CerrarOverlayCommand, OverlayActionStyle.Secondary));
-    }
-
-    private void ShowRestricted()
-    {
-        ShowError("location_off", "Acceso restringido",
-            "El acceso a la ubicación está restringido por una política del dispositivo. Consultá con el administrador.",
-            new OverlayAction("Cerrar", CerrarOverlayCommand, OverlayActionStyle.Secondary));
-    }
-
-    private void MostrarResultado(GpsResult result)
-    {
-        switch (result)
+        switch (fallo.Code)
         {
-            case GpsResult.Success s:
-                Coordenadas = $"Lat: {s.Location.Latitude}, Lng: {s.Location.Longitude}";
-                Hide();
+            case GpsErrorCatalog.PermisoNecesario:
+                acciones.Add(new OverlayAction("Pedir permiso", PedirPermisoCommand));
                 break;
 
-            case GpsResult.PermissionDenied d:
-                ShowPermissionDenied(d.CanRetry);
+            case GpsErrorCatalog.PermisoDenegado:
+                acciones.Add(new OverlayAction("Abrir configuración", AbrirAjustesCommand));
                 break;
 
-            case GpsResult.PermissionRestricted:
-                ShowRestricted();
+            // El permiso lo concede la app; el GPS se enciende desde el sistema. Son ajustes
+            // distintos: mandarlo a los de la app acá lo dejaría sin salida.
+            case GpsErrorCatalog.Apagado:
+                acciones.Add(new OverlayAction("Activar ubicación", AbrirAjustesUbicacionCommand));
+                acciones.Add(new OverlayAction("Reintentar", ReintentarCommand, OverlayActionStyle.Secondary));
                 break;
 
-            case GpsResult.GpsDisabled:
-                Coordenadas = "El GPS está desactivado. Activalo desde ajustes.";
-                Hide();
+            case GpsErrorCatalog.SinSenal:
+            case GpsErrorCatalog.Cancelado:
+            case GpsErrorCatalog.Desconocido:
+                acciones.Add(new OverlayAction("Reintentar", ReintentarCommand));
                 break;
 
-            case GpsResult.NotSupported:
-                Coordenadas = "Este dispositivo no soporta GPS.";
-                Hide();
-                break;
-
-            case GpsResult.NoSignal:
-                Coordenadas = "No se pudo obtener ubicación (GPS sin señal).";
-                Hide();
-                break;
-
-            case GpsResult.Cancelled:
-                Coordenadas = "Operación cancelada por el usuario.";
-                Hide();
-                break;
-
-            case GpsResult.Failure f:
-                Coordenadas = $"Error: {f.Message}";
-                Hide();
+            // Restringido por política y GPS inexistente no tienen acción posible: el único
+            // botón es Cerrar, y por eso es el primario.
+            default:
+                acciones.Add(new OverlayAction("Cerrar", CerrarOverlayCommand));
                 break;
         }
+
+        if (!acciones.Any(a => a.Text == "Cerrar"))
+            acciones.Add(new OverlayAction("Cerrar", CerrarOverlayCommand, OverlayActionStyle.Secondary));
+
+        ShowError("location_off", fallo.Title, fallo.DisplayMessage, acciones.ToArray());
     }
+
+    [RelayCommand] private void AbrirAjustes() => _gpsService.OpenAppSettings();
+
+    [RelayCommand] private void AbrirAjustesUbicacion() => _gpsService.OpenLocationSettings();
+
+    [RelayCommand] private void CerrarOverlay() => Hide();
+
+    /// <summary>Reintenta el permiso rehaciendo el flujo completo.</summary>
+    [RelayCommand] private Task PedirPermiso() => SolicitarGeolocalizacion();
+
+    [RelayCommand] private Task Reintentar() => SolicitarGeolocalizacion();
 }

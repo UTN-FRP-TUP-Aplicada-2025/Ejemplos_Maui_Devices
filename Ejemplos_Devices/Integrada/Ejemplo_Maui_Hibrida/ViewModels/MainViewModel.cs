@@ -32,6 +32,10 @@ public partial class MainViewModel : ObservableObject
 
     private readonly UrlCommandDispatcher _dispatcher;
 
+    // Guard de reentrada del puente: hay un comando de dispositivo (cámara/QR/GPS…) en curso.
+    // Evita que un segundo click dispare un segundo despacho concurrente. Ver ADR-0009.
+    private bool comandoEnCurso;
+
     public IWebViewBridge WebBridge { get; }
 
     public MainViewModel(NetworkOverlayViewModel network, GpsOverlayViewModel gps, CallOverlayViewModel call, PrinterOverlayViewModel printer, UrlCommandDispatcher dispatcher, IWebViewBridge webBridge)
@@ -79,16 +83,33 @@ public partial class MainViewModel : ObservableObject
     [RelayCommand]
     private void Refresh() => WebBridge.Reload();
 
-    [RelayCommand]
+    // AllowConcurrentExecutions = true es imprescindible: si el comando quedara bloqueado por
+    // estar "en ejecución" (default de AsyncRelayCommand), el EventToCommandBehavior no lo
+    // invocaría en el 2º Navigating y `e.Cancel` NO se fijaría → el WebView haría la navegación
+    // real (recarga de la página, perdiendo la inyección del resultado). Ver ADR-0009.
+    [RelayCommand(AllowConcurrentExecutions = true)]
     private async Task Navigating(WebNavigatingEventArgs e)
     {
         if (_dispatcher.IsCommand(e.Url))
-            e.Cancel = true;   // sincrónico: cancelar ANTES de cualquier await
+        {
+            e.Cancel = true;             // SIEMPRE cancelar la URL-comando: nunca debe recargar
 
-        var outcome = await _dispatcher.DispatchAsync(e.Url);
+            if (comandoEnCurso)          // click duplicado mientras hay un comando en curso:
+            {                            // ya se canceló la navegación; se descarta el duplicado.
+                IsRefreshing = false;
+                return;
+            }
 
-        if (outcome.NavigateTo is not null)
-            Url = outcome.NavigateTo;
+            comandoEnCurso = true;
+            try
+            {
+                var outcome = await _dispatcher.DispatchAsync(e.Url);
+
+                if (outcome.NavigateTo is not null)
+                    Url = outcome.NavigateTo;
+            }
+            finally { comandoEnCurso = false; }
+        }
 
         IsRefreshing = false;
     }

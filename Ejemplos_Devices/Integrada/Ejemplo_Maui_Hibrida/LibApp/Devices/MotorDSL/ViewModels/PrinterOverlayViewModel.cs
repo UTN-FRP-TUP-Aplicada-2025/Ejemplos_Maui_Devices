@@ -16,7 +16,7 @@ namespace LibApp.Devices.MotorDSL.ViewModels;
 /// </summary>
 public partial class PrinterOverlayViewModel : StatusOverlayViewModel
 {
-    private readonly PrinterService _service;
+    private readonly IPrinterService _service;
     private byte[]? _bytes;
     private PrinterDevice? _lastDevice;
     private RenderResult? _lastRender;
@@ -34,7 +34,7 @@ public partial class PrinterOverlayViewModel : StatusOverlayViewModel
     // remoto (PrintCommandHandler); nulo cuando el documento es local.
     private Func<Task>? _reintentarDocumento;
 
-    public PrinterOverlayViewModel(PrinterService service)
+    public PrinterOverlayViewModel(IPrinterService service)
     {
         _service = service;
         Hide();
@@ -61,7 +61,8 @@ public partial class PrinterOverlayViewModel : StatusOverlayViewModel
         var acciones = new List<OverlayAction>();
         if (reintentar is not null)
             acciones.Add(new OverlayAction("Reintentar", ReintentarDocumentoCommand));
-        acciones.Add(new OverlayAction("Cerrar", CerrarOverlayCommand, OverlayActionStyle.Secondary));
+
+        acciones.Add(Cerrar(unico: acciones.Count == 0));
 
         ShowError("error", failure.Title, failure.DisplayMessage, acciones.ToArray());
     }
@@ -74,8 +75,7 @@ public partial class PrinterOverlayViewModel : StatusOverlayViewModel
         {
             var detalle = render.Errors.FirstOrDefault() ?? "Error de render";
             var fallo = PrinterErrorCatalog.RenderFallido(detalle);
-            ShowError("error", fallo.Title, fallo.DisplayMessage,
-                new OverlayAction("Cerrar", CerrarOverlayCommand, OverlayActionStyle.Secondary));
+            ShowError("error", fallo.Title, fallo.DisplayMessage, Cerrar(unico: true));
             return;
         }
         _bytes = bytes;
@@ -84,7 +84,7 @@ public partial class PrinterOverlayViewModel : StatusOverlayViewModel
         {
             ShowError("print_disabled", "Impresión no disponible",
                 "Este dispositivo no puede imprimir por Bluetooth.",
-                new OverlayAction("Cerrar", CerrarOverlayCommand, OverlayActionStyle.Secondary));
+                Cerrar(unico: true));
             return;
         }
 
@@ -144,10 +144,20 @@ public partial class PrinterOverlayViewModel : StatusOverlayViewModel
             case DiscoverResult.NotSupported:
                 ShowError("print_disabled", "Impresión no disponible",
                     "Este dispositivo no puede imprimir por Bluetooth.",
-                    new OverlayAction("Cerrar", CerrarOverlayCommand, OverlayActionStyle.Secondary));
+                    Cerrar(unico: true));
                 break;
         }
     }
+
+    /// <summary>
+    /// «Cerrar». Cuando es la única acción de la pantalla es <b>primaria</b>: un botón único en
+    /// gris comunica «esto no es importante» siendo lo único que el usuario puede hacer.
+    /// Recordar que Primary es «el DataTrigger de Secondary no disparó», así que omitirlo no da
+    /// ningún error y la pantalla queda sin nada que destaque.
+    /// </summary>
+    private OverlayAction Cerrar(bool unico = false)
+        => new("Cerrar", CerrarOverlayCommand,
+               unico ? OverlayActionStyle.Primary : OverlayActionStyle.Secondary);
 
     private void MostrarSelector(IReadOnlyList<PrinterDevice> devices)
     {
@@ -292,7 +302,7 @@ public partial class PrinterOverlayViewModel : StatusOverlayViewModel
             case BluetoothPermissionResult.Restricted:
                 ShowError("block", "Acceso restringido",
                     "El Bluetooth está restringido por una política del dispositivo.",
-                    new OverlayAction("Cerrar", CerrarOverlayCommand, OverlayActionStyle.Secondary));
+                    Cerrar(unico: true));
                 break;
         }
     }
