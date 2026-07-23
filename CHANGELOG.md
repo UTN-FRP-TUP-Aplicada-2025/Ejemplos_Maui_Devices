@@ -3,6 +3,59 @@
 Cambios notables de los ejemplos de dispositivos MAUI (`Ejemplos_Maui_Devices`).
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
 
+## [2026-07-23] — Puente de comandos por URL: clasificación separada de ejecución (Plan 1)
+
+Alcance: `Ejemplo_Maui_Hibrida/LibApp/UrlCommands/*` (contrato, dispatcher, handler de GPS) +
+`Ejemplo_ws_Blazor/Components/Pages/*` (Panel + nueva página de geolocalización) + tests.
+Motivado por dos defectos del modelo anterior: (1) la cancelación era «es comando ⇒ cancelo»,
+sin poder expresar un comando que *no* cancela; (2) en el camino de re-navegación del GPS, un
+fallo del dispositivo devolvía `(cancel=true, navigateTo=null)` → navegación cancelada y sin
+re-navegar = **página congelada**.
+
+### Agregado
+
+- **`CommandDelivery` (enum) — cómo un comando devuelve su resultado a la web.** `None` (la
+  respuesta es la UI nativa: llamada, impresión), `Injection` (se inyecta en el DOM vía
+  `IWebViewBridge.RunScript`, requiere navegación cancelada) y `Substitution` (se re-navega la
+  misma URL con el query param de comando sustituido por query params de valor, patrón APPGDA).
+  Es propiedad del **comando concreto**, no del handler: se consulta con `DeliveryFor(url)`.
+- **`UrlPlan` (record) — resultado de clasificar una URL, calculado una sola vez y de forma
+  síncrona.** Evita evaluar `CanHandle` dos veces por navegación (antes en `IsCommand` y de nuevo
+  en `DispatchAsync`), lo que dejaba de ser inocuo apenas un handler consultara/mutara estado.
+- **`Ejemplo_ws_Blazor/Components/Pages/GeoLocalizacion.razor` — nueva página `/geolocalizacion`.**
+  Muestra la coordenada recibida por query (`Latitud`/`Longitud`); si viene vacía usa el centinela
+  `0.0/0.0`. Es el destino del modo `Substitution` del GPS.
+- **Tests.** `UrlCommandDispatcherTests` (los dos ejes del Plan 1: OR de cancelación y gancho
+  síncrono para todos los matches) y tres casos nuevos en `GpsCommandHandlerTests`
+  (re-navegación con centinela ante fallo en `Substitution`, no-inyección ante fallo en
+  `Injection`, y `DeliveryFor` distinguiendo ambos modos).
+
+### Corregido
+
+- **El GPS en modo `Substitution` re-navega SIEMPRE, haya o no señal.** Ante un fallo del
+  dispositivo ahora sustituye por el centinela `0.0/0.0` (igual que APPGDA) en vez de devolver
+  `NavigateTo=null`. Se acabó la página congelada tras un GPS sin señal por el botón nativo.
+- **`UrlCommandDispatcher` separa `Plan(url)` (100 % síncrono) de `ExecuteAsync(plan, url)`.** La
+  cancelación pasa a ser un **OR** sobre los handlers que matchean: alcanza con uno cancelable.
+  Se conserva first-match-wins para la ejecución. En `DEBUG`, dos aserciones (`Debug.Fail`)
+  atrapan URLs mal formadas (cancela por un handler pero ejecuta otro que no cancela) y comandos
+  `Substitution` que devuelven `NavigateTo=null` — falla ruidoso en vez de un WebView colgado.
+- **`MainViewModel.Navigating` decide `e.Cancel` en la fase síncrona** (antes de cualquier
+  `await`) a partir del `UrlPlan`, y limita el guard de reentrada a los planes que cancelan.
+
+### Cambiado
+
+- **`IUrlCommandHandler` gana tres miembros con *default interface members*** — `CancelsNavigation`
+  (default `true`), `DeliveryFor` (default `None`) y `OnMatchedSync` (default no-op). Los 7 handlers
+  existentes **no requieren ninguna edición** y conservan su comportamiento.
+- **El camino web «Tomar Coordenadas» pasa de `Injection` a `Substitution`.** `Panel.razor` ya no
+  inyecta en `#contenidoCoordenada`: navega a `/geolocalizacion?coordenadas=coordenadas`. Se
+  renombró el `NavigationManager` inyectado a `_navigationManager` en todos los handlers de la
+  página.
+- **El `.csproj` de tests linkea `LibApp/UrlCommands/*.cs` por comodín** (todo el paquete raíz es
+  platform-free), en vez de enumerar archivo por archivo. `Handlers/` sigue explícito: sólo
+  `GpsCommandHandler` entra.
+
 ## [2026-07-18] — El video end2end ahora captura el recorrido completo (pre-warm + espera activa)
 
 Alcance: `Utilities/simular_ui.sh` + `Utilities/end2end/com.ejemplos.devices.integrada.hibrida.yaml`.

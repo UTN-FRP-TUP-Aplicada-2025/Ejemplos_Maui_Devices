@@ -3,6 +3,7 @@ using System.Globalization;
 using Ejemplo_Maui_Hibrida.Tests.Fakes;
 using LibApp.Devices.GPS.Models;
 using LibApp.Devices.GPS.ViewModels;
+using LibApp.UrlCommands;
 using LibApp.UrlCommands.Handlers;
 using Microsoft.Maui.Devices.Sensors;
 using Xunit;
@@ -82,5 +83,52 @@ public class GpsCommandHandlerTests
         var u2 = (await h.HandleAsync("/panel?coordenadas=coordenadas")).NavigateTo;
 
         Assert.NotEqual(u1, u2);
+    }
+
+    // Plan 1 §3: en modo Substitution (sin "param") un fallo del dispositivo DEBE re-navegar igual,
+    // con el centinela 0.0/0.0. Antes devolvía (true, null) y la página quedaba congelada: navegación
+    // cancelada y sin re-navegación.
+    [Fact]
+    public async Task Sin_param_y_sin_senal_renavega_igual_con_centinela_cero()
+    {
+        var gps = new GpsOverlayViewModel(new FakeGpsService { Resultado = new GpsResult.NoSignal() });
+        var h = new GpsCommandHandler(gps, new FakeWebViewBridge());
+
+        var outcome = await h.HandleAsync("/panel?coordenadas=coordenadas");
+
+        Assert.True(outcome.CancelNavigation);
+        Assert.NotNull(outcome.NavigateTo);                          // ← lo que el defecto NO hacía
+        Assert.Contains("Latitud=0.0", outcome.NavigateTo);
+        Assert.Contains("Longitud=0.0", outcome.NavigateTo);
+        Assert.DoesNotContain("coordenadas=coordenadas", outcome.NavigateTo);
+    }
+
+    // En modo Injection, en cambio, un fallo NO re-navega: la continuación es el overlay y la página
+    // sigue viva porque la navegación se canceló.
+    [Fact]
+    public async Task Con_param_y_sin_senal_no_renavega_ni_inyecta()
+    {
+        var gps = new GpsOverlayViewModel(new FakeGpsService { Resultado = new GpsResult.NoSignal() });
+        var bridge = new FakeWebViewBridge();
+        var scripts = new List<string>();
+        bridge.ScriptRequested += (_, js) => scripts.Add(js);
+        var h = new GpsCommandHandler(gps, bridge);
+
+        var outcome = await h.HandleAsync("/panel?coordenadas=coordenadas&param=contenidoCoordenada");
+
+        Assert.True(outcome.CancelNavigation);
+        Assert.Null(outcome.NavigateTo);
+        Assert.Empty(scripts);
+    }
+
+    // El modo se deduce de la URL, no del handler (Plan 1 §4, eje B).
+    [Theory]
+    [InlineData("/panel?coordenadas=coordenadas",                           CommandDelivery.Substitution)]
+    [InlineData("/panel?coordenadas=coordenadas&param=contenidoCoordenada", CommandDelivery.Injection)]
+    public void DeliveryFor_distingue_los_dos_modos(string url, CommandDelivery esperado)
+    {
+        var h = new GpsCommandHandler(new GpsOverlayViewModel(new FakeGpsService()), new FakeWebViewBridge());
+
+        Assert.Equal(esperado, h.DeliveryFor(url));
     }
 }

@@ -65,13 +65,17 @@
     <Compile Include="..\Ejemplo_Maui_Hibrida\LibApp\Devices\Networks\ViewModels\NetworkOverlayViewModel.cs" Link="Origen\Networks\NetworkOverlayViewModel.cs" />
     <Compile Include="..\Ejemplo_Maui_Hibrida\LibApp\Devices\MotorDSL\ViewModels\PrinterOverlayViewModel.cs" Link="Origen\MotorDSL\PrinterOverlayViewModel.cs" />
 
-    <!-- Puente de comandos por URL: sólo el contrato y el handler de GPS son platform-free
-         (dependen de GpsOverlayViewModel + Models). Se linkean para cubrir el round-trip de
-         cultura de las coordenadas (ADR-0009 D2). El resto de handlers tocan Shell/Application. -->
-    <Compile Include="..\Ejemplo_Maui_Hibrida\LibApp\UrlCommands\IUrlCommandHandler.cs"          Link="Origen\UrlCommands\IUrlCommandHandler.cs" />
-    <Compile Include="..\Ejemplo_Maui_Hibrida\LibApp\UrlCommands\BridgeOutcome.cs"               Link="Origen\UrlCommands\BridgeOutcome.cs" />
-    <Compile Include="..\Ejemplo_Maui_Hibrida\LibApp\UrlCommands\Handlers\GpsCommandHandler.cs"  Link="Origen\UrlCommands\GpsCommandHandler.cs" />
-    <Compile Include="..\Ejemplo_Maui_Hibrida\LibApp\UrlCommands\UrlCommandDispatcher.cs"        Link="Origen\UrlCommands\UrlCommandDispatcher.cs" />
+    <!-- Puente de comandos por URL: TODO el paquete raíz es platform-free (contrato, enum de
+         entrega, plan de clasificación, dispatcher). Comodín para no tener que tocar este csproj
+         cada vez que el modelo de comandos gana un tipo. Handlers/ NO entra por comodín: la mayoría
+         toca Shell/Application; sólo GpsCommandHandler se linkea, abajo, de forma explícita
+         (depende de GpsOverlayViewModel + Models) para cubrir el round-trip de cultura de las
+         coordenadas (ADR-0009 D2). -->
+    <Compile Include="..\Ejemplo_Maui_Hibrida\LibApp\UrlCommands\*.cs"
+             Link="Origen\UrlCommands\%(Filename)%(Extension)" />
+
+    <Compile Include="..\Ejemplo_Maui_Hibrida\LibApp\UrlCommands\Handlers\GpsCommandHandler.cs"
+             Link="Origen\UrlCommands\GpsCommandHandler.cs" />
 
     <!-- El interceptor de navegación: sujeto de prueba del guard de reentrada (ADR-0009 D1).
          Usa tipos de Microsoft.Maui.Controls (WebNavigating/NavigatedEventArgs); resuelven en

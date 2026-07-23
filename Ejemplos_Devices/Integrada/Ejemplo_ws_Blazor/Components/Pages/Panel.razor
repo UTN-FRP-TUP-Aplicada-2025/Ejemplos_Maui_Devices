@@ -7,8 +7,6 @@
 @rendermode InteractiveServer
 @attribute [StreamRendering]
 
-@inject NavigationManager Navigation
-
 <PageTitle>Home</PageTitle>
 
 <!-- GPS -->
@@ -18,8 +16,8 @@
     </div>
     <div class="card-body">
         <button @onclick="OnSolicitarCoordenadas" class="btn btn-primary">Tomar Coordenadas</button><br />
-        <p>Toma y muestra las coordenadas desde el GPS.</p>
-        <div id="contenidoCoordenada">@ContenidoCoordenada</div>
+        <p>Toma y muestra las coordenadas desde el GPS en una página nueva.</p>
+    @*     <div id="contenidoCoordenada">@ContenidoCoordenada</div> *@
     </div>
 </div>
 
@@ -132,6 +130,9 @@
 
 @code {
 
+    [Inject]
+    private NavigationManager _navigationManager { get; set; } = default!;
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
@@ -158,7 +159,8 @@
     {
         // La app intercepta la navegación (e.Cancel), toma el GPS e INYECTA el resultado en
         // #contenidoCoordenada por JS (sin recargar). Mismo patrón que foto/selfie/QR: param={id}.
-        Navigation.NavigateTo("/panel?coordenadas=coordenadas&param=contenidoCoordenada", forceLoad: true);
+        //Navigation.NavigateTo("/panel?coordenadas=coordenadas&param=contenidoCoordenada", forceLoad: true);
+        _navigationManager.NavigateTo("/geolocalizacion?coordenadas=coordenadas", forceLoad: true);
     }
 
     //la app interviene  la url y redirecciona con:
@@ -182,7 +184,7 @@
     #region llamada
     public void OnLLamar()
     {
-        Navigation.NavigateTo("/panel?phone=phone", forceLoad: true);
+        _navigationManager.NavigateTo("/panel?phone=phone", forceLoad: true);
     }
     public void OnLLamarYSendAPI()
     {
@@ -192,7 +194,7 @@
         string parametrosLLamar = "phone=phone";
         string parametrosSendAPI = $"sendAPI=sendAPI&httpMethod=Post&url={HttpUtility.UrlEncode("https://geolocate.somee.com/api/GeoReporter/track")}";
 
-        Navigation.NavigateTo($"/panel?{parametrosLLamar}&{parametrosSendAPI}", forceLoad: true);
+        _navigationManager.NavigateTo($"/panel?{parametrosLLamar}&{parametrosSendAPI}", forceLoad: true);
     }
     #endregion
 
@@ -205,7 +207,7 @@
     //1- desde la pagina se redirecciona con esta url
     public void OnTomarFoto()
     {
-        Navigation.NavigateTo("/panel?photo=photo&param=imgFoto1", forceLoad: true);
+        _navigationManager.NavigateTo("/panel?photo=photo&param=imgFoto1", forceLoad: true);
     }
     async public Task OnMostrarContenidoFoto()
     {
@@ -229,7 +231,7 @@
     //1- desde la pagina se redirecciona con esta url
     public void OnTomarSelfie()
     {
-        Navigation.NavigateTo("/panel?selfie=selfie&param=imgSelfie1", forceLoad: true);
+        _navigationManager.NavigateTo("/panel?selfie=selfie&param=imgSelfie1", forceLoad: true);
     }
     async public Task OnMostrarContenidoSelfie()
     {
@@ -253,7 +255,7 @@
         string parametrosSendAPI =
             $"sendAPI=sendAPI&httpMethod=Post&url={HttpUtility.UrlEncode("https://geolocate.somee.com/api/GeoReporter/track")}" +
             $"&param=contenidoSendAPI&body={HttpUtility.UrlEncode(body)}";
-        Navigation.NavigateTo($"/panel?{parametrosSendAPI}", forceLoad: true);
+        _navigationManager.NavigateTo($"/panel?{parametrosSendAPI}", forceLoad: true);
     }
     #endregion
 
@@ -263,7 +265,7 @@
     public void OnQR()
     {
         string parametrosQR = $"qr=qr&param=contenidoQR";
-        Navigation.NavigateTo($"/panel?{parametrosQR}", forceLoad: true);
+        _navigationManager.NavigateTo($"/panel?{parametrosQR}", forceLoad: true);
     }
     #endregion
 
@@ -273,7 +275,7 @@
     public void OnRedirect()
     {
         string url = $"https://www.google.com";
-        Navigation.NavigateTo(url, forceLoad: true);
+        _navigationManager.NavigateTo(url, forceLoad: true);
     }
     #endregion
     
@@ -296,7 +298,7 @@
 
     public void OnImprimirTicker()
     {
-        Navigation.NavigateTo("/panel?action=print", forceLoad: true);
+        _navigationManager.NavigateTo("/panel?action=print", forceLoad: true);
     }
     #endregion
 }

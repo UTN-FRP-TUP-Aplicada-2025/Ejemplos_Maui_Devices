@@ -90,28 +90,46 @@ public partial class MainViewModel : ObservableObject
     [RelayCommand(AllowConcurrentExecutions = true)]
     private async Task Navigating(WebNavigatingEventArgs e)
     {
-        if (_dispatcher.IsCommand(e.Url))
+        // ── Fase SÍNCRONA ────────────────────────────────────────────────────────────────
+        // El cuerpo de un método async corre sincrónicamente hasta el primer await. Todo lo que
+        // decide e.Cancel tiene que estar ACÁ ARRIBA. Regla de mantenimiento: no introducir ningún
+        // await por encima de la asignación de e.Cancel.
+        var plan = _dispatcher.Plan(e.Url);
+
+        if (plan.Cancel)
+            e.Cancel = true;             // la URL-comando cancelable nunca debe recargar
+
+        if (plan.HasMatches == false)
         {
-            e.Cancel = true;             // SIEMPRE cancelar la URL-comando: nunca debe recargar
-
-            if (comandoEnCurso)          // click duplicado mientras hay un comando en curso:
-            {                            // ya se canceló la navegación; se descarta el duplicado.
-                IsRefreshing = false;
-                return;
-            }
-
-            comandoEnCurso = true;
-            try
-            {
-                var outcome = await _dispatcher.DispatchAsync(e.Url);
-
-                if (outcome.NavigateTo is not null)
-                    Url = outcome.NavigateTo;
-            }
-            finally { comandoEnCurso = false; }
+            IsRefreshing = false;
+            return;                      // navegación normal: no se toca
         }
 
-        IsRefreshing = false;
+        // Guard de reentrada: sólo para planes que CANCELAN. Un plan no-cancelable deja seguir la
+        // navegación de todos modos, así que bloquearlo no protege nada y sí podría descartar
+        // trabajo. Para los 7 handlers actuales —todos cancelables— esta condición es equivalente
+        // a la anterior.
+        if (plan.Cancel && comandoEnCurso)   // click duplicado mientras hay un comando en curso:
+        {                                    // ya se canceló la navegación; se descarta el duplicado.
+            IsRefreshing = false;
+            return;
+        }
+
+        // ── Fase ASÍNCRONA ───────────────────────────────────────────────────────────────
+        var marcarEnCurso = plan.Cancel;
+        if (marcarEnCurso) comandoEnCurso = true;
+        try
+        {
+            var outcome = await _dispatcher.ExecuteAsync(plan, e.Url);
+
+            if (outcome.NavigateTo is not null)
+                Url = outcome.NavigateTo;
+        }
+        finally
+        {
+            if (marcarEnCurso) comandoEnCurso = false;
+            IsRefreshing = false;
+        }
     }
 
     [RelayCommand]

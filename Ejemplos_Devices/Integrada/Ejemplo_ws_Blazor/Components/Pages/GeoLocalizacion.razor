@@ -1,0 +1,46 @@
+﻿@page "/geolocalizacion"
+
+
+
+@rendermode InteractiveServer
+@attribute [StreamRendering]
+
+<h3>GeoLocalizacion</h3>
+
+<div style="">@geoLocalizacion</div>
+<br/>
+<button class="btn btn-primary" @onclick="Volver">Volver</button>
+
+@code {
+
+    [Inject]
+    private NavigationManager _navigationManager { get; set; } = default!;
+
+    string geoLocalizacion = "Obteniendo geolocalización...";
+
+    [SupplyParameterFromQuery]
+    public string Latitud { get; set; }
+    [SupplyParameterFromQuery]
+    public string Longitud { get; set; }
+
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if(firstRender)
+        {
+            if (string.IsNullOrEmpty(Latitud) || string.IsNullOrEmpty(Longitud))
+            {
+                Latitud=  "0.0";
+                Longitud = "0.0";
+            }
+            geoLocalizacion=$"{{\"Latitud\": \"{Latitud}\", \"Longitud\": \"{Longitud}\"}}";
+            StateHasChanged();
+
+        }
+        return base.OnAfterRenderAsync(firstRender);
+    }
+
+    private void Volver()
+    {
+        _navigationManager.NavigateTo("/panel", true);
+    }   
+}
