@@ -1,7 +1,8 @@
 
-using Ejemplo_Maui_Hibrida.LibApp.Devices.GPS;
 using LibApp.CustomWebView.Behaviors;
+using LibApp.Devices.GPS;
 using LibApp.Devices.Phone.Models;
+
 using System.Text.Json;
 
 namespace LibApp.UrlCommands.Handlers;

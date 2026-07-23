@@ -4,11 +4,11 @@ using System.Text.Json;
 using LibApp.Devices.MotorDSL.DTOs.Print;
 using LibApp.Devices.MotorDSL.Models;
 using LibApp.Devices.MotorDSL.ViewModels;
-using LibApp.UrlCommands;
+
 using MotorDsl.Core.Contracts;
 using MotorDsl.Core.Models;
 
-namespace Ejemplo_Maui_Hibrida.LibApp.UrlCommands.Handlers;
+namespace LibApp.UrlCommands.Handlers;
 
 public class PrintCommandHandler : IUrlCommandHandler
 {

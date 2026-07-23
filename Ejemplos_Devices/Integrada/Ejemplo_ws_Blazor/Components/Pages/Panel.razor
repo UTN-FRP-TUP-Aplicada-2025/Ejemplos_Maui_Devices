@@ -21,6 +21,18 @@
     </div>
 </div>
 
+<!-- GPS -->
+<div class="card m-2 p-2" style="background-color: #ffeeaf;">
+    <div class="card-head">
+        <h4>Solicitar GeoPosicion</h4>
+    </div>
+    <div class="card-body">
+        <button @onclick="OnSolicitarGeoposicion" class="btn btn-primary">Tomar Coordenadas</button><br />
+        <p>Toma y muestra las coordenadas desde el GPS en una página nueva.</p>
+        <div id="contenidoCoordenada">@ContenidoCoordenada</div>
+    </div>
+</div>
+
 <!-- Phone CALL y API -->
 <div class="card m-2 p-2" style="background-color: #ffeeaf;">
     <div class="card-head">
@@ -159,8 +171,14 @@
     {
         // La app intercepta la navegación (e.Cancel), toma el GPS e INYECTA el resultado en
         // #contenidoCoordenada por JS (sin recargar). Mismo patrón que foto/selfie/QR: param={id}.
-        //Navigation.NavigateTo("/panel?coordenadas=coordenadas&param=contenidoCoordenada", forceLoad: true);
         _navigationManager.NavigateTo("/geolocalizacion?coordenadas=coordenadas", forceLoad: true);
+    }
+        
+    public void OnSolicitarGeoposicion()
+    {
+        // La app intercepta la navegación (e.Cancel), toma el GPS e INYECTA el resultado en
+        // #contenidoCoordenada por JS (sin recargar). Mismo patrón que foto/selfie/QR: param={id}.
+        _navigationManager.NavigateTo("/panel?coordenadas=coordenadas&param=contenidoCoordenada", forceLoad: true);
     }
 
     //la app interviene  la url y redirecciona con:

@@ -1,6 +1,7 @@
 using LibApp.CustomWebView.Behaviors;
 using LibApp.Devices.QRLector.Models;
 using LibApp.Devices.QRLector.Pages;
+
 using System.Text.Json;
 
 namespace LibApp.UrlCommands.Handlers;

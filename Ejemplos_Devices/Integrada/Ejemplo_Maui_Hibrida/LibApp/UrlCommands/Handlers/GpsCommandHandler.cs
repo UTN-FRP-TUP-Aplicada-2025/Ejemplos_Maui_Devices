@@ -1,6 +1,5 @@
 using System.Globalization;
 using System.Text.Json;
-using System.Threading;
 
 using LibApp.CustomWebView.Behaviors;
 using LibApp.Devices.GPS.Models;
@@ -39,8 +38,7 @@ public sealed class GpsCommandHandler : IUrlCommandHandler
     //  - con "param={id}"  → Injection   (camino web "Tomar Coordenadas")
     //  - sin "param"       → Substitution (botón nativo "Geo Pos" y todo consumidor que espere
     //                        la coordenada en la query, como APPGDA/GetURLConCoordenadas)
-    public CommandDelivery DeliveryFor(string url) =>
-        string.IsNullOrEmpty(GetQueryValue(url, "param"))
+    public CommandDelivery DeliveryFor(string url) => string.IsNullOrEmpty(GetQueryValue(url, "param"))
             ? CommandDelivery.Substitution
             : CommandDelivery.Injection;
 

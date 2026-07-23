@@ -1,7 +1,8 @@
 using LibApp.Devices.Phone.Models;
+
 using System.Text;
 
-namespace Ejemplo_Maui_Hibrida.LibApp.Devices.GPS;
+namespace LibApp.Devices.GPS;
 
 /// <summary>
 /// Relay REST genérico: reenvía un request (verbo + url + body opcional) que

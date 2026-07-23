@@ -3,6 +3,30 @@
 Cambios notables de los ejemplos de dispositivos MAUI (`Ejemplos_Maui_Devices`).
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
 
+## [2026-07-23] — Panel con ambos modos de GPS y normalización de namespaces en `LibApp`
+
+Alcance: `Ejemplo_ws_Blazor/Components/Pages/Panel.razor` + namespaces/usings de
+`Ejemplo_Maui_Hibrida/LibApp/**` y `MauiProgram.cs`. Complemento del Plan 1: al haber pasado el
+camino web de `Injection` a `Substitution`, el panel se había quedado sin forma de ejercitar la
+inyección en el DOM.
+
+### Agregado
+
+- **Tarjeta «Solicitar GeoPosicion» en `Panel.razor` (modo `Injection`).** Navega a
+  `/panel?coordenadas=coordenadas&param=contenidoCoordenada`: la app cancela la navegación, toma el
+  GPS e inyecta el resultado en `#contenidoCoordenada` sin recargar. Convive con la tarjeta
+  existente «Tomar Coordenadas», que sigue usando `Substitution` contra `/geolocalizacion`.
+
+### Cambiado
+
+- **`ApiRelayService` y `PrintCommandHandler` pasan de `Ejemplo_Maui_Hibrida.LibApp.*` a `LibApp.*`.**
+  Eran los dos últimos tipos de `LibApp` que colgaban del namespace de la app; ahora todo el paquete
+  usa el prefijo `LibApp`, alineado con el resto de los handlers y con el link por comodín del
+  `.csproj` de tests. Se actualizaron los `using` de `SendApiCommandHandler` y `MauiProgram`.
+- **Usings agrupados por origen en `MauiProgram.cs`** (BCL / CommunityToolkit / `Microsoft.*` /
+  `LibApp.*` / `MotorDsl.*` / app) y limpieza de `using` muertos en los handlers de GPS, QR e
+  impresión. Sin cambios de comportamiento.
+
 ## [2026-07-23] — Puente de comandos por URL: clasificación separada de ejecución (Plan 1)
 
 Alcance: `Ejemplo_Maui_Hibrida/LibApp/UrlCommands/*` (contrato, dispatcher, handler de GPS) +

@@ -1,11 +1,12 @@
 ﻿using BarcodeScanning;
-using LibApp.Devices.Common.Services;
+
 using CommunityToolkit.Maui;
 using CommunityToolkit.Maui.Core;
-using Ejemplo_Maui_Hibrida.LibApp.Devices.GPS;
-using Ejemplo_Maui_Hibrida.LibApp.UrlCommands.Handlers;
-using Ejemplo_Maui_Hibrida.ViewModels;
+
+using Microsoft.Extensions.Logging;
+
 using LibApp.CustomWebView.Behaviors;
+//
 using LibApp.Devices.Camera.Pages;
 using LibApp.Devices.GPS.Services;
 using LibApp.Devices.GPS.ViewModels;
@@ -16,13 +17,18 @@ using LibApp.Devices.Networks.Services;
 using LibApp.Devices.Networks.ViewModels;
 using LibApp.Devices.Phone.Services;
 using LibApp.Devices.Phone.ViewModels;
+using LibApp.Devices.Common.Services;
+using LibApp.Devices.GPS;
+//
 using LibApp.UrlCommands;
 using LibApp.UrlCommands.Handlers;
-using Microsoft.Extensions.Logging;
+
 using MotorDsl.Bluetooth;
 using MotorDsl.Core.Models;
 using MotorDsl.Extensions;
 using MotorDsl.Maui;
+
+using Ejemplo_Maui_Hibrida.ViewModels;
 
 namespace Ejemplo_Maui_Hibrida;
 
