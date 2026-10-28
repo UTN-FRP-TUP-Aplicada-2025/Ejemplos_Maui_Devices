@@ -13,9 +13,9 @@
     <File Path="../README.md" />
   </Folder>
   <Folder Name="/Docs/certificado-ssl/">
-    <File Path="Docs/certificados-ssl/Anexo-A-Comandos.md" />
-    <File Path="Docs/certificados-ssl/Anexo-B-Glosario.md" />
-    <File Path="Docs/certificados-ssl/README.md" />
+    <File Path="Docs/Certificados-SSL/Anexo-A-Comandos.md" />
+    <File Path="Docs/Certificados-SSL/Anexo-B-Glosario.md" />
+    <File Path="Docs/Certificados-SSL/README.md" />
   </Folder>
   <Folder Name="/Docs/otros/">
     <File Path="Docs/otros/AsyncRelayCommandOptions.md" />
@@ -126,7 +126,7 @@
     <File Path="Printer/Ejemplo_Docs_Printer/Prompts_Generacion_Apk_ejemplo/ficheros_claude.ia/Androidmanifest.XML" />
     <File Path="Printer/Ejemplo_Docs_Printer/Prompts_Generacion_Apk_ejemplo/ficheros_claude.ia/Instalacion.md" />
     <File Path="Printer/Ejemplo_Docs_Printer/Prompts_Generacion_Apk_ejemplo/ficheros_claude.ia/Ithermalprinterservice.cs" />
-    <File Path="Printer/Ejemplo_Docs_Printer/Prompts_Generacion_Apk_ejemplo/ficheros_claude.ia/Mainpage.XAML" />
+    <File Path="Printer/Ejemplo_Docs_Printer/Prompts_Generacion_Apk_ejemplo/ficheros_claude.ia/MainPage.XAML" />
     <File Path="Printer/Ejemplo_Docs_Printer/Prompts_Generacion_Apk_ejemplo/ficheros_claude.ia/MainPage.XAML.cs" />
     <File Path="Printer/Ejemplo_Docs_Printer/Prompts_Generacion_Apk_ejemplo/ficheros_claude.ia/MauiProgram.cs" />
     <File Path="Printer/Ejemplo_Docs_Printer/Prompts_Generacion_Apk_ejemplo/ficheros_claude.ia/Thermalprintermaui.csproj" />
