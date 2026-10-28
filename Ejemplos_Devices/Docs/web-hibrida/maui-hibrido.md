@@ -485,7 +485,7 @@ Todo el "remedio de red" para `aplicada.somee.com` vive **sólo en Android**. iO
 </domain-config>
 ```
 
-**Por qué Android necesitó esto** (detalle en [`../certificados-ssl/README.md`](../certificados-ssl/README.md)):
+**Por qué Android necesitó esto** (detalle en [`../Certificados-SSL/README.md`](../Certificados-SSL/README.md)):
 la cadena del sitio termina en **`ISRG Root X2`** (raíz ECDSA de Let's Encrypt/ISRG, 2020). El servidor
 envía hoja + 2 intermedios (`YE2`, `Root YE`) y **espera que el cliente ya tenga la raíz**. Un **Android
 viejo (Moto g42)** no la tiene y **no hace AIA fetching**, así que la cadena queda abierta → el GET
@@ -674,4 +674,4 @@ target **iOS 15.0** / **Android API 25** (`csproj:25-26`).
 > Documentación relacionada — comandos del Canal B:
 > [`lectura-qr.md`](./lectura-qr.md) (QR) · [`captura-foto.md`](./captura-foto.md) (foto y selfie) ·
 > [`llamada.md`](./llamada.md) (teléfono) · [`envio-api.md`](./envio-api.md) (relay REST).
-> Cadena TLS y arreglo de Android: [`../certificados-ssl/README.md`](../certificados-ssl/README.md).
+> Cadena TLS y arreglo de Android: [`../Certificados-SSL/README.md`](../Certificados-SSL/README.md).
