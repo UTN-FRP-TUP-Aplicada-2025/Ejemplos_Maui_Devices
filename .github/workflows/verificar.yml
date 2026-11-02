@@ -1,0 +1,56 @@
+name: Verificar
+
+# Control que alimenta la guarda del merge delegado (ver «Delegación del merge al agente» en el README).
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  verificar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Sin archivos de secretos versionados
+        # Los .pem se aceptan sólo si son certificados públicos (las raíces TLS que usa Android);
+        # una clave privada en cualquier archivo la detecta el paso siguiente.
+        run: |
+          set -u
+          hallados=""
+          while IFS= read -r f; do
+            case "$f" in
+              *.pem) grep -q 'PRIVATE KEY' "$f" || continue ;;
+            esac
+            hallados="$hallados$f"$'\n'
+          done < <(git ls-files | grep -Ei '(^|/)(\.env(\..*)?|[^/]*\.env|[^/]*\.(pem|key|p12|pfx|jks|keystore|ppk)|id_(rsa|dsa|ecdsa|ed25519)|\.git-credentials|\.netrc|credentials(\.json)?|secrets?\.(json|ya?ml))$' || true)
+          if [ -n "$hallados" ]; then
+            echo "::error::Archivos de secretos versionados:"
+            printf '%s' "$hallados"
+            exit 1
+          fi
+          echo "Sin archivos de secretos."
+
+      - name: Sin patrones de token en el contenido
+        run: |
+          set -u
+          patron='ghp_[A-Za-z0-9]{20,}|gho_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}|AKIA[0-9A-Z]{16}|-----BEGIN [A-Z ]*PRIVATE KEY-----'
+          hallados=$(git grep -nIlE "$patron" -- . ':!.github/workflows/verificar.yml' || true)
+          if [ -n "$hallados" ]; then
+            echo "::error::Patrones de token o clave privada en:"
+            echo "$hallados"
+            exit 1
+          fi
+          echo "Sin patrones de token."
+
+      - name: Archivos .md vacíos (sólo aviso)
+        # Hay marcadores vacíos a propósito; se informan sin hacer fallar el control.
+        run: |
+          set -u
+          while IFS= read -r f; do
+            grep -q '[^[:space:]]' "$f" || echo "::warning file=$f::.md vacío"
+          done < <(git ls-files '*.md')
