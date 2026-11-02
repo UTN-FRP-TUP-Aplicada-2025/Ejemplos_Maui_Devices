@@ -48,7 +48,11 @@ env:
 
 jobs:
   publish-ios:
-    runs-on: macos-15
+    # Runner propio (VM Tart efímera en m4dev): es el que usamos por defecto.
+    runs-on: [self-hosted, macOS, ARM64, m4dev, macos-15]
+    # Runner hospedado de GitHub: para usar los ejemplos fuera de nuestra infraestructura,
+    # comentá la línea de arriba y descomentá esta.
+    # runs-on: macos-15
     name: iOS Publish - Printer - Ejemplo_MotorDSL
 
     steps:
