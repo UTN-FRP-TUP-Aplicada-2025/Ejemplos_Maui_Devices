@@ -52,11 +52,8 @@ env:
 
 jobs:
   publish-ios:
-    # Runner propio (VM Tart efímera en m4dev): es el que usamos por defecto.
-    runs-on: [self-hosted, macOS, ARM64, m4dev, macos-15]
-    # Runner hospedado de GitHub: para usar los ejemplos fuera de nuestra infraestructura,
-    # comentá la línea de arriba y descomentá esta.
-    # runs-on: macos-15
+    # Runner estándar de GitHub: gratuito y sin límite de minutos en repositorios públicos.
+    runs-on: macos-15
     name: iOS Publish - QR - CS.LectorQR_Dialog
 
     steps:
